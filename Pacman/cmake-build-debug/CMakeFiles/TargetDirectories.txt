@@ -1,0 +1,3 @@
+C:/Users/Bogdan/Documents/GitHub/Pacman/Pacman/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/Bogdan/Documents/GitHub/Pacman/Pacman/cmake-build-debug/CMakeFiles/Pacman.dir
+C:/Users/Bogdan/Documents/GitHub/Pacman/Pacman/cmake-build-debug/CMakeFiles/edit_cache.dir
