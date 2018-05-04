@@ -12,6 +12,13 @@ void gameInit() {
 		printf("SDL error: %s\n", SDL_GetError());
 		exit(-1);
 	}
+	TTF_Init();
+
+
+	SDL_Color white = { 255, 255, 255 };
+	extern TTF_Font* font;
+
+	font = TTF_OpenFont("arial.ttf", 24);
 
 	extern Game game;
 	unsigned int width = game.screen.width / 3;
@@ -22,6 +29,7 @@ void gameInit() {
 	game.screen.renderer = SDL_CreateRenderer(game.screen.window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	game.isRunning = SDL_TRUE;
+	return;
 }
 
 void gameQuit() {
@@ -33,4 +41,23 @@ void gameQuit() {
 	game.isRunning = SDL_FALSE;
 
 	SDL_Quit();
+	return;
+}
+
+void printMenu() {
+	SDL_Color white = { 255, 255, 255 };
+	extern TTF_Font* font;
+
+	SDL_Surface* surface = TTF_RenderText_Solid(font, "New game", white);
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+
+	SDL_Rect Message_rect;
+	Message_rect.x = game.screen.width / 12;
+	Message_rect.y = game.screen.height / 16;
+	Message_rect.w = game.screen.width / 6;
+	Message_rect.h = game.screen.height / 12;
+	SDL_RenderCopy(game.screen.renderer, Message, NULL, &Message_rect);
+
+	SDL_RenderPresent(game.screen.renderer);
+	return;
 }

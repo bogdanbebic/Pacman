@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <Windows.h>
 #include <SDL.h>
+#include <SDL_ttf.h>
 
 
 #define SCREEN_WIDTH 640
@@ -32,6 +33,10 @@ void gameQuit();
 
 void getScreenResolution(int *width, int *height);
 
+void printMenu();
+
 Game game;
+
+TTF_Font* font;
 
 #endif
