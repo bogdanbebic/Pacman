@@ -11,6 +11,7 @@
 #define SCREEN_HEIGHT 480
 #define SCREEN_SCALE 1
 #define SCREEN_NAME "Pacman"
+#define MAX_STRING_LINE 20
 
 typedef struct ScreenStruct {
 	unsigned int width;
@@ -38,5 +39,7 @@ void printMenu();
 Game game;
 
 TTF_Font* font;
+
+enum MenuOptions { newGame, continueGame, highscore, settings, credits, quit, numberOfMenuOptions };
 
 #endif

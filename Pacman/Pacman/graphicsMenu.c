@@ -45,18 +45,55 @@ void gameQuit() {
 }
 
 void printMenu() {
+
+	/* !!!!! TODO: implementiraj crtanje pacmana !!!!! */
+
 	SDL_Color white = { 255, 255, 255 };
 	extern TTF_Font* font;
 
-	SDL_Surface* surface = TTF_RenderText_Solid(font, "New game", white);
-	SDL_Texture* Message = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_Surface* surface[numberOfMenuOptions];
+	SDL_Texture* Message[numberOfMenuOptions];
+	SDL_Rect Message_rect[numberOfMenuOptions];
 
-	SDL_Rect Message_rect;
-	Message_rect.x = game.screen.width / 12;
-	Message_rect.y = game.screen.height / 16;
-	Message_rect.w = game.screen.width / 6;
-	Message_rect.h = game.screen.height / 12;
-	SDL_RenderCopy(game.screen.renderer, Message, NULL, &Message_rect);
+	enum MenuOptions menuOption;
+
+	
+	for (menuOption = 0; menuOption < numberOfMenuOptions; menuOption++) {
+
+		switch (menuOption) {
+		case newGame:
+			surface[menuOption] = TTF_RenderText_Solid(font, "NEW GAME", white);
+			break;
+		case continueGame:
+			surface[menuOption] = TTF_RenderText_Solid(font, "CONTINUE", white);
+			break;
+		case highscore:
+			surface[menuOption] = TTF_RenderText_Solid(font, "HIGHSCORE", white);
+			break;
+		case settings:
+			surface[menuOption] = TTF_RenderText_Solid(font, "SETTINGS", white);
+			break;
+		case credits:
+			surface[menuOption] = TTF_RenderText_Solid(font, "CREDITS", white);
+			break;
+		case quit:
+			surface[menuOption] = TTF_RenderText_Solid(font, "QUIT GAME", white);
+			break;
+		default:
+			break;
+		}
+		
+		Message[menuOption] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[menuOption]);
+		Message_rect[menuOption].x = game.screen.width / 12;
+		Message_rect[menuOption].y = (menuOption + 1) * (game.screen.height / 16);	// OVDE MENJAS !!!!!!!!!!
+		Message_rect[menuOption].w = game.screen.width / 6;
+		Message_rect[menuOption].h = game.screen.height / 24;
+
+
+		SDL_RenderCopy(game.screen.renderer, Message[menuOption], NULL, &Message_rect[menuOption]);
+	}
+	
+
 
 	SDL_RenderPresent(game.screen.renderer);
 	return;
