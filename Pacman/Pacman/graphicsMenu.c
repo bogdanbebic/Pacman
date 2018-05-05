@@ -68,6 +68,14 @@ void printMenu(enum menuOptions currentMenuOption) {
 	for (menuOption = 0; menuOption < numberOfMenuOptions; menuOption++) {
 
 		switch (menuOption) {
+		case demoGame:
+			if (currentMenuOption == menuOption) {
+				surface[menuOption] = TTF_RenderText_Solid(font, "DEMO GAME", yellow);
+			}
+			else {
+				surface[menuOption] = TTF_RenderText_Solid(font, "DEMO GAME", white);
+			}
+			break;
 		case newGame:
 			if (currentMenuOption == menuOption) {
 				surface[menuOption] = TTF_RenderText_Solid(font, "NEW GAME", yellow);
@@ -123,7 +131,7 @@ void printMenu(enum menuOptions currentMenuOption) {
 		Message[menuOption] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[menuOption]);
 		SDL_FreeSurface(surface[menuOption]);
 		Message_rect[menuOption].x = game.screen.width / 12;
-		Message_rect[menuOption].y = (menuOption + 1) * (game.screen.height / 16);	// OVDE MENJAS !!!!!!!!!!
+		Message_rect[menuOption].y = (2 + 3 * menuOption) * (game.screen.height / 48);	// OVDE MENJAS !!!!!!!!!!
 		Message_rect[menuOption].w = game.screen.width / 6;
 		Message_rect[menuOption].h = game.screen.height / 24;
 
@@ -131,12 +139,6 @@ void printMenu(enum menuOptions currentMenuOption) {
 		SDL_RenderCopy(game.screen.renderer, Message[menuOption], NULL, &Message_rect[menuOption]);
 		SDL_RenderPresent(game.screen.renderer);
 	}
-	
-
-	//for (menuOption; menuOption < numberOfMenuOptions; menuOption) { //za brisanje teksture i rendera
-	//	SDL_DestroyTexture(Message[menuOption]);
-	//}
-	//SDL_DestroyRenderer(game.screen.renderer);
 	
 	return;
 }

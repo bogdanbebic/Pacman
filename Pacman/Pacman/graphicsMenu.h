@@ -28,7 +28,7 @@ typedef struct GameStruct {
 	void(*quit)();
 } Game;
 
-enum MenuOptions { newGame, continueGame, highscore, settings, credits, quitGame, numberOfMenuOptions };
+enum MenuOptions { demoGame, newGame, continueGame, highscore, settings, credits, quitGame, numberOfMenuOptions };
 
 void gameInit();
 

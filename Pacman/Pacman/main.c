@@ -7,7 +7,7 @@
 #include <SDL_ttf.h>
 
 #include "graphicsMenu.h"
-
+#include "game.h"
 
 int main(int argc, char *argv[]) {
 
@@ -19,54 +19,73 @@ int main(int argc, char *argv[]) {
 
 	// PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC); // za potrebe proslave
 
+	enum ActiveScreen {isMenu, isDemo, isNew, isContinue, isHighscore, isSettings, isCredits, isQuit, numberOfScreens};
+
+	enum ActiveScreen activeScreen = isMenu;
+
 	game.init();
 
-	enum MenuOptions menuOption = 0;	// Ovo je za izbor u meniju
+	int isGameCreated = 0;
+
+	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
 	SDL_Event event;
 
 	printMenu(menuOption);
 
 	while (game.isRunning) {
 		while (SDL_PollEvent(&event)) {
+			
 			switch(event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
 
-				case SDLK_UP:
-					menuOption = menuOption ? menuOption - 1 : numberOfMenuOptions - 1;
-					break;
-
-				case SDLK_DOWN:
-					menuOption = (menuOption + 1) % numberOfMenuOptions;
-					break;
-
-				case SDLK_RETURN: case SDLK_RIGHT: 
-					// printf("Menu option: %d\n", menuOption);	// za potrebe debagovanja
-					switch (menuOption) {
-					case newGame:
-						//TODO: implement window for new game
-						break;
-					case continueGame:
-						//TODO: implement game continuation
-						break;
-					case highscore:
-						//TODO: implement highscore window
-						break;
-					case settings:
-						//TODO: implement settings window
-						break;
-					case quitGame:
-						game.isRunning = SDL_FALSE;
-						// TODO: implement
-						break;
+				case SDLK_ESCAPE:
+					if (activeScreen != isMenu) {
+						activeScreen = isMenu;
 					}
 					break;
 
-				default:
+				case SDLK_UP:
+					if (activeScreen == isMenu) {
+						menuOption = menuOption ? menuOption - 1 : numberOfMenuOptions - 1;
+					}
+					break;
+
+				case SDLK_DOWN:
+					if (activeScreen == isMenu) {
+						menuOption = (menuOption + 1) % numberOfMenuOptions;
+					}
+					break;
+
+				case SDLK_RETURN: case SDLK_RIGHT:
+					// printf("Menu option: %d\n", menuOption);	// za potrebe debagovanja
+					if (activeScreen == isMenu) {
+						activeScreen = menuOption + 1;
+						//switch (menuOption) {
+						//case newGame:
+						//	isGameCreated = 1;
+						//	//TODO: implement window for new game
+						//	break;
+						//case continueGame:
+						//	if (isGameCreated) {
+						//		//TODO: implement game continuation
+						//	}
+						//	break;
+						//case highscore:
+						//	//TODO: implement highscore window
+						//	break;
+						//case settings:
+						//	//TODO: implement settings window
+						//	break;
+						//case quitGame:
+						//	game.isRunning = SDL_FALSE;
+						//	// TODO: implement
+						//	break;
+						//}
+					}
 					break;
 				}
-				printMenu(menuOption);
-				break;
+				break;	// !!!!! NE DIRAJ, OVO SPRECAVA GASENJE PROGRAMA !!!!!
 
 			/* videcemo da li cemo i ovo da implmentiramo */
 			/* case SDL_MOUSEBUTTONDOWN: 		// !!!!! ovo je za mis, NE DIRAJ, NE BRISI !!!!!
@@ -78,6 +97,29 @@ int main(int argc, char *argv[]) {
 
 			case SDL_QUIT:
 				game.isRunning = SDL_FALSE;
+				break;
+			}
+
+			switch (activeScreen) {
+			case isMenu:
+				printMenu(menuOption);
+				break;
+			case isDemo:
+				break;
+			case isNew:
+				break;
+			case isContinue:
+				break;
+			case isHighscore:
+				break;
+			case isSettings:
+				break;
+			case isCredits:
+				break;
+			case isQuit:
+				game.isRunning = SDL_FALSE;
+				break;
+			default:
 				break;
 			}
 		}

@@ -21,9 +21,21 @@
     <ClCompile Include="graphicsMenu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphicsMenu.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameMap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pacStruct.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
