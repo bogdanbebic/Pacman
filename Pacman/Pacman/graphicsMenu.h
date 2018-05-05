@@ -28,18 +28,20 @@ typedef struct GameStruct {
 	void(*quit)();
 } Game;
 
+enum MenuOptions { newGame, continueGame, highscore, settings, credits, quitGame, numberOfMenuOptions };
+
 void gameInit();
 
 void gameQuit();
 
 void getScreenResolution(int *width, int *height);
 
-void printMenu();
+void printMenu(enum menuOptions currentMenuOption);
 
 Game game;
 
 TTF_Font* font;
 
-enum MenuOptions { newGame, continueGame, highscore, settings, credits, quit, numberOfMenuOptions };
+SDL_Texture* Message[numberOfMenuOptions];
 
 #endif
