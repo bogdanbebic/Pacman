@@ -105,16 +105,28 @@ int main(int argc, char *argv[]) {
 				printMenu(menuOption);
 				break;
 			case isDemo:
+				// TODO: implement
 				break;
 			case isNew:
+				isGameCreated = 1;
+				// TODO: implement
 				break;
 			case isContinue:
+				if (isGameCreated) {
+					// TODO: implement
+				}
+				else {
+					activeScreen = isMenu;
+				}
 				break;
 			case isHighscore:
+				// TODO: implement
 				break;
 			case isSettings:
+				// TODO: implement
 				break;
 			case isCredits:
+				// TODO: implement
 				break;
 			case isQuit:
 				game.isRunning = SDL_FALSE;
