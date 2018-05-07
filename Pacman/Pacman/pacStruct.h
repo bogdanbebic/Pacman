@@ -5,6 +5,7 @@
 #define DIRECTION_RIGHT 1
 #define DIRECTION_DOWN 2
 #define DIRECTION_LEFT 3
+#define DIRECTION_NONE -1
 
 /*
 *	Direction:
@@ -12,6 +13,7 @@
 *	RIGHT -> 1
 *	DOWN -> 2
 *	LEFT -> 3
+*	NONE -> -1
 */
 typedef struct PacStructStruct {
 	int iPosition;
