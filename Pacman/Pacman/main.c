@@ -9,6 +9,9 @@
 #include "graphicsMenu.h"
 #include "game.h"
 
+
+SDL_Event event;
+
 int main(int argc, char *argv[]) {
 
 	extern Game game;
@@ -28,13 +31,13 @@ int main(int argc, char *argv[]) {
 	int isGameCreated = 0;
 
 	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
-	SDL_Event event;
+	//SDL_Event event;
 
 	printMenu(menuOption);
 
 	while (game.isRunning) {
+
 		while (SDL_PollEvent(&event)) {
-			
 			switch(event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
@@ -108,8 +111,12 @@ int main(int argc, char *argv[]) {
 				// TODO: implement
 				break;
 			case isNew:
+				SDL_RenderClear(game.screen.renderer);
 				isGameCreated = 1;
+				playNewGame();
+				SDL_RenderClear(game.screen.renderer);
 				// TODO: implement
+				activeScreen = isMenu;
 				break;
 			case isContinue:
 				if (isGameCreated) {

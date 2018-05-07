@@ -154,14 +154,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="game.c" />
+    <ClCompile Include="gameGraphics.c" />
     <ClCompile Include="graphicsMenu.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
+    <ClInclude Include="gameGraphics.h" />
     <ClInclude Include="gameMap.h" />
     <ClInclude Include="graphicsMenu.h" />
     <ClInclude Include="pacStruct.h" />
+    <ClInclude Include="testMap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

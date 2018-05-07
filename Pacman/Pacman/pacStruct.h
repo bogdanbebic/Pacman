@@ -7,6 +7,8 @@
 #define DIRECTION_LEFT 3
 #define DIRECTION_NONE -1
 
+#define NUMBER_OF_GHOSTS 4
+
 /*
 *	Direction:
 *	UP -> 0

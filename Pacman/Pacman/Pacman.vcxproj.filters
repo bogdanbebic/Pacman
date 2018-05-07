@@ -24,6 +24,9 @@
     <ClCompile Include="game.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gameGraphics.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphicsMenu.h">
@@ -36,6 +39,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="pacStruct.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameGraphics.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testMap.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
