@@ -61,7 +61,7 @@ void playNewGame() {
 
 
 
-	printInitMap(testMap2);
+	printInitMap(testMap2, pacman);
 
 	while (isLevelRunning) {
 
