@@ -10,7 +10,13 @@
 #include "pacStruct.h"
 #include "game.h"
 
-void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman);
+#define LEN_OF_SCORE_BOX 15
+
+void updateScoreBoxAndLivesBox(int livesCount, int currentScore);
+
+void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int pacDotCount);
+
+void updateScoreAndLives(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int * pacDotCount, int * livesCount, int * currentScore);
 
 void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int delay);
 

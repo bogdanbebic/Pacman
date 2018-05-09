@@ -154,8 +154,8 @@ void printMenu(enum menuOptions currentMenuOption) {
 
 
 		SDL_RenderCopy(game.screen.renderer, Message[menuOption], NULL, &Message_rect[menuOption]);
-		SDL_RenderPresent(game.screen.renderer);
+		
 	}
-	
+	SDL_RenderPresent(game.screen.renderer);
 	return;
 }

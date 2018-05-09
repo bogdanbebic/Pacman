@@ -115,6 +115,7 @@ int main(int argc, char *argv[]) {
 				isGameCreated = 1;
 				playNewGame(MEDIUM);
 				SDL_RenderClear(game.screen.renderer);
+				printMenu(menuOption); // odmah vrati na meni, cim zavrsi sa 3 zivota
 				// TODO: implement
 				activeScreen = isMenu;
 				break;
