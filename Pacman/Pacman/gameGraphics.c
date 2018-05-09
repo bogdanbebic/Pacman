@@ -70,7 +70,19 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman) {
 	return;
 }
 
-void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS]) {
+void deletePacmanGhost(int iPosition, int jPosition) {
+	surface[iPosition][jPosition] = SDL_LoadBMP("Pictures/background.bmp");
+
+	SDL_RenderFillRect(game.screen.renderer, &tile_rect[iPosition][jPosition]);
+
+	tile[iPosition][jPosition] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[iPosition][jPosition]);
+
+	SDL_RenderCopy(game.screen.renderer, tile[iPosition][jPosition], NULL, &tile_rect[iPosition][jPosition]);
+	SDL_RenderPresent(game.screen.renderer);
+	return;
+}
+
+void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int delay) {
 
 	extern SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 	extern SDL_Texture* tile[HEIGHT_OF_MAP][WIDTH_OF_MAP];
@@ -79,7 +91,6 @@ void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruc
 	SDL_Color yellow = { 255, 255, 0 }, black = { 0, 0, 0 };
 	extern Game game;
 
-	// TODO: update-uj staro mesto pacmana
 	PacStruct oldPosition = getOldPacPosition(pacman);
 	SDL_RenderFillRect(game.screen.renderer, &tile_rect[oldPosition.iPosition][oldPosition.jPosition]);
 
@@ -110,6 +121,7 @@ void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruc
 
 	SDL_RenderCopy(game.screen.renderer, tile[pacman.iPosition][pacman.jPosition], NULL, &tile_rect[pacman.iPosition][pacman.jPosition]);
 	SDL_RenderPresent(game.screen.renderer);
-	SDL_Delay(250);
+	SDL_Delay(delay);
+
 	return;
 }

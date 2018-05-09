@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
 			case isNew:
 				SDL_RenderClear(game.screen.renderer);
 				isGameCreated = 1;
-				playNewGame();
+				playNewGame(HARD);
 				SDL_RenderClear(game.screen.renderer);
 				// TODO: implement
 				activeScreen = isMenu;
