@@ -7,7 +7,7 @@
 #define WIDTH_SCREEN 600
 #define HEIGHT_SCREEN 400
 
-void wallCheckAndMove(PacStruct *);
+void wallCheckAndMove(int [HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct *);
 
 void playNewGame();
 

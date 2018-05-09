@@ -1,19 +1,18 @@
 #include "game.h"
 #include "testMap.h"
 
-void wallCheckAndMove(PacStruct *pacStruct) {
+void wallCheckAndMove(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct *pacStruct) {
 	switch (pacStruct->direction) {
 	case DIRECTION_UP:
-		if (pacStruct->iPosition - 1 == WALL) {
+		if (map[pacStruct->iPosition - 1][pacStruct->jPosition] == WALL) {
 			pacStruct->direction = DIRECTION_NONE;
-			// PlaySound(TEXT("Music/ImperialMarch"), NULL, SND_ASYNC); // za potrebe debagovanja
 		}
 		else {
 			pacStruct->iPosition--;
 		}
 		break;
 	case DIRECTION_RIGHT:
-		if (pacStruct->jPosition + 1 == WALL) {
+		if (map[pacStruct->iPosition][pacStruct->jPosition + 1] == WALL) {
 			pacStruct->direction = DIRECTION_NONE;
 		}
 		else {
@@ -21,7 +20,7 @@ void wallCheckAndMove(PacStruct *pacStruct) {
 		}
 		break;
 	case DIRECTION_DOWN:
-		if (pacStruct->iPosition + 1 == WALL) {
+		if (map[pacStruct->iPosition + 1][pacStruct->jPosition] == WALL) {
 			pacStruct->direction = DIRECTION_NONE;
 		}
 		else {
@@ -29,7 +28,7 @@ void wallCheckAndMove(PacStruct *pacStruct) {
 		}
 		break;
 	case DIRECTION_LEFT:
-		if (pacStruct->jPosition - 1 == WALL) {
+		if (map[pacStruct->iPosition][pacStruct->jPosition - 1] == WALL) {
 			pacStruct->direction = DIRECTION_NONE;
 		}
 		else {
@@ -56,9 +55,13 @@ void playNewGame() {
 	*	za	potrebe testiranja, kasnije ih
 	*	treba promeniti u nesto smisleno
 	*/
-	pacman.direction = DIRECTION_NONE;	
+	pacman.direction = DIRECTION_UP;	
 	pacman.iPosition = HEIGHT_OF_MAP / 2;
 	pacman.jPosition = WIDTH_OF_MAP / 2;
+
+
+
+	printInitMap(testMap2);
 
 	while (isLevelRunning) {
 
@@ -97,15 +100,15 @@ void playNewGame() {
 				game.isRunning = SDL_FALSE;
 				break;
 			}
-			wallCheckAndMove(&pacman);
-			PacStruct ghosts[4];
+			wallCheckAndMove(testMap1, &pacman);
+			// PacStruct ghosts[4];
 			// TODO: odredjivanje novih pozicija duhova
-			// TODO: wallCheck za duhove
+			// TODO: wallCheckAndMove za duhove
 
-			// TODO: poziv funkcije za grafiku -> iscrtavanje mape 
-			printMap(testMap2, pacman, ghosts);
+			// TODO: poziv funkcije za grafiku -> iscrtavanje nove mape 
 
 			// TODO: provera -> pacman i duh na istom polju
+			// TODO: lives count provera
 
 			// TODO: broj preostalih PAC_DOT-ova na mapi
 
