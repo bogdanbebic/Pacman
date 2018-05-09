@@ -55,7 +55,7 @@ void playNewGame() {
 	*	za	potrebe testiranja, kasnije ih
 	*	treba promeniti u nesto smisleno
 	*/
-	pacman.direction = DIRECTION_UP;	
+	pacman.direction = DIRECTION_NONE;	
 	pacman.iPosition = HEIGHT_OF_MAP / 2;
 	pacman.jPosition = WIDTH_OF_MAP / 2;
 
@@ -101,13 +101,13 @@ void playNewGame() {
 				break;
 			}
 		}
-		wallCheckAndMove(testMap1, &pacman);
+		wallCheckAndMove(testMap2, &pacman);
 		PacStruct ghosts[4];
 		// TODO: odredjivanje novih pozicija duhova
 		// TODO: wallCheckAndMove za duhove
 
 		// TODO: poziv funkcije za grafiku -> iscrtavanje nove mape
-		updateMap(testMap1, pacman, ghosts);
+		updateMap(testMap2, pacman, ghosts);
 
 		// TODO: provera -> pacman i duh na istom polju
 		// TODO: lives count provera
@@ -116,8 +116,6 @@ void playNewGame() {
 
 		// TODO: azuriranje mape, da li je Pacman pojeo nesto
 
-		// TODO: ovde mozda treba i da se delay-uje ekran i potez zbog ljudskog igranja i gledanja
-		SDL_Delay(300);
 	}
 
 	// TODO: ispis endgame ekrana -> pobeda ili poraz
