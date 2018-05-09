@@ -22,6 +22,9 @@ void printMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct 
 				surface[i][j] = TTF_RenderText_Solid(font, "o", yellow);
 			else 
 				surface[i][j] = TTF_RenderText_Solid(font, " ", yellow);
+			if (i == pacman.iPosition && j == pacman.jPosition) {
+				surface[i][j] = TTF_RenderText_Solid(font, "<", yellow);
+			}
 
 			Message[i][j] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[i][j]);
 			SDL_FreeSurface(surface[i][j]);

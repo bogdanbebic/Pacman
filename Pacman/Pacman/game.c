@@ -6,6 +6,7 @@ void wallCheckAndMove(PacStruct *pacStruct) {
 	case DIRECTION_UP:
 		if (pacStruct->iPosition - 1 == WALL) {
 			pacStruct->direction = DIRECTION_NONE;
+			// PlaySound(TEXT("Music/ImperialMarch"), NULL, SND_ASYNC); // za potrebe debagovanja
 		}
 		else {
 			pacStruct->iPosition--;

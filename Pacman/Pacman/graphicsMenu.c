@@ -34,7 +34,7 @@ void gameInit() {
 void gameQuit() {
 	extern SDL_Texture* Message[numberOfMenuOptions];
 	enum MenuOptions menuOption;
-	for (menuOption = 0; menuOption < numberOfMenuOptions; menuOption++) { //za brisanje teksture i rendera
+	for (menuOption = 0; menuOption < numberOfMenuOptions; menuOption++) { // za brisanje teksture i rendera
 		SDL_DestroyTexture(Message[menuOption]);
 	}
 	SDL_DestroyRenderer(game.screen.renderer);
