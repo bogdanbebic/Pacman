@@ -1,11 +1,9 @@
 #ifndef _pacStruct_h_
 #define _pacStruct_h_
 
-#define DIRECTION_UP 0
-#define DIRECTION_RIGHT 1
-#define DIRECTION_DOWN 2
-#define DIRECTION_LEFT 3
-#define DIRECTION_NONE -1
+
+
+enum Direction { DIRECTION_NONE = -1, DIRECTION_UP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT, NUMBER_OF_DIRECTIONS };
 
 #define NUMBER_OF_GHOSTS 4
 
@@ -20,7 +18,7 @@
 typedef struct PacStructStruct {
 	int iPosition;
 	int jPosition;
-	int direction;
+	enum Direction direction;
 } PacStruct;
 
 #endif
