@@ -100,22 +100,24 @@ void playNewGame() {
 				game.isRunning = SDL_FALSE;
 				break;
 			}
-			wallCheckAndMove(testMap1, &pacman);
-			// PacStruct ghosts[4];
-			// TODO: odredjivanje novih pozicija duhova
-			// TODO: wallCheckAndMove za duhove
-
-			// TODO: poziv funkcije za grafiku -> iscrtavanje nove mape 
-
-			// TODO: provera -> pacman i duh na istom polju
-			// TODO: lives count provera
-
-			// TODO: broj preostalih PAC_DOT-ova na mapi
-
-			// TODO: azuriranje mape, da li je Pacman pojeo nesto
-
-			// TODO: ovde mozda treba i da se delay-uje ekran i potez zbog ljudskog igranja i gledanja
 		}
+		wallCheckAndMove(testMap1, &pacman);
+		PacStruct ghosts[4];
+		// TODO: odredjivanje novih pozicija duhova
+		// TODO: wallCheckAndMove za duhove
+
+		// TODO: poziv funkcije za grafiku -> iscrtavanje nove mape
+		updateMap(testMap1, pacman, ghosts);
+
+		// TODO: provera -> pacman i duh na istom polju
+		// TODO: lives count provera
+
+		// TODO: broj preostalih PAC_DOT-ova na mapi
+
+		// TODO: azuriranje mape, da li je Pacman pojeo nesto
+
+		// TODO: ovde mozda treba i da se delay-uje ekran i potez zbog ljudskog igranja i gledanja
+		SDL_Delay(300);
 	}
 
 	// TODO: ispis endgame ekrana -> pobeda ili poraz
