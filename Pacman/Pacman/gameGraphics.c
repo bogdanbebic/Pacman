@@ -1,9 +1,38 @@
 #include "gameGraphics.h"
 #include "gameMap.h"
+#include "pacStruct.h"
 
 SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 SDL_Texture *message[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 SDL_Rect Message_rect[HEIGHT_OF_MAP][WIDTH_OF_MAP];
+
+static PacStruct getOldPacPosition(PacStruct pacStruct) {
+	PacStruct oldPosition;
+
+	oldPosition.iPosition = pacStruct.iPosition;
+	oldPosition.jPosition = pacStruct.jPosition;
+
+	switch (pacStruct.direction) {
+	case DIRECTION_NONE:
+		break;
+	case DIRECTION_UP:
+		oldPosition.iPosition = pacStruct.iPosition + 1;
+		break;
+	case DIRECTION_RIGHT:
+		oldPosition.jPosition = pacStruct.jPosition - 1;
+		break;
+	case DIRECTION_DOWN:
+		oldPosition.iPosition = pacStruct.iPosition - 1;
+		break;
+	case DIRECTION_LEFT:
+		oldPosition.jPosition = pacStruct.jPosition + 1;
+		break;
+	default:
+		break;
+	}
+
+	return oldPosition;
+}
 
 void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]) {
 	int i, j;
@@ -20,14 +49,14 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]) {
 			if (map[i][j] == WALL)
 				surface[i][j] = TTF_RenderText_Solid(font, "#", yellow);
 			else if (map[i][j] == PAC_DOT)
-				surface[i][j] = TTF_RenderText_Solid(font, ".", yellow);
+				surface[i][j] = TTF_RenderText_Solid(font, " . ", yellow);
 			else if (map[i][j] == POWER_PELLET)
 				surface[i][j] = TTF_RenderText_Solid(font, "o", yellow);
 			else 
 				surface[i][j] = TTF_RenderText_Solid(font, " ", yellow);
 
 			message[i][j] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[i][j]);
-			SDL_FreeSurface(surface[i][j]);
+			//SDL_FreeSurface(surface[i][j]);
 			Message_rect[i][j].x = j * game.screen.width / WIDTH_OF_MAP /3;
 			Message_rect[i][j].y = i * game.screen.height / HEIGHT_OF_MAP/2;
 			Message_rect[i][j].w = game.screen.width / WIDTH_OF_MAP/3;
@@ -46,19 +75,25 @@ void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruc
 	extern SDL_Texture* message[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 	extern SDL_Rect Message_rect[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 	TTF_Font *font = TTF_OpenFont("impact.ttf", 46);
-	SDL_Color yellow = { 255, 255, 0 };
+	SDL_Color yellow = { 255, 255, 0 }, black = { 0, 0, 0 };
 	extern Game game;
 
+	// TODO: update-uj staro mesto pacmana
+	PacStruct oldPosition = getOldPacPosition(pacman);
+	SDL_RenderFillRect(game.screen.renderer, &Message_rect[oldPosition.iPosition][oldPosition.jPosition]);
+
+	SDL_RenderFillRect(game.screen.renderer, &Message_rect[pacman.iPosition][pacman.jPosition]);
 	surface[pacman.iPosition][pacman.jPosition] = TTF_RenderText_Solid(font, "<", yellow);
-	// TODO: update-uj staro i novo mesto pacmana
+
+
 
 	// TODO: uradi isto ovo za duhove
 
 	message[pacman.iPosition][pacman.jPosition] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[pacman.iPosition][pacman.jPosition]);
-	SDL_FreeSurface(surface[pacman.iPosition][pacman.jPosition]);
+	//SDL_FreeSurface(surface[pacman.iPosition][pacman.jPosition]);
 
 	SDL_RenderCopy(game.screen.renderer, message[pacman.iPosition][pacman.jPosition], NULL, &Message_rect[pacman.iPosition][pacman.jPosition]);
 	SDL_RenderPresent(game.screen.renderer);
-
+	SDL_Delay(250);
 	return;
 }
