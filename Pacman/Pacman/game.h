@@ -4,12 +4,13 @@
 #include "graphicsMenu.h"
 #include "pacStruct.h"
 #include "gameGraphics.h"
+
 #define WIDTH_SCREEN 600
 #define HEIGHT_SCREEN 400
 
 void wallCheckAndMove(int [HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct *);
 
-void playNewGame();
+void playNewGame(enum DifficultySpeed difficulty);
 
 typedef struct ScreenStruct {
 	unsigned int width;

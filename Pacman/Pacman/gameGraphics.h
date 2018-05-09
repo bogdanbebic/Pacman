@@ -10,10 +10,10 @@
 #include "pacStruct.h"
 #include "game.h"
 
-void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]);
+void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman);
 
-void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS]);
+void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int delay);
 
-
+void deletePacmanGhost(int iPosition, int jPosition);
 
 #endif
