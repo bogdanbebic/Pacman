@@ -33,10 +33,11 @@ int main(int argc, char *argv[]) {
 	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
 	//SDL_Event event;
 
-	printMenu(menuOption);
 
 	while (game.isRunning) {
-
+							   // Mora ovde printMenu !!!!!!
+		printMenu(menuOption); // ako je van isRunning while-a ne prikaze meni nakon
+							   // zavrsavanja igre, vec tek nakon bilo kog klika		
 		while (SDL_PollEvent(&event)) {
 			switch(event.type) {
 			case SDL_KEYDOWN:
@@ -115,7 +116,7 @@ int main(int argc, char *argv[]) {
 				isGameCreated = 1;
 				playNewGame(MEDIUM);
 				SDL_RenderClear(game.screen.renderer);
-				printMenu(menuOption); // odmah vrati na meni, cim zavrsi sa 3 zivota
+				//printMenu(menuOption); // da bi se odmah pojavio meni nakon zavrsene igre
 				// TODO: implement
 				activeScreen = isMenu;
 				break;

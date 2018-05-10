@@ -40,10 +40,10 @@ static PacStruct getOldPacPosition(PacStruct pacStruct) {
 	return oldPosition;
 }
 
-void updateScoreBoxAndLivesBox(int livesCount, int currentScore) {
-	extern SDL_Surface* ScoreBoxSurface, *LivesBoxSurface;
-	extern SDL_Texture* ScoreBoxTexture, *LivesBoxTexture;
-	extern SDL_Rect ScoreBoxRect, LivesBoxRect;
+void updateScoreBox(int currentScore) {
+	extern SDL_Surface* ScoreBoxSurface;
+	extern SDL_Texture* ScoreBoxTexture;
+	extern SDL_Rect ScoreBoxRect;
 	TTF_Font *font = TTF_OpenFont("impact.ttf", 46);
 	SDL_Color yellow = { 255, 255, 0 };
 	extern Game game;
@@ -53,7 +53,7 @@ void updateScoreBoxAndLivesBox(int livesCount, int currentScore) {
 	//dopisuje broj dotova na kraj stringa scoreBox
 	strcat_s(scoreBox, LEN_OF_SCORE_BOX, itoa(currentScore, bufferString, 10));
 
-	//pozicija score box-a
+	//stampanje score box-a
 	ScoreBoxSurface = TTF_RenderText_Solid(font, scoreBox, yellow);
 	ScoreBoxTexture = SDL_CreateTextureFromSurface(game.screen.renderer, ScoreBoxSurface);
 	ScoreBoxRect.x = 0;
@@ -62,16 +62,50 @@ void updateScoreBoxAndLivesBox(int livesCount, int currentScore) {
 	ScoreBoxRect.h = game.screen.height / HEIGHT_OF_MAP / 2;
 	SDL_RenderFillRect(game.screen.renderer, &ScoreBoxRect);
 	SDL_RenderCopy(game.screen.renderer, ScoreBoxTexture, NULL, &ScoreBoxRect);
+	//SDL_RenderPresent(game.screen.renderer);
+	return;
+}
 
-	//pozicija Lives box-a
-	/*ScoreBoxSurface = TTF_RenderText_Solid(font, "LIVES", yellow);
-	ScoreBoxTexture = SDL_CreateTextureFromSurface(game.screen.renderer, ScoreBoxSurface);
-	ScoreBoxRect.x = WIDTH_OF_MAP - 1;
-	ScoreBoxRect.y = HEIGHT_OF_MAP;
-	ScoreBoxRect.w = 2 * game.screen.width / WIDTH_OF_MAP / 3;
-	ScoreBoxRect.h = game.screen.height / HEIGHT_OF_MAP / 2;
-	SDL_RenderFillRect(game.screen.renderer, &ScoreBoxRect);
-	SDL_RenderCopy(game.screen.renderer, ScoreBoxTexture, NULL, &ScoreBoxRect);*/
+void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles, int livesCount) {
+	extern SDL_Surface* LivesBoxSurface;
+	extern SDL_Texture* LivesBoxTexture;
+	extern SDL_Rect LivesBoxRect;
+	extern Game game;
+	for (int i = 0; i < numberOfLivesTiles; i++) {
+		if (numberOfLivesTiles == 1) {//biranje odgovarajuce slike u Livesbox-u
+			LivesBoxSurface = SDL_LoadBMP("Pictures/SinglePacLife.bmp");
+		}
+		else {
+			if (i < livesCount) { 
+				if (i == 0) {
+					LivesBoxSurface = SDL_LoadBMP("Pictures/FirstPacLife.bmp");
+				}
+				else if (i == numberOfLivesTiles - 1) {
+					LivesBoxSurface = SDL_LoadBMP("Pictures/LastPacLife.bmp");
+				}
+				else {
+					LivesBoxSurface = SDL_LoadBMP("Pictures/MidPacLife.bmp");
+				}
+			}
+			else {
+				if (i == numberOfLivesTiles - 1) {
+					LivesBoxSurface = SDL_LoadBMP("Pictures/NoLastLife.bmp");
+				}
+				else {
+					LivesBoxSurface = SDL_LoadBMP("Pictures/NoMidLife.bmp");
+				}
+			}
+		}
+		//stampanje odgovarajuce slike
+		LivesBoxTexture = SDL_CreateTextureFromSurface(game.screen.renderer, LivesBoxSurface);
+		LivesBoxRect.x = i * game.screen.width / WIDTH_OF_MAP / 3;
+		LivesBoxRect.y = (HEIGHT_OF_MAP - 1) * game.screen.height / HEIGHT_OF_MAP / 2;
+		LivesBoxRect.w = game.screen.width / WIDTH_OF_MAP / 3;
+		LivesBoxRect.h = game.screen.height / HEIGHT_OF_MAP / 2;
+		SDL_RenderFillRect(game.screen.renderer, &LivesBoxRect);
+		SDL_RenderCopy(game.screen.renderer, LivesBoxTexture, NULL, &LivesBoxRect);
+	}
+	//SDL_RenderPresent(game.screen.renderer); // radi i bez ovoga !!
 	return;
 }
 
@@ -81,9 +115,6 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int pa
 	extern SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 	extern SDL_Texture* tile[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 	extern SDL_Rect tile_rect[HEIGHT_OF_MAP][WIDTH_OF_MAP];
-	extern SDL_Surface* ScoreBoxSurface, *LivesBoxSurface;
-	extern SDL_Texture* ScoreBoxTexture, *LivesBoxTexture;
-	extern SDL_Rect ScoreBoxRect, LivesBoxRect;
 	TTF_Font *font = TTF_OpenFont("impact.ttf", 46);
 	SDL_Color yellow = { 255, 255, 0 };
 	extern Game game;
@@ -126,8 +157,10 @@ void deletePacmanGhost(int iPosition, int jPosition) {
 	return;
 }
 
-void  updateScoreAndLives(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int * pacDotCount, int * livesCount, int * currentScore) {
+enum GameMode updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int * pacDotCount, int * currentScore) {
 	
+	enum GameMode gameMode = Normal;
+
 	if (map[pacman.iPosition][pacman.jPosition] == PAC_DOT) {
 		*currentScore += 10;
 		map[pacman.iPosition][pacman.jPosition] = NO_WALL;
@@ -136,14 +169,13 @@ void  updateScoreAndLives(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman
 	else if (map[pacman.iPosition][pacman.jPosition] == POWER_PELLET) {
 		map[pacman.iPosition][pacman.jPosition] = NO_WALL;
 		*currentScore += 50;
-		//TODO: Sada bi neko vreme pacman jurio duhove zbog Lukica
+		gameMode = Reverse;
 	}
 	//TODO:update-ovanje scora kada pacman pojede duha
 	//TODO:update-ovanje scora kada pacman pojede vockice
-	//TODO:update-ovanje zivota ako duh pojede pacmana
 
-	updateScoreBoxAndLivesBox(*livesCount, *currentScore);
-	return;
+	updateScoreBox(*currentScore);
+	return gameMode;
 }
 void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int delay) {
 
@@ -156,8 +188,8 @@ void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruc
 
 	PacStruct oldPosition = getOldPacPosition(pacman);
 	SDL_RenderFillRect(game.screen.renderer, &tile_rect[oldPosition.iPosition][oldPosition.jPosition]);
-
-	SDL_RenderFillRect(game.screen.renderer, &tile_rect[pacman.iPosition][pacman.jPosition]);
+	
+	//SDL_RenderFillRect(game.screen.renderer, &tile_rect[pacman.iPosition][pacman.jPosition]);
 
 	switch (pacman.direction) {
 	case DIRECTION_NONE:
@@ -181,7 +213,6 @@ void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruc
 	// TODO: uradi isto ovo za duhove
 
 	tile[pacman.iPosition][pacman.jPosition] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[pacman.iPosition][pacman.jPosition]);
-
 	SDL_RenderCopy(game.screen.renderer, tile[pacman.iPosition][pacman.jPosition], NULL, &tile_rect[pacman.iPosition][pacman.jPosition]);
 	SDL_RenderPresent(game.screen.renderer);
 	SDL_Delay(delay);
