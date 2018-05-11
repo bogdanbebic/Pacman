@@ -177,6 +177,7 @@ enum GameMode updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacSt
 	updateScoreBox(*currentScore);
 	return gameMode;
 }
+
 void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int delay) {
 
 	extern SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
@@ -210,10 +211,22 @@ void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruc
 		break;
 	}
 
+	surface[ghosts[0].iPosition][ghosts[0].jPosition] = SDL_LoadBMP("Pictures/Blinky.bmp");
+	surface[ghosts[1].iPosition][ghosts[1].jPosition] = SDL_LoadBMP("Pictures/Inky.bmp");
+	surface[ghosts[2].iPosition][ghosts[2].jPosition] = SDL_LoadBMP("Pictures/Pinky.bmp");
+	surface[ghosts[3].iPosition][ghosts[3].jPosition] = SDL_LoadBMP("Pictures/Clyde.bmp");
+
 	// TODO: uradi isto ovo za duhove
 
 	tile[pacman.iPosition][pacman.jPosition] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[pacman.iPosition][pacman.jPosition]);
 	SDL_RenderCopy(game.screen.renderer, tile[pacman.iPosition][pacman.jPosition], NULL, &tile_rect[pacman.iPosition][pacman.jPosition]);
+	
+	int i = 0;
+	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
+		tile[ghosts[i].iPosition][ghosts[i].jPosition] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[ghosts[i].iPosition][ghosts[i].jPosition]);
+		SDL_RenderCopy(game.screen.renderer, tile[ghosts[i].iPosition][ghosts[i].jPosition], NULL, &tile_rect[ghosts[i].iPosition][ghosts[i].jPosition]);
+	}
+
 	SDL_RenderPresent(game.screen.renderer);
 	SDL_Delay(delay);
 

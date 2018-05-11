@@ -49,6 +49,23 @@ void initTempMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int tempMap[HEIGHT_OF_MAP
 	}
 }
 
+void initGhostsPostitions(PacStruct ghosts[NUMBER_OF_GHOSTS]) {
+	int i;
+	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
+		ghosts[i].direction = DIRECTION_NONE;
+		ghosts[i].iPosition = 4;
+		ghosts[i].jPosition = 3 + i;
+	}
+	return;
+}
+
+int pacmanGhostCheck(PacStruct pacman, PacStruct ghost) {
+	if (pacman.iPosition == ghost.iPosition && pacman.jPosition == ghost.jPosition)
+		return 1;
+	else
+		return 0;
+}
+
 extern SDL_Event event;
 
 void playNewGame(enum DifficultySpeed difficulty) {
@@ -62,16 +79,20 @@ void playNewGame(enum DifficultySpeed difficulty) {
 	PacStruct pacman;
 	PacStruct ghosts[4];
 
+	int i;
+
 	int level = -1;
 	int delay;
 	delay = (int)difficulty;
 	int isStartOfNewGame = 1;	// NE DIRAJ OVO !!!!!
 
+	int isPacmanEaten = 0;
+
 	int livesCount;	// TODO: ovo promeni da bude promenljivo
 	int numberOfLivesTiles;
 	int pacDotCount = 0;
 
-	//broj rezervisanih pozicija za zivote na mapi
+	// broj rezervisanih pozicija za zivote na mapi
 	// i broj samih zivota odredjen tezinom igre
 	switch (difficulty) {
 	case EASY:
@@ -102,6 +123,9 @@ void playNewGame(enum DifficultySpeed difficulty) {
 			// TODO: ucitaj broj coinova sa mape, NE OVAKO !!!!!
 		pacman.iPosition = HEIGHT_OF_MAP / 2;
 		pacman.jPosition = WIDTH_OF_MAP / 2;
+
+		// Inicijalizuje pozicije duhova
+		initGhostsPostitions(ghosts);	// TODO: napraviti nesto smisleno, ne ovako hardcode-ovano
 		
 		if (pacDotCount == 0 || isStartOfNewGame) { // OVO JE ZA NOVI NIVO
 			if (isStartOfNewGame) {
@@ -115,7 +139,7 @@ void playNewGame(enum DifficultySpeed difficulty) {
 			updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
 		}
 		
-		while (isLevelRunning && pacDotCount && livesCount && game.isRunning) {
+		while (isLevelRunning && pacDotCount && livesCount && game.isRunning && !isPacmanEaten) {
 			while (SDL_PollEvent(&event) && isLevelRunning) {
 				switch (event.type) {
 				case SDL_KEYDOWN:
@@ -153,14 +177,23 @@ void playNewGame(enum DifficultySpeed difficulty) {
 			}
 			
 			wallCheckAndMove(testMapTemp, &pacman);
-			
-			//azuriranje Score-a, da li je Pacman pojeo nesto
+
 			//TODO: updateovanje gamemode-a igre, ko koga juri!!!!
+
+			//azuriranje Score-a, da li je Pacman pojeo nesto
 			gameMode = updateScoreAndGameMode(testMapTemp, pacman, &pacDotCount, &currentScore);
 
 			// TODO: odredjivanje novih pozicija duhova
+
 			// TODO: wallCheckAndMove za duhove
-			// TODO: provera -> pacman i duh na istom polju
+
+			// provera -> pacman i duh na istom polju
+			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
+				isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
+			}
+			if (isPacmanEaten) {
+				livesCount--;
+			}
 
 			//azurira livesBox sa trenutnim brojem zivota
 			//moze efikasnije ako se stavi da azurira samo kada se promeni broj zivota 
@@ -169,14 +202,10 @@ void playNewGame(enum DifficultySpeed difficulty) {
 			// Poziv funkcije za grafiku -> iscrtavanje nove mape
 			updateMap(testMapTemp, pacman, ghosts, delay - 2 * level);
 		}
-		//ako se stavi u komentar igrica moze da se ugasi samo ako se direktno zatvori prozor igre
-		if (pacDotCount != 0) { // TODO: ne menjaj ga ovako, nego kad crkne !!!!!!!!!!
-			livesCount--;		
-		}
-
-		// OVO JE OVDE ZBOG DEBAGOVANJA
-		isLevelRunning = SDL_TRUE;	// TODO: OVO SE NE MENJA OVDE, SAMO GORE
 		
+		// KADA SE POJEDE PACMAN, MORA DA SE RESETUJE
+		isPacmanEaten = 0;
+
 		if (pacman.iPosition != HEIGHT_OF_MAP / 2 || pacman.jPosition != WIDTH_OF_MAP / 2) {
 			deletePacmanGhost(pacman.iPosition, pacman.jPosition);
 		}

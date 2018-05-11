@@ -10,7 +10,7 @@ BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghos
 	int queueX[HEIGHT_OF_MAP * WIDTH_OF_MAP];
 	int queueY[HEIGHT_OF_MAP * WIDTH_OF_MAP];
 
-	BFS_solution sol;
+	BFS_solution sol = { 0 , 0 };
 	int i = 0;
 	int queueCount = 1;
 	queueX[0] = pacmanX;

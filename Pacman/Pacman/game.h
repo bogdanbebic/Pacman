@@ -14,6 +14,10 @@ void initTempMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], int tempMap[HEIGHT_OF_MA
 
 void playNewGame(enum DifficultySpeed difficulty);
 
+void initGhostsPostitions(PacStruct ghosts[NUMBER_OF_GHOSTS]);
+
+int pacmanGhostCheck(PacStruct pacman, PacStruct ghost);
+
 typedef struct ScreenStruct {
 	unsigned int width;
 	unsigned int height;

@@ -25,7 +25,7 @@
     <RootNamespace>Pacman</RootNamespace>
     <ProjectName>
     </ProjectName>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -163,6 +163,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="gameGraphics.h" />
     <ClInclude Include="gameMap.h" />
+    <ClInclude Include="ghosts.h" />
     <ClInclude Include="graphicsMenu.h" />
     <ClInclude Include="pacStruct.h" />
     <ClInclude Include="testMap.h" />
