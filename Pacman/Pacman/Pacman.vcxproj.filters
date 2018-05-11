@@ -27,6 +27,9 @@
     <ClCompile Include="gameGraphics.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AI_ghost.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphicsMenu.h">

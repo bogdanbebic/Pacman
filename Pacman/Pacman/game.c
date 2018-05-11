@@ -1,7 +1,7 @@
 #include "game.h"
 #include "testMap.h"
 
-void wallCheckAndMove(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct *pacStruct) {
+void wallCheckAndMove(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct) {
 	switch (pacStruct->direction) {
 	case DIRECTION_UP:
 		if (map[pacStruct->iPosition - 1][pacStruct->jPosition] == WALL) {
@@ -41,7 +41,7 @@ void wallCheckAndMove(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct *pacStruc
 	return;
 }
 
-void initTempMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], int tempMap[HEIGHT_OF_MAP][HEIGHT_OF_MAP]) {
+void initTempMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int tempMap[HEIGHT_OF_MAP][WIDTH_OF_MAP]) {
 	for (int i = 0; i < HEIGHT_OF_MAP; i++) {
 		for (int j = 0; j < WIDTH_OF_MAP; j++) {
 			tempMap[i][j] = map[i][j];
