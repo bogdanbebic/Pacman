@@ -1,10 +1,15 @@
 #include "gameGraphics.h"
 #include "gameMap.h"
 #include "pacStruct.h"
+#include <stdlib.h>
+#include <string.h>
 
 static SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 static SDL_Texture *tile[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 static SDL_Rect tile_rect[HEIGHT_OF_MAP][WIDTH_OF_MAP];
+static SDL_Surface* ScoreBoxSurface, *LivesBoxSurface;
+static SDL_Texture* ScoreBoxTexture, *LivesBoxTexture;
+static SDL_Rect ScoreBoxRect, LivesBoxRect;
 
 static PacStruct getOldPacPosition(PacStruct pacStruct) {
 	PacStruct oldPosition;
@@ -35,7 +40,76 @@ static PacStruct getOldPacPosition(PacStruct pacStruct) {
 	return oldPosition;
 }
 
-void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman) {
+void updateScoreBox(int currentScore) {
+	extern SDL_Surface* ScoreBoxSurface;
+	extern SDL_Texture* ScoreBoxTexture;
+	extern SDL_Rect ScoreBoxRect;
+	TTF_Font *font = TTF_OpenFont("impact.ttf", 46);
+	SDL_Color yellow = { 255, 255, 0 };
+	extern Game game;
+	char scoreBox[LEN_OF_SCORE_BOX] = "SCORE: ";
+	char bufferString[LEN_OF_SCORE_BOX];
+
+	//dopisuje broj dotova na kraj stringa scoreBox
+	strcat_s(scoreBox, LEN_OF_SCORE_BOX, itoa(currentScore, bufferString, 10));
+
+	//stampanje score box-a
+	ScoreBoxSurface = TTF_RenderText_Solid(font, scoreBox, yellow);
+	ScoreBoxTexture = SDL_CreateTextureFromSurface(game.screen.renderer, ScoreBoxSurface);
+	ScoreBoxRect.x = 0;
+	ScoreBoxRect.y = 0;
+	ScoreBoxRect.w = 2 * game.screen.width / WIDTH_OF_MAP / 3;
+	ScoreBoxRect.h = game.screen.height / HEIGHT_OF_MAP / 2;
+	SDL_RenderFillRect(game.screen.renderer, &ScoreBoxRect);
+	SDL_RenderCopy(game.screen.renderer, ScoreBoxTexture, NULL, &ScoreBoxRect);
+	//SDL_RenderPresent(game.screen.renderer);
+	return;
+}
+
+void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles, int livesCount) {
+	extern SDL_Surface* LivesBoxSurface;
+	extern SDL_Texture* LivesBoxTexture;
+	extern SDL_Rect LivesBoxRect;
+	extern Game game;
+	for (int i = 0; i < numberOfLivesTiles; i++) {
+		if (numberOfLivesTiles == 1) {//biranje odgovarajuce slike u Livesbox-u
+			LivesBoxSurface = SDL_LoadBMP("Pictures/SinglePacLife.bmp");
+		}
+		else {
+			if (i < livesCount) { 
+				if (i == 0) {
+					LivesBoxSurface = SDL_LoadBMP("Pictures/FirstPacLife.bmp");
+				}
+				else if (i == numberOfLivesTiles - 1) {
+					LivesBoxSurface = SDL_LoadBMP("Pictures/LastPacLife.bmp");
+				}
+				else {
+					LivesBoxSurface = SDL_LoadBMP("Pictures/MidPacLife.bmp");
+				}
+			}
+			else {
+				if (i == numberOfLivesTiles - 1) {
+					LivesBoxSurface = SDL_LoadBMP("Pictures/NoLastLife.bmp");
+				}
+				else {
+					LivesBoxSurface = SDL_LoadBMP("Pictures/NoMidLife.bmp");
+				}
+			}
+		}
+		//stampanje odgovarajuce slike
+		LivesBoxTexture = SDL_CreateTextureFromSurface(game.screen.renderer, LivesBoxSurface);
+		LivesBoxRect.x = i * game.screen.width / WIDTH_OF_MAP / 3;
+		LivesBoxRect.y = (HEIGHT_OF_MAP - 1) * game.screen.height / HEIGHT_OF_MAP / 2;
+		LivesBoxRect.w = game.screen.width / WIDTH_OF_MAP / 3;
+		LivesBoxRect.h = game.screen.height / HEIGHT_OF_MAP / 2;
+		SDL_RenderFillRect(game.screen.renderer, &LivesBoxRect);
+		SDL_RenderCopy(game.screen.renderer, LivesBoxTexture, NULL, &LivesBoxRect);
+	}
+	//SDL_RenderPresent(game.screen.renderer); // radi i bez ovoga !!
+	return;
+}
+
+void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int pacDotCount) {
 	int i, j;
 
 	extern SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
@@ -55,18 +129,19 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman) {
 				surface[i][j] = SDL_LoadBMP("Pictures/powerPellet1.bmp");
 			else
 				surface[i][j] = SDL_LoadBMP("Pictures/background.bmp");
-
 			tile[i][j] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[i][j]);
 			tile_rect[i][j].x = j * game.screen.width / WIDTH_OF_MAP /3;
 			tile_rect[i][j].y = i * game.screen.height / HEIGHT_OF_MAP/2;
 			tile_rect[i][j].w = game.screen.width / WIDTH_OF_MAP/3;
 			tile_rect[i][j].h = game.screen.height / HEIGHT_OF_MAP/2;
-
 			SDL_RenderCopy(game.screen.renderer, tile[i][j], NULL, &tile_rect[i][j]);
-			SDL_RenderPresent(game.screen.renderer);
 		}
 	}
+	//pocetna pozicija pacmena
 	surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanR.bmp");
+	//tile[pacman.iPosition][pacman.jPosition] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[pacman.iPosition][pacman.jPosition]);
+	//SDL_RenderCopy(game.screen.renderer, tile[pacman.iPosition][pacman.jPosition], NULL, &tile_rect[pacman.iPosition][pacman.jPosition]);
+	SDL_RenderPresent(game.screen.renderer); //ako je unutar for-ova koji prave mapu, uspori znatno, zato je pomeren ovde
 	return;
 }
 
@@ -82,6 +157,26 @@ void deletePacmanGhost(int iPosition, int jPosition) {
 	return;
 }
 
+enum GameMode updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int * pacDotCount, int * currentScore) {
+	
+	enum GameMode gameMode = Normal;
+
+	if (map[pacman.iPosition][pacman.jPosition] == PAC_DOT) {
+		*currentScore += 10;
+		map[pacman.iPosition][pacman.jPosition] = NO_WALL;
+		(*pacDotCount)--;
+	}
+	else if (map[pacman.iPosition][pacman.jPosition] == POWER_PELLET) {
+		map[pacman.iPosition][pacman.jPosition] = NO_WALL;
+		*currentScore += 50;
+		gameMode = Reverse;
+	}
+	//TODO:update-ovanje scora kada pacman pojede duha
+	//TODO:update-ovanje scora kada pacman pojede vockice
+
+	updateScoreBox(*currentScore);
+	return gameMode;
+}
 void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int delay) {
 
 	extern SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
@@ -93,8 +188,8 @@ void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruc
 
 	PacStruct oldPosition = getOldPacPosition(pacman);
 	SDL_RenderFillRect(game.screen.renderer, &tile_rect[oldPosition.iPosition][oldPosition.jPosition]);
-
-	SDL_RenderFillRect(game.screen.renderer, &tile_rect[pacman.iPosition][pacman.jPosition]);
+	
+	//SDL_RenderFillRect(game.screen.renderer, &tile_rect[pacman.iPosition][pacman.jPosition]);
 
 	switch (pacman.direction) {
 	case DIRECTION_NONE:
@@ -118,7 +213,6 @@ void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruc
 	// TODO: uradi isto ovo za duhove
 
 	tile[pacman.iPosition][pacman.jPosition] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[pacman.iPosition][pacman.jPosition]);
-
 	SDL_RenderCopy(game.screen.renderer, tile[pacman.iPosition][pacman.jPosition], NULL, &tile_rect[pacman.iPosition][pacman.jPosition]);
 	SDL_RenderPresent(game.screen.renderer);
 	SDL_Delay(delay);

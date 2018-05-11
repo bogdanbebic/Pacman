@@ -34,6 +34,6 @@ int testMap2[HEIGHT_OF_MAP][WIDTH_OF_MAP] = { { WALL, WALL, WALL, WALL, WALL, WA
 { WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL,  WALL },
 { WALL, POWER_PELLET, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, POWER_PELLET,  WALL },
 { WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL } };
-int pacDotCountTestMap2 = 8;
-
+int pacDotCountTestMap2 = 12;
+//Ne ubrajam Power Pellete-e u broj dotova
 #endif // !_testMap_h_

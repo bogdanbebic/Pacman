@@ -5,7 +5,10 @@ enum DifficultySpeed { EASY = 250, MEDIUM = 200, HARD = 128 };
 
 enum Direction { DIRECTION_NONE = -1, DIRECTION_UP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT, NUMBER_OF_DIRECTIONS };
 
+enum Gamemode { Normal, Reverse };
+
 #define NUMBER_OF_GHOSTS 4
+
 
 /*
 *	Direction:

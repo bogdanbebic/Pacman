@@ -10,6 +10,8 @@
 
 void wallCheckAndMove(int [HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct *);
 
+void initTempMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], int tempMap[HEIGHT_OF_MAP][HEIGHT_OF_MAP]);
+
 void playNewGame(enum DifficultySpeed difficulty);
 
 typedef struct ScreenStruct {

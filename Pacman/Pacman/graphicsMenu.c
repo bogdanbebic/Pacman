@@ -58,9 +58,10 @@ void printMenu(enum menuOptions currentMenuOption) {
 	SDL_Color yellow = { 255, 255, 0 };
 	extern TTF_Font* font;
 
-	SDL_Surface* surface[numberOfMenuOptions];
+	SDL_Surface* surface[numberOfMenuOptions], * PacmanSurface;
 	extern SDL_Texture* Message[numberOfMenuOptions];
-	SDL_Rect Message_rect[numberOfMenuOptions];
+	SDL_Texture * PacmanTexture;
+	SDL_Rect Message_rect[numberOfMenuOptions], PacmanRect;
 
 	enum MenuOptions menuOption;
 
@@ -130,6 +131,22 @@ void printMenu(enum menuOptions currentMenuOption) {
 		
 		Message[menuOption] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[menuOption]);
 		SDL_FreeSurface(surface[menuOption]);
+
+		//Pacman koji stoji ispred selektovane stavke u meniju
+		PacmanRect.x = game.screen.width / 24;
+		PacmanRect.y = (2 + 3 * menuOption) * (game.screen.height / 48);
+		PacmanRect.w = game.screen.width / 30;
+		PacmanRect.h = game.screen.height / 24;
+		if (menuOption == currentMenuOption) {
+			PacmanSurface = SDL_LoadBMP("Pictures/pacmanR.bmp");
+			PacmanTexture = SDL_CreateTextureFromSurface(game.screen.renderer, PacmanSurface);
+			SDL_FreeSurface(PacmanSurface);
+			SDL_RenderCopy(game.screen.renderer, PacmanTexture, NULL, &PacmanRect);
+		}
+		else {
+			SDL_RenderFillRect(game.screen.renderer, &PacmanRect);
+		}
+
 		Message_rect[menuOption].x = game.screen.width / 12;
 		Message_rect[menuOption].y = (2 + 3 * menuOption) * (game.screen.height / 48);	// OVDE MENJAS !!!!!!!!!!
 		Message_rect[menuOption].w = game.screen.width / 6;
@@ -137,8 +154,8 @@ void printMenu(enum menuOptions currentMenuOption) {
 
 
 		SDL_RenderCopy(game.screen.renderer, Message[menuOption], NULL, &Message_rect[menuOption]);
-		SDL_RenderPresent(game.screen.renderer);
+		
 	}
-	
+	SDL_RenderPresent(game.screen.renderer);
 	return;
 }
