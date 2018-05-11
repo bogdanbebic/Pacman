@@ -1,6 +1,9 @@
 #ifndef _game_h_
 #define _game_h_
 
+#include "ghosts.h"
+
+
 #include "graphicsMenu.h"
 #include "pacStruct.h"
 #include "gameGraphics.h"

@@ -30,6 +30,9 @@
     <ClCompile Include="AI_ghost.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ghosts.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="testMap.h">

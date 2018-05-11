@@ -50,12 +50,30 @@ void initTempMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int tempMap[HEIGHT_OF_MAP
 }
 
 void initGhostsPostitions(PacStruct ghosts[NUMBER_OF_GHOSTS]) {
-	int i;
+	/*int i;
 	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 		ghosts[i].direction = DIRECTION_NONE;
 		ghosts[i].iPosition = 4;
 		ghosts[i].jPosition = 3 + i;
 	}
+	*/
+
+	ghosts[0].direction = DIRECTION_NONE;
+	ghosts[0].iPosition = 1;
+	ghosts[0].jPosition = 1;
+
+	ghosts[1].direction = DIRECTION_NONE;
+	ghosts[1].iPosition = 1;
+	ghosts[1].jPosition = 8;
+
+	ghosts[2].direction = DIRECTION_NONE;
+	ghosts[2].iPosition = 8;
+	ghosts[2].jPosition = 8;
+
+	ghosts[3].direction = DIRECTION_NONE;
+	ghosts[3].iPosition = 8;
+	ghosts[3].jPosition = 1;
+		
 	return;
 }
 
@@ -202,6 +220,8 @@ void playNewGame(enum DifficultySpeed difficulty) {
 
 			// Poziv funkcije za grafiku -> iscrtavanje nove mape
 			updateMap(testMapTemp, pacman, ghosts, delay - 2 * level);
+
+			ghosts[1] = ClydeAI(testMap2, pacman, ghosts, 1);
 		}
 		
 		// KADA SE POJEDE PACMAN, MORA DA SE RESETUJE

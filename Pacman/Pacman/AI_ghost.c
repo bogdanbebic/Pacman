@@ -1,11 +1,11 @@
-#include "game.h"
+/*#include "game.h"
 
 typedef struct {
 	int direction;
 	int count;
 } BFS_solution;
 
-BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghostY, int pacmanX, int pacmanY){
+BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghostY, int pacmanX, int pacmanY) {	
 	short visited[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 	int queueX[HEIGHT_OF_MAP * WIDTH_OF_MAP];
 	int queueY[HEIGHT_OF_MAP * WIDTH_OF_MAP];
@@ -66,12 +66,35 @@ BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghos
 	}
 }
 
-int BlinkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghostY, int pacmanX, int pacmanY) {
-	return BFS_next(Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], ghostX, ghostY, pacmanX, pacmanY).direction;
+PacStruct BlinkyAI(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int currentGhostIndex) {
+	PacStruct sol = ghosts[currentGhostIndex];
+	int ghostX = ghosts[currentGhostIndex].iPosition;
+	int ghostY = ghosts[currentGhostIndex].jPosition;
+	int pacmanX = pacman.iPosition;
+	int pacmanY = pacman.jPosition;
+
+	sol.direction = BFS_next(map[HEIGHT_OF_MAP][WIDTH_OF_MAP], ghostX, ghostY, pacmanX, pacmanY).direction;
+	switch (sol.direction)
+	{
+	case DIRECTION_UP :
+		sol.jPosition--;
+		break;
+	case DIRECTION_DOWN:
+		sol.jPosition++;
+		break;
+	case DIRECTION_LEFT:
+		sol.iPosition--;
+		break;
+	case DIRECTION_RIGHT:
+		sol.iPosition++;
+		break;
+	}
+	return sol;
 }
 
 BFS_solution PinkyAI_logic(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghostY, int pacmanX, int pacmanY) {
 	BFS_solution solution;
+
 	solution.count = HEIGHT_OF_MAP * WIDTH_OF_MAP;
 	solution.direction = DIRECTION_NONE;
 	BFS_solution currentSol;
@@ -104,14 +127,44 @@ BFS_solution PinkyAI_logic(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int
 		}
 	}
 
+
 	return solution;
 }
 
-int PinkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghostY, int pacmanX, int pacmanY) {
-	return PinkyAI_logic(Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], ghostX, ghostY, pacmanX, pacmanY).direction;
+PacStruct PinkyAI(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int currentGhostIndex) {
+	PacStruct sol = ghosts[currentGhostIndex];
+	int ghostX = ghosts[currentGhostIndex].iPosition;
+	int ghostY = ghosts[currentGhostIndex].jPosition;
+	int pacmanX = pacman.iPosition;
+	int pacmanY = pacman.jPosition;
+
+	sol.direction = PinkyAI_logic(map[HEIGHT_OF_MAP][WIDTH_OF_MAP], ghostX, ghostY, pacmanX, pacmanY).direction;
+	switch (sol.direction)
+	{
+	case DIRECTION_UP:
+		sol.jPosition--;
+		break;
+	case DIRECTION_DOWN:
+		sol.jPosition++;
+		break;
+	case DIRECTION_LEFT:
+		sol.iPosition--;
+		break;
+	case DIRECTION_RIGHT:
+		sol.iPosition++;
+		break;
+	}
+	return sol;
+
 }
 
-int InkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghostY, int pacmanX, int pacmanY) {
+PacStruct InkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int currentGhostIndex) {
+	PacStruct sol = ghosts[currentGhostIndex];
+	int ghostX = ghosts[currentGhostIndex].iPosition;
+	int ghostY = ghosts[currentGhostIndex].jPosition;
+	int pacmanX = pacman.iPosition;
+	int pacmanY = pacman.jPosition;
+
 	BFS_solution solution;
 	solution.count = HEIGHT_OF_MAP * WIDTH_OF_MAP;
 	solution.direction = DIRECTION_NONE;
@@ -145,12 +198,51 @@ int InkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghostY, int pac
 		}
 	}
 
-	return solution.direction;
+	sol.direction = solution.direction;
+	switch (sol.direction)
+	{
+	case DIRECTION_UP:
+		sol.jPosition--;
+		break;
+	case DIRECTION_DOWN:
+		sol.jPosition++;
+		break;
+	case DIRECTION_LEFT:
+		sol.iPosition--;
+		break;
+	case DIRECTION_RIGHT:
+		sol.iPosition++;
+		break;
+	}
+	return sol;
 }
 
-int ClydeAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghostY, int pacmanX, int pacmanY) {
+PacStruct ClydeAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int currentGhostIndex) {
+	PacStruct sol = ghosts[currentGhostIndex];
+	int ghostX = ghosts[currentGhostIndex].iPosition;
+	int ghostY = ghosts[currentGhostIndex].jPosition;
+	int pacmanX = pacman.iPosition;
+	int pacmanY = pacman.jPosition;
+
 	BFS_solution bfsSolution = BFS_next(Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], ghostX, ghostY, pacmanX, pacmanY);
 	if (bfsSolution.count > 10)  //po pravilu je 8, ali mi se cini da je to premalo PROVERITI
-		return BFS_next(Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], ghostX, ghostY, HEIGHT_OF_MAP-1, 1).direction;
-	return bfsSolution.direction;
-}
+		bfsSolution = BFS_next(Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], ghostX, ghostY, HEIGHT_OF_MAP - 1, 1);
+
+	sol.direction = bfsSolution.direction;
+	switch (sol.direction)
+	{
+	case DIRECTION_UP:
+		sol.jPosition--;
+		break;
+	case DIRECTION_DOWN:
+		sol.jPosition++;
+		break;
+	case DIRECTION_LEFT:
+		sol.iPosition--;
+		break;
+	case DIRECTION_RIGHT:
+		sol.iPosition++;
+		break;
+	}
+	return sol;
+}*/
