@@ -184,6 +184,7 @@ void playNewGame(enum DifficultySpeed difficulty) {
 			gameMode = updateScoreAndGameMode(testMapTemp, pacman, &pacDotCount, &currentScore);
 
 			// TODO: odredjivanje novih pozicija duhova
+			
 
 			// TODO: wallCheckAndMove za duhove
 

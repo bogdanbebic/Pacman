@@ -51,7 +51,8 @@ void updateScoreBox(int currentScore) {
 	char bufferString[LEN_OF_SCORE_BOX];
 
 	//dopisuje broj dotova na kraj stringa scoreBox
-	strcat_s(scoreBox, LEN_OF_SCORE_BOX, itoa(currentScore, bufferString, 10));
+	_itoa_s(currentScore, bufferString, sizeof(bufferString), 10);
+	strcat_s(scoreBox, LEN_OF_SCORE_BOX, bufferString);
 
 	//stampanje score box-a
 	ScoreBoxSurface = TTF_RenderText_Solid(font, scoreBox, yellow);
@@ -189,7 +190,22 @@ void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruc
 
 	PacStruct oldPosition = getOldPacPosition(pacman);
 	SDL_RenderFillRect(game.screen.renderer, &tile_rect[oldPosition.iPosition][oldPosition.jPosition]);
-	
+
+	int i;
+	PacStruct oldPositionGhost;
+	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
+		oldPositionGhost = getOldPacPosition(ghosts[i]);
+		if (map[oldPositionGhost.iPosition][oldPositionGhost.jPosition] == PAC_DOT)
+			surface[oldPositionGhost.iPosition][oldPositionGhost.jPosition] = SDL_LoadBMP("Pictures/pacDot.bmp");
+		else if (map[oldPositionGhost.iPosition][oldPositionGhost.jPosition] == POWER_PELLET)
+			surface[oldPositionGhost.iPosition][oldPositionGhost.jPosition] = SDL_LoadBMP("Pictures/powerPellet1.bmp");
+		else
+			surface[oldPositionGhost.iPosition][oldPositionGhost.jPosition] = SDL_LoadBMP("Pictures/background.bmp");
+
+		tile[oldPositionGhost.iPosition][oldPositionGhost.jPosition] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
+		SDL_RenderCopy(game.screen.renderer, tile[oldPositionGhost.iPosition][oldPositionGhost.jPosition], NULL, &tile_rect[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
+	}
+
 	//SDL_RenderFillRect(game.screen.renderer, &tile_rect[pacman.iPosition][pacman.jPosition]);
 
 	switch (pacman.direction) {
@@ -221,11 +237,11 @@ void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruc
 	tile[pacman.iPosition][pacman.jPosition] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[pacman.iPosition][pacman.jPosition]);
 	SDL_RenderCopy(game.screen.renderer, tile[pacman.iPosition][pacman.jPosition], NULL, &tile_rect[pacman.iPosition][pacman.jPosition]);
 	
-	int i = 0;
 	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 		tile[ghosts[i].iPosition][ghosts[i].jPosition] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[ghosts[i].iPosition][ghosts[i].jPosition]);
 		SDL_RenderCopy(game.screen.renderer, tile[ghosts[i].iPosition][ghosts[i].jPosition], NULL, &tile_rect[ghosts[i].iPosition][ghosts[i].jPosition]);
 	}
+		
 
 	SDL_RenderPresent(game.screen.renderer);
 	SDL_Delay(delay);

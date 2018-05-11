@@ -1,7 +1,32 @@
-﻿  gameGraphics.c
-c:\users\bogdan\documents\github\pacman\pacman\pacman\gamegraphics.c(54): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.15063.0\ucrt\stdlib.h(1334): note: see declaration of 'itoa'
+﻿  main.c
+  graphicsMenu.c
+  gameGraphics.c
   game.c
+  AI_ghost.c
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(70): warning C4047: 'function': 'int (*)[10]' differs in levels of indirection from 'int'
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(70): warning C4024: 'BFS_next': different types for formal and actual parameter 1
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(79): warning C4047: 'function': 'int (*)[10]' differs in levels of indirection from 'int'
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(79): warning C4024: 'BFS_next': different types for formal and actual parameter 1
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(86): warning C4047: 'function': 'int (*)[10]' differs in levels of indirection from 'int'
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(86): warning C4024: 'BFS_next': different types for formal and actual parameter 1
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(93): warning C4047: 'function': 'int (*)[10]' differs in levels of indirection from 'int'
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(93): warning C4024: 'BFS_next': different types for formal and actual parameter 1
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(100): warning C4047: 'function': 'int (*)[10]' differs in levels of indirection from 'int'
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(100): warning C4024: 'BFS_next': different types for formal and actual parameter 1
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(111): warning C4047: 'function': 'int (*)[10]' differs in levels of indirection from 'int'
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(111): warning C4024: 'PinkyAI_logic': different types for formal and actual parameter 1
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(120): warning C4047: 'function': 'int (*)[10]' differs in levels of indirection from 'int'
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(120): warning C4024: 'PinkyAI_logic': different types for formal and actual parameter 1
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(127): warning C4047: 'function': 'int (*)[10]' differs in levels of indirection from 'int'
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(127): warning C4024: 'PinkyAI_logic': different types for formal and actual parameter 1
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(134): warning C4047: 'function': 'int (*)[10]' differs in levels of indirection from 'int'
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(134): warning C4024: 'PinkyAI_logic': different types for formal and actual parameter 1
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(141): warning C4047: 'function': 'int (*)[10]' differs in levels of indirection from 'int'
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(141): warning C4024: 'PinkyAI_logic': different types for formal and actual parameter 1
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(152): warning C4047: 'function': 'int (*)[10]' differs in levels of indirection from 'int'
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(152): warning C4024: 'BFS_next': different types for formal and actual parameter 1
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(154): warning C4047: 'function': 'int (*)[10]' differs in levels of indirection from 'int'
+c:\users\bogdan\documents\github\pacman\pacman\pacman\ai_ghost.c(154): warning C4024: 'BFS_next': different types for formal and actual parameter 1
   Generating Code...
   Pacman.vcxproj -> C:\Users\Bogdan\Documents\GitHub\Pacman\Pacman\Debug\Pacman.exe
   Pacman.vcxproj -> C:\Users\Bogdan\Documents\GitHub\Pacman\Pacman\Debug\Pacman.pdb (Partial PDB)
