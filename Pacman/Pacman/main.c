@@ -9,6 +9,7 @@
 #include "graphicsMenu.h"
 #include "game.h"
 
+//extern map[29][28];
 
 SDL_Event event;
 
@@ -19,8 +20,15 @@ int main(int argc, char *argv[]) {
 	game.quit = gameQuit;
 	getScreenResolution(&game.screen.width, &game.screen.height);
 	ShowWindow(GetConsoleWindow(), SW_HIDE);
+	/*int i, j;
+	for (i = 0; i < 29; i++) {
+		for (j = 0; j < 28; j++) {
+			printf("%3d ", map[i][j]);
+		}
+		putchar('\n');
+	}*/
 
-	// PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC); // za potrebe proslave
+	PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC); // za potrebe proslave
 
 	enum ActiveScreen {isMenu, isDemo, isNew, isContinue, isHighscore, isSettings, isCredits, isQuit, numberOfScreens};
 

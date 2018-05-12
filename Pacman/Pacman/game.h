@@ -11,15 +11,19 @@
 #define WIDTH_SCREEN 600
 #define HEIGHT_SCREEN 400
 
-void wallCheckAndMove(int [HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct *);
+void wallCheckAndMove(int [HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *);
 
-void initTempMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], int tempMap[HEIGHT_OF_MAP][HEIGHT_OF_MAP]);
+void initTempMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int tempMap[HEIGHT_OF_MAP][WIDTH_OF_MAP]);
 
 void playNewGame(enum DifficultySpeed difficulty);
 
 void initGhostsPostitions(PacStruct ghosts[NUMBER_OF_GHOSTS]);
 
+void initPacmanPosition(PacStruct *pacman);
+
 int pacmanGhostCheck(PacStruct pacman, PacStruct ghost);
+
+int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]);
 
 typedef struct ScreenStruct {
 	unsigned int width;

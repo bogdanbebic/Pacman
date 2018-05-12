@@ -85,21 +85,7 @@ PacStruct BlinkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacSt
 	int pacmanX = pacman.jPosition;
 
 	sol.direction = BFS_next(Map, ghostX, ghostY, pacmanX, pacmanY).direction;
-	switch (sol.direction)
-	{
-	case DIRECTION_UP:
-		sol.iPosition--;
-		break;
-	case DIRECTION_DOWN:
-		sol.iPosition++;
-		break;
-	case DIRECTION_LEFT:
-		sol.jPosition--;
-		break;
-	case DIRECTION_RIGHT:
-		sol.jPosition++;
-		break;
-	}
+
 	return sol;
 }
 
@@ -151,21 +137,6 @@ PacStruct PinkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStr
 
 
 	sol.direction = PinkyAI_logic(Map, ghostX, ghostY, pacmanX, pacmanY).direction;
-	switch (sol.direction)
-	{
-	case DIRECTION_UP:
-		sol.iPosition--;
-		break;
-	case DIRECTION_DOWN:
-		sol.iPosition++;
-		break;
-	case DIRECTION_LEFT:
-		sol.jPosition--;
-		break;
-	case DIRECTION_RIGHT:
-		sol.jPosition++;
-		break;
-	}
 
 	return sol;
 }
@@ -212,22 +183,7 @@ PacStruct InkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStru
 	}
 
 	sol.direction = solution.direction;
-	switch (sol.direction)
-	{
-	case DIRECTION_UP:
-		sol.iPosition--;
-		break;
-	case DIRECTION_DOWN:
-		sol.iPosition++;
-		break;
-	case DIRECTION_LEFT:
-		sol.jPosition--;
-		break;
-	case DIRECTION_RIGHT:
-		sol.jPosition++;
-		break;
-	}
-
+	
 	return sol;
 }
 
@@ -241,24 +197,9 @@ PacStruct ClydeAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStr
 
 	BFS_solution bfsSolution = BFS_next(Map, ghostX, ghostY, pacmanX, pacmanY);
 	if (bfsSolution.count > 10)  //po pravilu je 8, ali mi se cini da je to premalo PROVERITI
-		bfsSolution = BFS_next(Map, ghostX, ghostY, HEIGHT_OF_MAP - 2, 1);
+		bfsSolution = BFS_next(Map, ghostX, ghostY, 1, HEIGHT_OF_MAP - 2);
 
 		sol.direction = bfsSolution.direction;
-		switch (sol.direction)
-		{
-		case DIRECTION_UP:
-			sol.iPosition--;
-			break;
-		case DIRECTION_DOWN:
-			sol.iPosition++;
-			break;
-		case DIRECTION_LEFT:
-			sol.jPosition--;
-			break;
-		case DIRECTION_RIGHT:
-			sol.jPosition++;
-			break;
-		}
-
+		
 		return sol;
 }
