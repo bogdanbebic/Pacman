@@ -123,7 +123,7 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int pa
 	for (i = 0; i < HEIGHT_OF_MAP; i++) {
 		for (j = 0; j < WIDTH_OF_MAP; j++) {
 			if (map[i][j] == WALL)
-				surface[i][j] = SDL_LoadBMP("Pictures/weed1.bmp");
+				surface[i][j] = SDL_LoadBMP("Pictures/WallGreenEmpty.bmp");
 			else if (map[i][j] == PAC_DOT)
 				surface[i][j] = SDL_LoadBMP("Pictures/pacDot.bmp");
 			else if (map[i][j] == POWER_PELLET)

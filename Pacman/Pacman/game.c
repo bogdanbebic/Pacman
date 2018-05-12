@@ -224,9 +224,9 @@ void playNewGame(enum DifficultySpeed difficulty) {
 			updateMap(testMapTemp, pacman, ghosts, delay - 2 * level);
 
 			// NOVI DIRECTION-I DUHOVA
-			//ghosts[0] = BlinkyAI(map, pacman, ghosts, 0);
-			//ghosts[1] = InkyAI(map, pacman, ghosts, 1);
-			//ghosts[2] = PinkyAI(map, pacman, ghosts, 2);
+			ghosts[0] = BlinkyAI(map, pacman, ghosts, 0);
+			ghosts[1] = InkyAI(map, pacman, ghosts, 1);
+			ghosts[2] = PinkyAI(map, pacman, ghosts, 2);
 			ghosts[3] = ClydeAI(map, pacman, ghosts, 3);
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 				wallCheckAndMove(map, &ghosts[i]);
