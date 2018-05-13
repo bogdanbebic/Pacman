@@ -63,7 +63,7 @@ void updateScoreBox(int currentScore) {
 	ScoreBoxRect.h = game.screen.height / HEIGHT_OF_MAP / 2;
 	SDL_RenderFillRect(game.screen.renderer, &ScoreBoxRect);
 	SDL_RenderCopy(game.screen.renderer, ScoreBoxTexture, NULL, &ScoreBoxRect);
-	//SDL_RenderPresent(game.screen.renderer);
+	SDL_RenderPresent(game.screen.renderer);
 	return;
 }
 
@@ -73,7 +73,7 @@ void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles
 	extern SDL_Rect LivesBoxRect;
 	extern Game game;
 	for (int i = 0; i < numberOfLivesTiles; i++) {
-		if (numberOfLivesTiles == 1) {//biranje odgovarajuce slike u Livesbox-u
+		if (numberOfLivesTiles == 1) { //biranje odgovarajuce slike u Livesbox-u
 			LivesBoxSurface = SDL_LoadBMP("Pictures/SinglePacLife.bmp");
 		}
 		else {
@@ -106,7 +106,6 @@ void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles
 		SDL_RenderFillRect(game.screen.renderer, &LivesBoxRect);
 		SDL_RenderCopy(game.screen.renderer, LivesBoxTexture, NULL, &LivesBoxRect);
 	}
-	//SDL_RenderPresent(game.screen.renderer); // radi i bez ovoga !!
 	return;
 }
 
@@ -137,6 +136,7 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int pa
 			tile_rect[i][j].h = game.screen.height / HEIGHT_OF_MAP/2;
 			SDL_RenderCopy(game.screen.renderer, tile[i][j], NULL, &tile_rect[i][j]);
 		}
+		SDL_RenderPresent(game.screen.renderer);
 	}
 	//pocetna pozicija pacmena
 	surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanR.bmp");
@@ -166,27 +166,6 @@ void deletePacmanGhost(PacStruct pacStruct) {
 void drawInitPacman(PacStruct pacman) {
 	surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanR.bmp");
 	return;
-}
-
-enum GameMode updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int * pacDotCount, int * currentScore) {
-	
-	enum GameMode gameMode = Normal;
-
-	if (map[pacman.iPosition][pacman.jPosition] == PAC_DOT) {
-		*currentScore += 10;
-		map[pacman.iPosition][pacman.jPosition] = NO_WALL;
-		(*pacDotCount)--;
-	}
-	else if (map[pacman.iPosition][pacman.jPosition] == POWER_PELLET) {
-		map[pacman.iPosition][pacman.jPosition] = NO_WALL;
-		*currentScore += 50;
-		gameMode = Reverse;
-	}
-	//TODO:update-ovanje scora kada pacman pojede duha
-	//TODO:update-ovanje scora kada pacman pojede vockice
-
-	updateScoreBox(*currentScore);
-	return gameMode;
 }
 
 void updateMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int delay) {

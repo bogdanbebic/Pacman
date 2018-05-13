@@ -84,6 +84,33 @@ int pacmanGhostCheck(PacStruct pacman, PacStruct ghost) {
 		return 0;
 }
 
+enum GameMode updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[], int * pacDotCount, int * currentScore, enum GameMode *gameMode) {
+	int i;
+	if (map[pacman.iPosition][pacman.jPosition] == PAC_DOT) {
+		*currentScore += 10;
+		map[pacman.iPosition][pacman.jPosition] = NO_WALL;
+		(*pacDotCount)--;
+	}
+	else if (map[pacman.iPosition][pacman.jPosition] == POWER_PELLET) {
+		map[pacman.iPosition][pacman.jPosition] = NO_WALL;
+		*currentScore += 50;
+		*gameMode = Reverse;
+	}
+	if (*gameMode == Reverse) {
+		for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
+			if (pacmanGhostCheck(pacman, ghosts[i])) {
+				*currentScore += 200;
+				// TODO: VRATI DUHA NA POCETNO MESTO !!!!!!!!!
+			}
+		}
+	}
+
+	//TODO:update-ovanje scora kada pacman pojede vockice
+
+	updateScoreBox(*currentScore);
+	return *gameMode;
+}
+
 int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]) {
 	int i, j;
 	int pacDotCount = 0;
@@ -97,71 +124,90 @@ int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]) {
 	return pacDotCount;
 }
 
-extern SDL_Event event;
-
-void playNewGame(enum DifficultySpeed difficulty) {
-	extern int map[HEIGHT_OF_MAP][WIDTH_OF_MAP];
-	int testMapTemp[HEIGHT_OF_MAP][WIDTH_OF_MAP];
-	enum GameMode gameMode = Normal;
-	SDL_bool isLevelRunning = SDL_TRUE;
-
-	PacStruct pacman;
-	PacStruct ghosts[4];
-
-	int i;
-
-	int level = -1;
-	int delay;
-	delay = (int)difficulty;
-	int isStartOfNewGame = 1;	// NE DIRAJ OVO !!!!!
-
-	int isPacmanEaten = 0;
-
-	int livesCount;	// TODO: ovo promeni da bude promenljivo
-	int numberOfLivesTiles;
-	int pacDotCount = 0;
+void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, int *currentScore, enum GameMode *gameMode, int *isStartOfNewGame) {
+	*isStartOfNewGame = 1;
+	*gameMode = Normal;
+	*level = -1;
+	*delay = (int)difficulty;
 
 	// broj rezervisanih pozicija za zivote na mapi
 	// i broj samih zivota odredjen tezinom igre
 	switch (difficulty) {
 	case EASY:
-		numberOfLivesTiles= livesCount = 5;
+		*numberOfLivesTiles = *livesCount = 5;
 		break;
 	case MEDIUM:
-		numberOfLivesTiles = livesCount = 3;
+		*numberOfLivesTiles = *livesCount = 3;
 		break;
 	case HARD:
-		numberOfLivesTiles = livesCount = 1;
+		*numberOfLivesTiles = *livesCount = 1;
 		break;
 	default:
 		break;
 	}
+	*currentScore = 0;
+}
 
-	int currentScore = 0;
+extern SDL_Event event;
+
+void playNewGame(enum DifficultySpeed difficulty) {
+	extern int map[HEIGHT_OF_MAP][WIDTH_OF_MAP];
+
+	int testMapTemp[HEIGHT_OF_MAP][WIDTH_OF_MAP];
+
+	SDL_bool isLevelRunning = SDL_TRUE;
+
+	PacStruct pacman;
+	PacStruct ghosts[4];
+	enum GameMode gameMode;
+	int livesCount;
+	int numberOfLivesTiles;
+	int currentScore;
+	int level;
+	int delay;
+	int pacDotCount;
+	int isStartOfNewGame;
+
+	int i;
+	int isPacmanEaten = 0;
+	pacDotCount = countPacDots(map); //Power Pellet-i nisu u broju dotova!!!
+
+	initNewGame(difficulty, &delay, &level, &livesCount, &numberOfLivesTiles, &currentScore, &gameMode, &isStartOfNewGame);
 
 	while (isLevelRunning && livesCount && delay - 2 * level > 0 && game.isRunning) {
 		
+		/*
+		*	TODO:
+		*	Prebaciti ovo u neki newGameInit
+		*	da bi mogao continue game lepo da se radi
+		*/
 		// Inicijalizuje poziciju Pacman-a
 		initPacmanPosition(&pacman);
-		// TODO: crtajne Pacman-a
+		// Crtanje Pacman-a
 		drawInitPacman(pacman);
-
 		// Inicijalizuje pozicije duhova
 		initGhostsPostitions(ghosts);
 		
-		if (pacDotCount == 0 || isStartOfNewGame) { // OVO JE ZA NOVI NIVO
+		if (isStartOfNewGame || pacDotCount == 0) { // OVO JE ZA NOVI NIVO
 			if (isStartOfNewGame) {
 				isStartOfNewGame = 0;
 			}
-			pacDotCount = countPacDots(map); //Power Pellet-i nisu u broju dotova!!!
 			level++;
 			printInitMap(map, pacman, pacDotCount);
 			initTempMap(map, testMapTemp);
 			updateScoreBox(currentScore);
 			updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
+			pacDotCount = countPacDots(testMapTemp);
 		}
 		
 		while (isLevelRunning && pacDotCount && livesCount && game.isRunning && !isPacmanEaten) {
+
+			/*
+			*	TODO:
+			*	prebaciti u funkciju
+			*	za dohvatanje user input-a
+			*	za Pacman-a
+			*/
 			while (SDL_PollEvent(&event) && isLevelRunning) {
 				switch (event.type) {
 				case SDL_KEYDOWN:
@@ -203,29 +249,24 @@ void playNewGame(enum DifficultySpeed difficulty) {
 			//TODO: updateovanje gamemode-a igre, ko koga juri!!!!
 
 			//azuriranje Score-a, da li je Pacman pojeo nesto
-			gameMode = updateScoreAndGameMode(testMapTemp, pacman, &pacDotCount, &currentScore);
-
-			// TODO: odredjivanje novih pozicija duhova
-			
-
-			// TODO: wallCheckAndMove za duhove
+			/*
+			*	Popraviti ovu funkciju
+			*	da bude elegantnija
+			*/
+			gameMode = updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore, &gameMode);
 
 			// provera -> pacman i duh na istom polju pre pomeranja duhova
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 				isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
 			}
 
-			// Azurira livesBox sa trenutnim brojem zivota
-			// Moze efikasnije ako se stavi da azurira samo kada se promeni broj zivota 
-			updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
-
 			// Poziv funkcije za grafiku -> iscrtavanje nove mape
 			updateMap(testMapTemp, pacman, ghosts, delay - 2 * level);
 
 			// NOVI DIRECTION-I DUHOVA
 			//ghosts[0] = BlinkyAI(map, pacman, ghosts, 0);
-			ghosts[1] = InkyAI(map, pacman, ghosts, 1);
-			ghosts[2] = PinkyAI(map, pacman, ghosts, 2);
+			//ghosts[1] = InkyAI(map, pacman, ghosts, 1);
+			//ghosts[2] = PinkyAI(map, pacman, ghosts, 2);
 			//ghosts[3] = ClydeAI(map, pacman, ghosts, 3);
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 				wallCheckAndMove(map, &ghosts[i]);
@@ -235,8 +276,13 @@ void playNewGame(enum DifficultySpeed difficulty) {
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 				isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
 			}
+
 			if (isPacmanEaten) {
 				livesCount--;
+
+				// Azurira livesBox sa trenutnim brojem zivota
+				// Moze efikasnije ako se stavi da azurira samo kada se promeni broj zivota 
+				updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
 			}
 		}
 		
