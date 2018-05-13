@@ -7,9 +7,7 @@
 static SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 static SDL_Texture *tile[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 static SDL_Rect tile_rect[HEIGHT_OF_MAP][WIDTH_OF_MAP];
-static SDL_Surface* ScoreBoxSurface, *LivesBoxSurface;
-static SDL_Texture* ScoreBoxTexture, *LivesBoxTexture;
-static SDL_Rect ScoreBoxRect, LivesBoxRect;
+
 
 static PacStruct getOldPacPosition(PacStruct pacStruct) {
 	PacStruct oldPosition;
@@ -40,10 +38,39 @@ static PacStruct getOldPacPosition(PacStruct pacStruct) {
 	return oldPosition;
 }
 
+void updateLevelBox(int level) {
+	SDL_Surface* LevelBoxSurface;
+	SDL_Texture* LevelBoxTexture;
+	SDL_Rect LevelBoxRect;
+	TTF_Font *font = TTF_OpenFont("impact.ttf", 46);
+	SDL_Color yellow = { 255, 255, 0 };
+	extern Game game;
+	char LevelBox[LEN_OF_SCORE_BOX] = "LVL ";
+	char bufferString[LEN_OF_SCORE_BOX];
+
+	//dopisuje broj dotova na kraj stringa scoreBox
+	_itoa_s(level + 1, bufferString, sizeof(bufferString), 10);
+	strcat_s(LevelBox, LEN_OF_SCORE_BOX, bufferString);
+
+	//stampanje score box-a
+	LevelBoxSurface = TTF_RenderText_Solid(font, LevelBox, yellow);
+	LevelBoxTexture = SDL_CreateTextureFromSurface(game.screen.renderer, LevelBoxSurface);
+	LevelBoxRect.x = (WIDTH_OF_MAP - 5) * game.screen.width / (WIDTH_OF_MAP * 3);
+	LevelBoxRect.y = 0;
+	LevelBoxRect.w = 4 * game.screen.width / (WIDTH_OF_MAP * 3);
+	LevelBoxRect.h = 2 * game.screen.height / (HEIGHT_OF_MAP * 2);
+	SDL_RenderFillRect(game.screen.renderer, &LevelBoxRect);
+	SDL_RenderCopy(game.screen.renderer, LevelBoxTexture, NULL, &LevelBoxRect);
+	SDL_RenderPresent(game.screen.renderer);
+
+
+	return;
+}
+
 void updateScoreBox(int currentScore) {
-	extern SDL_Surface* ScoreBoxSurface;
-	extern SDL_Texture* ScoreBoxTexture;
-	extern SDL_Rect ScoreBoxRect;
+	SDL_Surface* ScoreBoxSurface;
+	SDL_Texture* ScoreBoxTexture;
+	SDL_Rect ScoreBoxRect;
 	TTF_Font *font = TTF_OpenFont("impact.ttf", 46);
 	SDL_Color yellow = { 255, 255, 0 };
 	extern Game game;
@@ -59,8 +86,8 @@ void updateScoreBox(int currentScore) {
 	ScoreBoxTexture = SDL_CreateTextureFromSurface(game.screen.renderer, ScoreBoxSurface);
 	ScoreBoxRect.x = 0;
 	ScoreBoxRect.y = 0;
-	ScoreBoxRect.w = 2 * game.screen.width / WIDTH_OF_MAP / 3;
-	ScoreBoxRect.h = game.screen.height / HEIGHT_OF_MAP / 2;
+	ScoreBoxRect.w = 6 * game.screen.width / (WIDTH_OF_MAP * 3);
+	ScoreBoxRect.h = 2 * game.screen.height / (HEIGHT_OF_MAP * 2);
 	SDL_RenderFillRect(game.screen.renderer, &ScoreBoxRect);
 	SDL_RenderCopy(game.screen.renderer, ScoreBoxTexture, NULL, &ScoreBoxRect);
 	SDL_RenderPresent(game.screen.renderer);
@@ -68,41 +95,23 @@ void updateScoreBox(int currentScore) {
 }
 
 void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles, int livesCount) {
-	extern SDL_Surface* LivesBoxSurface;
-	extern SDL_Texture* LivesBoxTexture;
-	extern SDL_Rect LivesBoxRect;
+	SDL_Surface* LivesBoxSurface;
+	SDL_Texture* LivesBoxTexture;
+	SDL_Rect LivesBoxRect;
 	extern Game game;
 	for (int i = 0; i < numberOfLivesTiles; i++) {
-		if (numberOfLivesTiles == 1) { //biranje odgovarajuce slike u Livesbox-u
-			LivesBoxSurface = SDL_LoadBMP("Pictures/SinglePacLife.bmp");
+		if (i < livesCount) { 
+			LivesBoxSurface = SDL_LoadBMP("Pictures/PacmanR.bmp");
 		}
 		else {
-			if (i < livesCount) { 
-				if (i == 0) {
-					LivesBoxSurface = SDL_LoadBMP("Pictures/FirstPacLife.bmp");
-				}
-				else if (i == numberOfLivesTiles - 1) {
-					LivesBoxSurface = SDL_LoadBMP("Pictures/LastPacLife.bmp");
-				}
-				else {
-					LivesBoxSurface = SDL_LoadBMP("Pictures/MidPacLife.bmp");
-				}
-			}
-			else {
-				if (i == numberOfLivesTiles - 1) {
-					LivesBoxSurface = SDL_LoadBMP("Pictures/NoLastLife.bmp");
-				}
-				else {
-					LivesBoxSurface = SDL_LoadBMP("Pictures/NoMidLife.bmp");
-				}
-			}
+			LivesBoxSurface = SDL_LoadBMP("Pictures/background.bmp");
 		}
 		//stampanje odgovarajuce slike
 		LivesBoxTexture = SDL_CreateTextureFromSurface(game.screen.renderer, LivesBoxSurface);
-		LivesBoxRect.x = i * game.screen.width / WIDTH_OF_MAP / 3;
-		LivesBoxRect.y = (HEIGHT_OF_MAP - 1) * game.screen.height / HEIGHT_OF_MAP / 2;
-		LivesBoxRect.w = game.screen.width / WIDTH_OF_MAP / 3;
-		LivesBoxRect.h = game.screen.height / HEIGHT_OF_MAP / 2;
+		LivesBoxRect.x = 2 * i * game.screen.width / (WIDTH_OF_MAP * 3);
+		LivesBoxRect.y = (HEIGHT_OF_MAP + 2) * game.screen.height / (HEIGHT_OF_MAP * 2);
+		LivesBoxRect.w = 2 * game.screen.width / (WIDTH_OF_MAP * 3);
+		LivesBoxRect.h = 2 * game.screen.height / (HEIGHT_OF_MAP * 2);
 		SDL_RenderFillRect(game.screen.renderer, &LivesBoxRect);
 		SDL_RenderCopy(game.screen.renderer, LivesBoxTexture, NULL, &LivesBoxRect);
 	}
@@ -130,10 +139,10 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int pa
 			else
 				surface[i][j] = SDL_LoadBMP("Pictures/background.bmp");
 			tile[i][j] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[i][j]);
-			tile_rect[i][j].x = j * game.screen.width / WIDTH_OF_MAP /3;
-			tile_rect[i][j].y = i * game.screen.height / HEIGHT_OF_MAP/2;
-			tile_rect[i][j].w = game.screen.width / WIDTH_OF_MAP/3;
-			tile_rect[i][j].h = game.screen.height / HEIGHT_OF_MAP/2;
+			tile_rect[i][j].x = j * game.screen.width / (WIDTH_OF_MAP * 3);
+			tile_rect[i][j].y = (i + 2) * game.screen.height / (HEIGHT_OF_MAP * 2);
+			tile_rect[i][j].w = game.screen.width / (WIDTH_OF_MAP * 3);
+			tile_rect[i][j].h = game.screen.height / (HEIGHT_OF_MAP * 2);
 			SDL_RenderCopy(game.screen.renderer, tile[i][j], NULL, &tile_rect[i][j]);
 		}
 		SDL_RenderPresent(game.screen.renderer);
