@@ -143,6 +143,8 @@ void playNewGame(enum DifficultySpeed difficulty) {
 		
 		// Inicijalizuje poziciju Pacman-a
 		initPacmanPosition(&pacman);
+		// TODO: crtajne Pacman-a
+		drawInitPacman(pacman);
 
 		// Inicijalizuje pozicije duhova
 		initGhostsPostitions(ghosts);
@@ -212,9 +214,6 @@ void playNewGame(enum DifficultySpeed difficulty) {
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 				isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
 			}
-			if (isPacmanEaten) {
-				livesCount--;
-			}
 
 			// Azurira livesBox sa trenutnim brojem zivota
 			// Moze efikasnije ako se stavi da azurira samo kada se promeni broj zivota 
@@ -224,10 +223,10 @@ void playNewGame(enum DifficultySpeed difficulty) {
 			updateMap(testMapTemp, pacman, ghosts, delay - 2 * level);
 
 			// NOVI DIRECTION-I DUHOVA
-			ghosts[0] = BlinkyAI(map, pacman, ghosts, 0);
+			//ghosts[0] = BlinkyAI(map, pacman, ghosts, 0);
 			ghosts[1] = InkyAI(map, pacman, ghosts, 1);
 			ghosts[2] = PinkyAI(map, pacman, ghosts, 2);
-			ghosts[3] = ClydeAI(map, pacman, ghosts, 3);
+			//ghosts[3] = ClydeAI(map, pacman, ghosts, 3);
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 				wallCheckAndMove(map, &ghosts[i]);
 			}
@@ -236,16 +235,19 @@ void playNewGame(enum DifficultySpeed difficulty) {
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 				isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
 			}
+			if (isPacmanEaten) {
+				livesCount--;
+			}
 		}
 		
 		isPacmanEaten = 0;	// KADA SE POJEDE PACMAN, MORA DA SE RESETUJE
 
 		// TODO: POPRAVITI OVO OBAVEZNO, MORA DA BRISE STARE POZICIJE
-		if (pacman.iPosition != HEIGHT_OF_MAP / 2 + 7 || pacman.jPosition != WIDTH_OF_MAP / 2) {
-			deletePacmanGhost(pacman.iPosition, pacman.jPosition);
-		}
 		for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
-			deletePacmanGhost(ghosts[i].iPosition, ghosts[i].jPosition);
+			deletePacmanGhost(ghosts[i]);
+		}
+		if (pacman.iPosition != HEIGHT_OF_MAP / 2 + 7 || pacman.jPosition != WIDTH_OF_MAP / 2) {
+			deletePacmanGhost(pacman);
 		}
 	}
 

@@ -22,6 +22,8 @@ enum GameMode updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacSt
 
 void updateMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int delay);
 
-void deletePacmanGhost(int iPosition, int jPosition);
+void deletePacmanGhost(PacStruct pacStruct);
+
+void drawInitPacman(PacStruct pacman);
 
 #endif

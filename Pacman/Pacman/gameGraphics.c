@@ -146,15 +146,25 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int pa
 	return;
 }
 
-void deletePacmanGhost(int iPosition, int jPosition) {
-	surface[iPosition][jPosition] = SDL_LoadBMP("Pictures/background.bmp");
+void deletePacmanGhost(PacStruct pacStruct) {
 
-	SDL_RenderFillRect(game.screen.renderer, &tile_rect[iPosition][jPosition]);
+	extern SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
+	extern SDL_Texture* tile[HEIGHT_OF_MAP][WIDTH_OF_MAP];
+	extern SDL_Rect tile_rect[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 
-	tile[iPosition][jPosition] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[iPosition][jPosition]);
+	surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/background.bmp");
 
-	SDL_RenderCopy(game.screen.renderer, tile[iPosition][jPosition], NULL, &tile_rect[iPosition][jPosition]);
+	SDL_RenderFillRect(game.screen.renderer, &tile_rect[pacStruct.iPosition][pacStruct.jPosition]);
+
+	tile[pacStruct.iPosition][pacStruct.jPosition] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[pacStruct.iPosition][pacStruct.jPosition]);
+
+	SDL_RenderCopy(game.screen.renderer, tile[pacStruct.iPosition][pacStruct.jPosition], NULL, &tile_rect[pacStruct.iPosition][pacStruct.jPosition]);
 	SDL_RenderPresent(game.screen.renderer);
+	return;
+}
+
+void drawInitPacman(PacStruct pacman) {
+	surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanR.bmp");
 	return;
 }
 
