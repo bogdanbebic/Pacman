@@ -168,7 +168,7 @@ void drawInitPacman(PacStruct pacman) {
 	return;
 }
 
-void updateMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int delay) {
+void updateMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int delay, int timer_tick) {
 
 	extern SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 	extern SDL_Texture* tile[HEIGHT_OF_MAP][WIDTH_OF_MAP];
@@ -178,6 +178,7 @@ void updateMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct
 	extern Game game;
 
 	PacStruct oldPosition = getOldPacPosition(pacman);
+	if(timer_tick%4==0)
 	SDL_RenderFillRect(game.screen.renderer, &tile_rect[oldPosition.iPosition][oldPosition.jPosition]);
 
 	int i;
@@ -188,6 +189,8 @@ void updateMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct
 			surface[oldPositionGhost.iPosition][oldPositionGhost.jPosition] = SDL_LoadBMP("Pictures/pacDot.bmp");
 		else if (map[oldPositionGhost.iPosition][oldPositionGhost.jPosition] == POWER_PELLET)
 			surface[oldPositionGhost.iPosition][oldPositionGhost.jPosition] = SDL_LoadBMP("Pictures/powerPellet1.bmp");
+		else if (map[oldPositionGhost.iPosition][oldPositionGhost.jPosition] == WALL)
+			surface[oldPositionGhost.iPosition][oldPositionGhost.jPosition] = SDL_LoadBMP("Pictures/WallGreenEmpty.bmp");
 		else
 			surface[oldPositionGhost.iPosition][oldPositionGhost.jPosition] = SDL_LoadBMP("Pictures/background.bmp");
 
@@ -195,22 +198,34 @@ void updateMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct
 		SDL_RenderCopy(game.screen.renderer, tile[oldPositionGhost.iPosition][oldPositionGhost.jPosition], NULL, &tile_rect[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
 	}
 
-	//SDL_RenderFillRect(game.screen.renderer, &tile_rect[pacman.iPosition][pacman.jPosition]);
 
+	//SDL_RenderFillRect(game.screen.renderer, &tile_rect[pacman.iPosition][pacman.jPosition]);
 	switch (pacman.direction) {
 	case DIRECTION_NONE:
 		break;
 	case DIRECTION_UP:
-		surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanU.bmp");
+		if (timer_tick % 2)
+			surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanU.bmp");
+		else
+			surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanUC.bmp");
 		break;
 	case DIRECTION_RIGHT:
-		surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanR.bmp");
+		if (timer_tick % 2)
+			surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanR.bmp");
+		else
+			surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanRC.bmp");
 		break;
 	case DIRECTION_DOWN:
-		surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanD.bmp");
+		if (timer_tick % 2)
+			surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanD.bmp");
+		else
+			surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanDC.bmp");
 		break;
 	case DIRECTION_LEFT:
-		surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanL.bmp");
+		if (timer_tick % 2)
+			surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanL.bmp");
+		else
+			surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanLC.bmp");
 		break;
 	default:
 		break;

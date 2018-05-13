@@ -168,6 +168,8 @@ void playNewGame(enum DifficultySpeed difficulty) {
 	int pacDotCount;
 	int isStartOfNewGame;
 
+
+	int timer_tick = 0;
 	int i;
 	int isPacmanEaten = 0;
 	pacDotCount = countPacDots(map); //Power Pellet-i nisu u broju dotova!!!
@@ -187,7 +189,7 @@ void playNewGame(enum DifficultySpeed difficulty) {
 		drawInitPacman(pacman);
 		// Inicijalizuje pozicije duhova
 		initGhostsPostitions(ghosts);
-		
+		timer_tick = 0;
 		if (isStartOfNewGame || pacDotCount == 0) { // OVO JE ZA NOVI NIVO
 			if (isStartOfNewGame) {
 				isStartOfNewGame = 0;
@@ -202,6 +204,8 @@ void playNewGame(enum DifficultySpeed difficulty) {
 		
 		while (isLevelRunning && pacDotCount && livesCount && game.isRunning && !isPacmanEaten) {
 
+			timer_tick++;
+
 			/*
 			*	TODO:
 			*	prebaciti u funkciju
@@ -209,6 +213,7 @@ void playNewGame(enum DifficultySpeed difficulty) {
 			*	za Pacman-a
 			*/
 			while (SDL_PollEvent(&event) && isLevelRunning) {
+
 				switch (event.type) {
 				case SDL_KEYDOWN:
 					switch (event.key.keysym.sym) {
@@ -243,9 +248,9 @@ void playNewGame(enum DifficultySpeed difficulty) {
 					break;
 				}
 			}
-			
-			wallCheckAndMove(testMapTemp, &pacman);
-
+			if (timer_tick % 4 == 0) {
+				wallCheckAndMove(testMapTemp, &pacman);
+			}
 			//TODO: updateovanje gamemode-a igre, ko koga juri!!!!
 
 			//azuriranje Score-a, da li je Pacman pojeo nesto
@@ -261,15 +266,17 @@ void playNewGame(enum DifficultySpeed difficulty) {
 			}
 
 			// Poziv funkcije za grafiku -> iscrtavanje nove mape
-			updateMap(testMapTemp, pacman, ghosts, delay - 2 * level);
+			updateMap(testMapTemp, pacman, ghosts, delay - 2 * level, timer_tick);
 
 			// NOVI DIRECTION-I DUHOVA
-			//ghosts[0] = BlinkyAI(map, pacman, ghosts, 0);
-			//ghosts[1] = InkyAI(map, pacman, ghosts, 1);
-			//ghosts[2] = PinkyAI(map, pacman, ghosts, 2);
-			//ghosts[3] = ClydeAI(map, pacman, ghosts, 3);
-			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
-				wallCheckAndMove(map, &ghosts[i]);
+			if (timer_tick % 7 == 0) {
+				ghosts[0] = BlinkyAI(map, pacman, ghosts, 0);
+				ghosts[1] = InkyAI(map, pacman, ghosts, 1);
+				ghosts[2] = PinkyAI(map, pacman, ghosts, 2);
+				ghosts[3] = ClydeAI(map, pacman, ghosts, 3);
+				for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
+					wallCheckAndMove(map, &ghosts[i]);
+				}
 			}
 
 			// provera -> pacman i duh na istom polju kad se pomere duhovi

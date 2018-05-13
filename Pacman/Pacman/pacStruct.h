@@ -1,7 +1,7 @@
 #ifndef _pacStruct_h_
 #define _pacStruct_h_
 
-enum DifficultySpeed { EASY = 250, MEDIUM = 200, HARD = 128 };
+enum DifficultySpeed { EASY = 75, MEDIUM = 53, HARD = 32 };
 
 enum Direction { DIRECTION_NONE = -1, DIRECTION_UP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT, NUMBER_OF_DIRECTIONS };
 

@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 		printMenu(menuOption); // ako je van isRunning while-a ne prikaze meni nakon
 							   // zavrsavanja igre, vec tek nakon bilo kog klika		
 		while (SDL_PollEvent(&event)) {
-			switch(event.type) {
+			switch (event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
 
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
 				game.isRunning = SDL_FALSE;
 				break;
 			}
-
+		
 			switch (activeScreen) {
 			case isMenu:
 				printMenu(menuOption);

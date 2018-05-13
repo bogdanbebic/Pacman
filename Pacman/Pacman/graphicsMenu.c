@@ -20,8 +20,8 @@ void gameInit() {
 	font = TTF_OpenFont("impact.ttf", 46);
 
 	extern Game game;
-	unsigned int width = game.screen.width / 3;
-	unsigned int height = game.screen.height / 2;
+	unsigned int width = 560;
+	unsigned int height = 525;
 	const char* name = SCREEN_NAME;
 
 	game.screen.window = SDL_CreateWindow(name,	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,	width, height, 0);
