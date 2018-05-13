@@ -11,6 +11,11 @@ static SDL_Surface* ScoreBoxSurface, *LivesBoxSurface;
 static SDL_Texture* ScoreBoxTexture, *LivesBoxTexture;
 static SDL_Rect ScoreBoxRect, LivesBoxRect;
 
+/*
+*	Returns the previous position of pacStruct
+*	Return value:
+*	PacStruct containing the previous position
+*/
 static PacStruct getOldPacPosition(PacStruct pacStruct) {
 	PacStruct oldPosition;
 
@@ -40,6 +45,10 @@ static PacStruct getOldPacPosition(PacStruct pacStruct) {
 	return oldPosition;
 }
 
+/*
+*	Updates the score box in the game screen
+*	according to the argument currentScore
+*/
 void updateScoreBox(int currentScore) {
 	extern SDL_Surface* ScoreBoxSurface;
 	extern SDL_Texture* ScoreBoxTexture;
@@ -67,6 +76,10 @@ void updateScoreBox(int currentScore) {
 	return;
 }
 
+/*
+*	Updates the Pacman lives box in the game screen
+*	according to the argument livesCount
+*/
 void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles, int livesCount) {
 	extern SDL_Surface* LivesBoxSurface;
 	extern SDL_Texture* LivesBoxTexture;
@@ -109,7 +122,11 @@ void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles
 	return;
 }
 
-void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int pacDotCount) {
+/*
+*	Prints argument map and pacman
+*	on the game screen
+*/
+void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman) {
 	int i, j;
 
 	extern SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
@@ -146,6 +163,10 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int pa
 	return;
 }
 
+/*
+*	Deletes pacStruct from the game screen,
+*	draws background instead of pacStruct
+*/
 void deletePacmanGhost(PacStruct pacStruct) {
 
 	extern SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
@@ -163,11 +184,20 @@ void deletePacmanGhost(PacStruct pacStruct) {
 	return;
 }
 
+/*
+*	Draws pacman on it's initial position
+*	on the game screen
+*/
 void drawInitPacman(PacStruct pacman) {
 	surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanR.bmp");
 	return;
 }
 
+/*
+*	Updates arguments map and pacman and ghosts
+*	according to their values and values of
+*	arguments delay and timer_tick
+*/
 void updateMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int delay, int timer_tick) {
 
 	extern SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];

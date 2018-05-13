@@ -1,6 +1,10 @@
 #include "game.h"
 #include "testMap.h"
 
+/*
+*	Moves pacStruct on map,
+*	prevents pacStruct to be in wall
+*/
 void wallCheckAndMove(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct) {
 	switch (pacStruct->direction) {
 	case DIRECTION_UP:
@@ -41,6 +45,10 @@ void wallCheckAndMove(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct
 	return;
 }
 
+/*
+*	Initializes temporary map
+*	which is used in a single level
+*/
 void initTempMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int tempMap[HEIGHT_OF_MAP][WIDTH_OF_MAP]) {
 	for (int i = 0; i < HEIGHT_OF_MAP; i++) {
 		for (int j = 0; j < WIDTH_OF_MAP; j++) {
@@ -49,6 +57,10 @@ void initTempMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int tempMap[HEIGHT_OF_MAP
 	}
 }
 
+/*
+*	Initializes starting ghosts
+*	positions on map
+*/
 void initGhostsPostitions(PacStruct ghosts[NUMBER_OF_GHOSTS]) {
 	
 	ghosts[0].direction = DIRECTION_NONE;
@@ -70,6 +82,10 @@ void initGhostsPostitions(PacStruct ghosts[NUMBER_OF_GHOSTS]) {
 	return;
 }
 
+/*
+*	Initializes starting pacman
+*	position on map
+*/
 void initPacmanPosition(PacStruct *pacman) {
 	pacman->direction = DIRECTION_NONE;
 	pacman->iPosition = HEIGHT_OF_MAP / 2 + 7;
@@ -77,6 +93,13 @@ void initPacmanPosition(PacStruct *pacman) {
 	return;
 }
 
+/*
+*	Checks if pacman and and ghost
+*	have the same coordinates
+*	Return value:
+*	1 for same coordinates
+*	0 for different coordinates
+*/
 int pacmanGhostCheck(PacStruct pacman, PacStruct ghost) {
 	if (pacman.iPosition == ghost.iPosition && pacman.jPosition == ghost.jPosition)
 		return 1;
@@ -84,6 +107,14 @@ int pacmanGhostCheck(PacStruct pacman, PacStruct ghost) {
 		return 0;
 }
 
+/*
+*	Updates the currentScore and
+*	gameMode if pacman has eaten
+*	a power pellet
+*	Returnn value:
+*	Reverse if pacman has eaten a power pellet
+*	gameMode (unchanged) otherwise
+*/
 enum GameMode updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[], int * pacDotCount, int * currentScore, enum GameMode *gameMode) {
 	int i;
 	if (map[pacman.iPosition][pacman.jPosition] == PAC_DOT) {
@@ -105,12 +136,17 @@ enum GameMode updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacSt
 		}
 	}
 
-	//TODO:update-ovanje scora kada pacman pojede vockice
+	// TODO: update-ovanje scora kada pacman pojede vockice
 
 	updateScoreBox(*currentScore);
 	return *gameMode;
 }
 
+/*
+*	Counts pacDot-s on given map
+*	Return value:
+*	count of pacDot-s
+*/
 int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]) {
 	int i, j;
 	int pacDotCount = 0;
@@ -124,6 +160,11 @@ int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]) {
 	return pacDotCount;
 }
 
+/*
+*	Initializes a new game
+*	with new game parameters.
+*	Sets values for all arguments except difficulty
+*/
 void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, int *currentScore, enum GameMode *gameMode, int *isStartOfNewGame) {
 	*isStartOfNewGame = 1;
 	*gameMode = Normal;
@@ -150,7 +191,14 @@ void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *l
 
 extern SDL_Event event;
 
-void playNewGame(enum DifficultySpeed difficulty) {
+/*
+*	Sets up and plays new Pacman game
+*	according to the argument difficulty
+*	Return value:
+*	currentScore is the score that 
+*	the player has accumulated in the game
+*/
+int playNewGame(enum DifficultySpeed difficulty) {
 	extern int map[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 
 	int testMapTemp[HEIGHT_OF_MAP][WIDTH_OF_MAP];
@@ -195,7 +243,7 @@ void playNewGame(enum DifficultySpeed difficulty) {
 				isStartOfNewGame = 0;
 			}
 			level++;
-			printInitMap(map, pacman, pacDotCount);
+			printInitMap(map, pacman);
 			initTempMap(map, testMapTemp);
 			updateScoreBox(currentScore);
 			updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
@@ -306,5 +354,8 @@ void playNewGame(enum DifficultySpeed difficulty) {
 
 	// TODO: ispis endgame ekrana -> pobeda ili poraz
 
-	return;
+	// TODO: videti da li je korisnik hteo da se unese score
+	// ako jeste, onda vracamo currentScore
+	// ako je hteo da sacuva partiju, vracamo neki flag (verovatno -1)s
+	return currentScore;
 }

@@ -19,7 +19,7 @@ void initTempMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int tempMap[HEIGHT_OF_MAP
 
 void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, int *currentScore, enum GameMode *gameMode, int *isStartOfNewGame);
 
-void playNewGame(enum DifficultySpeed difficulty);
+int playNewGame(enum DifficultySpeed difficulty);
 
 void initGhostsPostitions(PacStruct ghosts[NUMBER_OF_GHOSTS]);
 

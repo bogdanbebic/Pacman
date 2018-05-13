@@ -1,12 +1,18 @@
 #include "graphicsMenu.h"
 
-
+/*
+*	Gets the current hardware screen resolution
+*	using arguments width and height
+*/
 void getScreenResolution(int *width, int *height) {
 	*width = GetSystemMetrics(SM_CXSCREEN);
 	*height = GetSystemMetrics(SM_CYSCREEN);
 	return;
 }
 
+/*
+*	Initializes the game and everything needed for it
+*/
 void gameInit() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		printf("SDL error: %s\n", SDL_GetError());
@@ -24,13 +30,17 @@ void gameInit() {
 	unsigned int height = 525;
 	const char* name = SCREEN_NAME;
 
-	game.screen.window = SDL_CreateWindow(name,	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,	width, height, 0);
+	game.screen.window = SDL_CreateWindow(name,	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
 	game.screen.renderer = SDL_CreateRenderer(game.screen.window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	game.isRunning = SDL_TRUE;
 	return;
 }
 
+/*
+*	Quits the game and destroys the
+*	renderers and windows
+*/
 void gameQuit() {
 	extern SDL_Texture* Message[numberOfMenuOptions];
 	enum MenuOptions menuOption;
@@ -48,7 +58,11 @@ void gameQuit() {
 	return;
 }
 
-
+/*
+*	Prints the menu on the game screen
+*	using the argument enum menuOptions currentMenuOption
+*	for printing all of the menu options
+*/
 void printMenu(enum menuOptions currentMenuOption) {
 
 	/* !!!!! TODO: implementiraj crtanje pacmana !!!!! */
