@@ -95,28 +95,28 @@ BFS_solution PinkyAI_logic(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int
 	solution.count = HEIGHT_OF_MAP * WIDTH_OF_MAP;
 	solution.direction = DIRECTION_NONE;
 	BFS_solution currentSol;
-	if (Map[pacmanX + 1][pacmanY] != WALL) {
+	if (pacmanX < HEIGHT_OF_MAP - 1 && Map[pacmanX + 1][pacmanY] != WALL) {
 		currentSol = BFS_next(Map, ghostX, ghostY, pacmanX + 1, pacmanY);
 		if (currentSol.count < solution.count) {
 			solution.count = currentSol.count;
 			solution.direction = currentSol.direction;
 		}
 	}
-	if (Map[pacmanX - 1][pacmanY] != WALL) {
+	if (pacmanX > 0 && Map[pacmanX - 1][pacmanY] != WALL) {
 		currentSol = BFS_next(Map, ghostX, ghostY, pacmanX - 1, pacmanY);
 		if (currentSol.count < solution.count) {
 			solution.count = currentSol.count;
 			solution.direction = currentSol.direction;
 		}
 	}
-	if (Map[pacmanX][pacmanY + 1] != WALL) {
+	if (pacmanY < WIDTH_OF_MAP - 1 && Map[pacmanX][pacmanY + 1] != WALL) {
 		currentSol = BFS_next(Map, ghostX, ghostY, pacmanX, pacmanY + 1);
 		if (currentSol.count < solution.count) {
 			solution.count = currentSol.count;
 			solution.direction = currentSol.direction;
 		}
 	}
-	if (Map[pacmanX][pacmanY - 1] != WALL) {
+	if (pacmanY > 0 && Map[pacmanX][pacmanY - 1] != WALL) {
 		currentSol = BFS_next(Map, ghostX, ghostY, pacmanX, pacmanY - 1);
 		if (currentSol.count < solution.count) {
 			solution.count = currentSol.count;
@@ -135,7 +135,6 @@ PacStruct PinkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStr
 	int pacmanY = pacman.iPosition;
 	int pacmanX = pacman.jPosition;
 
-
 	sol.direction = PinkyAI_logic(Map, ghostX, ghostY, pacmanX, pacmanY).direction;
 
 	return sol;
@@ -148,33 +147,32 @@ PacStruct InkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStru
 	int pacmanY = pacman.iPosition;
 	int pacmanX = pacman.jPosition;
 
-
 	BFS_solution solution;
 	solution.count = HEIGHT_OF_MAP * WIDTH_OF_MAP;
 	solution.direction = DIRECTION_NONE;
 	BFS_solution currentSol;
-	if (Map[pacmanX + 1][pacmanY] != WALL) {
+	if (pacmanX < HEIGHT_OF_MAP - 1 && Map[pacmanX + 1][pacmanY] != WALL) {
 		currentSol = PinkyAI_logic(Map, ghostX, ghostY, pacmanX + 1, pacmanY);
 		if (currentSol.count < solution.count) {
 			solution.count = currentSol.count;
 			solution.direction = currentSol.direction;
 		}
 	}
-	if (Map[pacmanX - 1][pacmanY] != WALL) {
+	if (pacmanX > 0 && Map[pacmanX - 1][pacmanY] != WALL) {
 		currentSol = PinkyAI_logic(Map, ghostX, ghostY, pacmanX - 1, pacmanY);
 		if (currentSol.count < solution.count) {
 			solution.count = currentSol.count;
 			solution.direction = currentSol.direction;
 		}
 	}
-	if (Map[pacmanX][pacmanY + 1] != WALL) {
+	if (pacmanY < WIDTH_OF_MAP - 1 && Map[pacmanX][pacmanY + 1] != WALL) {
 		currentSol = PinkyAI_logic(Map, ghostX, ghostY, pacmanX, pacmanY + 1);
 		if (currentSol.count < solution.count) {
 			solution.count = currentSol.count;
 			solution.direction = currentSol.direction;
 		}
 	}
-	if (Map[pacmanX][pacmanY - 1] != WALL) {
+	if (pacmanY > 0 && Map[pacmanX][pacmanY - 1] != WALL) {
 		currentSol = PinkyAI_logic(Map, ghostX, ghostY, pacmanX, pacmanY - 1);
 		if (currentSol.count < solution.count) {
 			solution.count = currentSol.count;
@@ -194,12 +192,11 @@ PacStruct ClydeAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStr
 	int pacmanY = pacman.iPosition;
 	int pacmanX = pacman.jPosition;
 
-
 	BFS_solution bfsSolution = BFS_next(Map, ghostX, ghostY, pacmanX, pacmanY);
 	if (bfsSolution.count > 10)  //po pravilu je 8, ali mi se cini da je to premalo PROVERITI
 		bfsSolution = BFS_next(Map, ghostX, ghostY, 1, HEIGHT_OF_MAP - 2);
 
-		sol.direction = bfsSolution.direction;
+	sol.direction = bfsSolution.direction;
 		
-		return sol;
+	return sol;
 }

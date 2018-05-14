@@ -167,13 +167,31 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman) {
 *	Deletes pacStruct from the game screen,
 *	draws background instead of pacStruct
 */
-void deletePacmanGhost(PacStruct pacStruct) {
+void deletePacmanGhost(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacStruct) {
 
 	extern SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 	extern SDL_Texture* tile[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 	extern SDL_Rect tile_rect[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 
-	surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/background.bmp");
+	if (map[pacStruct.iPosition][pacStruct.jPosition] == WALL)
+		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/WallGreenEmpty.bmp");
+	else if (map[pacStruct.iPosition][pacStruct.jPosition] == PAC_DOT)
+		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/pacDot.bmp");
+	else if (map[pacStruct.iPosition][pacStruct.jPosition] == POWER_PELLET)
+		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/powerPellet1.bmp");
+	else
+		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/background.bmp");
+
+	pacStruct = getOldPacPosition(pacStruct);
+
+	if (map[pacStruct.iPosition][pacStruct.jPosition] == WALL)
+		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/WallGreenEmpty.bmp");
+	else if (map[pacStruct.iPosition][pacStruct.jPosition] == PAC_DOT)
+		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/pacDot.bmp");
+	else if (map[pacStruct.iPosition][pacStruct.jPosition] == POWER_PELLET)
+		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/powerPellet1.bmp");
+	else
+		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/background.bmp");
 
 	SDL_RenderFillRect(game.screen.renderer, &tile_rect[pacStruct.iPosition][pacStruct.jPosition]);
 

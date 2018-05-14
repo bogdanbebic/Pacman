@@ -338,6 +338,7 @@ int playNewGame(enum DifficultySpeed difficulty) {
 				// Azurira livesBox sa trenutnim brojem zivota
 				// Moze efikasnije ako se stavi da azurira samo kada se promeni broj zivota 
 				updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
+				SDL_RenderPresent(game.screen.renderer);
 			}
 		}
 		
@@ -345,10 +346,10 @@ int playNewGame(enum DifficultySpeed difficulty) {
 
 		// TODO: POPRAVITI OVO OBAVEZNO, MORA DA BRISE STARE POZICIJE
 		for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
-			deletePacmanGhost(ghosts[i]);
+			deletePacmanGhost(testMapTemp, ghosts[i]);
 		}
 		if (pacman.iPosition != HEIGHT_OF_MAP / 2 + 7 || pacman.jPosition != WIDTH_OF_MAP / 2) {
-			deletePacmanGhost(pacman);
+			deletePacmanGhost(testMapTemp, pacman);
 		}
 	}
 
