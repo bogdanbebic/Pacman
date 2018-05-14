@@ -163,7 +163,9 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman) {
 	return;
 }
 
-/*
+/*	
+*	Unused function kept for historical purposes
+*
 *	Deletes pacStruct from the game screen,
 *	draws background instead of pacStruct
 */

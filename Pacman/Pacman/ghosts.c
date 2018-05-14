@@ -28,7 +28,7 @@ BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghos
 			sol.count = visited[queueY[i]][queueX[i]];
 			return sol;
 		}
-		if (Map[queueY[i] + 1][queueX[i]] != WALL && visited[queueY[i] + 1][queueX[i]] <= 0) {
+		if (queueY[i] < HEIGHT_OF_MAP - 1 && Map[queueY[i] + 1][queueX[i]] != WALL && visited[queueY[i] + 1][queueX[i]] <= 0) {
 			queueY[queueCount] = queueY[i] + 1;
 			queueX[queueCount++] = queueX[i];
 			visited[queueY[i] + 1][queueX[i]] = visited[queueY[i]][queueX[i]] + 1;
@@ -38,7 +38,7 @@ BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghos
 			sol.count = visited[queueY[i]][queueX[i]];
 			return sol;
 		}
-		if (Map[queueY[i] - 1][queueX[i]] != WALL && visited[queueY[i] - 1][queueX[i]] <= 0) {
+		if (queueY[i] > 0 && Map[queueY[i] - 1][queueX[i]] != WALL && visited[queueY[i] - 1][queueX[i]] <= 0) {
 			
 			queueY[queueCount] = queueY[i] - 1;
 			queueX[queueCount++] = queueX[i];
@@ -50,7 +50,7 @@ BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghos
 			sol.count = visited[queueY[i]][queueX[i]];
 			return sol;
 		}
-		if (Map[queueY[i]][queueX[i] + 1] != WALL && visited[queueY[i]][queueX[i] + 1] <= 0) {
+		if (queueX[i] < WIDTH_OF_MAP - 1 && Map[queueY[i]][queueX[i] + 1] != WALL && visited[queueY[i]][queueX[i] + 1] <= 0) {
 			
 			queueY[queueCount] = queueY[i];
 			queueX[queueCount++] = queueX[i] + 1;
@@ -62,7 +62,7 @@ BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghos
 			sol.count = visited[queueY[i]][queueX[i]];
 			return sol;
 		}
-		if (Map[queueY[i]][queueX[i] - 1] != WALL && visited[queueY[i]][queueX[i] - 1] <= 0) {
+		if (queueX[i] > 0 && Map[queueY[i]][queueX[i] - 1] != WALL && visited[queueY[i]][queueX[i] - 1] <= 0) {
 			
 			queueY[queueCount] = queueY[i];
 			queueX[queueCount++] = queueX[i] - 1;

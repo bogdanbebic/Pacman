@@ -237,6 +237,12 @@ int playNewGame(enum DifficultySpeed difficulty) {
 		drawInitPacman(pacman);
 		// Inicijalizuje pozicije duhova
 		initGhostsPostitions(ghosts);
+
+		// TODO: drawTempMap(tempMap, pacman, ghosts);
+		printInitMap(testMapTemp, pacman);
+		updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore, &gameMode);
+		updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
+
 		timer_tick = 0;
 		if (isStartOfNewGame || pacDotCount == 0) { // OVO JE ZA NOVI NIVO
 			if (isStartOfNewGame) {
@@ -343,14 +349,6 @@ int playNewGame(enum DifficultySpeed difficulty) {
 		}
 		
 		isPacmanEaten = 0;	// KADA SE POJEDE PACMAN, MORA DA SE RESETUJE
-
-		// TODO: POPRAVITI OVO OBAVEZNO, MORA DA BRISE STARE POZICIJE
-		for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
-			deletePacmanGhost(testMapTemp, ghosts[i]);
-		}
-		if (pacman.iPosition != HEIGHT_OF_MAP / 2 + 7 || pacman.jPosition != WIDTH_OF_MAP / 2) {
-			deletePacmanGhost(testMapTemp, pacman);
-		}
 	}
 
 	// TODO: ispis endgame ekrana -> pobeda ili poraz
