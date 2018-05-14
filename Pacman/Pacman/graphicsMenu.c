@@ -26,8 +26,8 @@ void gameInit() {
 	font = TTF_OpenFont("impact.ttf", 46);
 
 	extern Game game;
-	unsigned int width = 560;
-	unsigned int height = 525;
+	unsigned int width = game.screen.width / 3;
+	unsigned int height = game.screen.height / 2 + 2 * game.screen.height / HEIGHT_OF_MAP;
 	const char* name = SCREEN_NAME;
 
 	game.screen.window = SDL_CreateWindow(name,	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
@@ -148,7 +148,7 @@ void printMenu(enum menuOptions currentMenuOption) {
 
 		//Pacman koji stoji ispred selektovane stavke u meniju
 		PacmanRect.x = game.screen.width / 24;
-		PacmanRect.y = (2 + 3 * menuOption) * (game.screen.height / 48);
+		PacmanRect.y = (5 + 3 * menuOption) * (game.screen.height / 48);
 		PacmanRect.w = game.screen.width / 30;
 		PacmanRect.h = game.screen.height / 24;
 		if (menuOption == currentMenuOption) {
@@ -162,7 +162,7 @@ void printMenu(enum menuOptions currentMenuOption) {
 		}
 
 		Message_rect[menuOption].x = game.screen.width / 12;
-		Message_rect[menuOption].y = (2 + 3 * menuOption) * (game.screen.height / 48);	// OVDE MENJAS !!!!!!!!!!
+		Message_rect[menuOption].y = (5 + 3 * menuOption) * (game.screen.height / 48);	// OVDE MENJAS !!!!!!!!!!
 		Message_rect[menuOption].w = game.screen.width / 6;
 		Message_rect[menuOption].h = game.screen.height / 24;
 

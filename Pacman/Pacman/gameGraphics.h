@@ -14,6 +14,8 @@
 
 void updateScoreBox(int currentScore);
 
+void updateLevelBox(int level);
+
 void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles, int livesCount);
 
 void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman);

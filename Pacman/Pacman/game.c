@@ -251,6 +251,7 @@ int playNewGame(enum DifficultySpeed difficulty) {
 			level++;
 			printInitMap(map, pacman);
 			initTempMap(map, testMapTemp);
+			//updateLevelBox(level);
 			updateScoreBox(currentScore);
 			updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
 			pacDotCount = countPacDots(testMapTemp);
