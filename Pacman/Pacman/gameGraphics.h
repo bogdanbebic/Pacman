@@ -10,7 +10,7 @@
 #include "pacStruct.h"
 #include "game.h"
 
-#define LEN_OF_SCORE_BOX 15
+#define LEN_OF_SCORE_BOX 50
 
 void updateScoreBox(int currentScore);
 

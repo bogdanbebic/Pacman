@@ -27,8 +27,6 @@ void getScreenResolution(int *width, int *height);
 
 void printMenu(enum menuOptions currentMenuOption);
 
-TTF_Font* font;
-
 SDL_Texture* Message[numberOfMenuOptions];
 
 #endif

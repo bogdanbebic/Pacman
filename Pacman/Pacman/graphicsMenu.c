@@ -21,7 +21,7 @@ void gameInit() {
 
 	TTF_Init();
 
-	extern TTF_Font* font;
+	TTF_Font* font;
 
 	font = TTF_OpenFont("impact.ttf", 46);
 
@@ -65,21 +65,19 @@ void gameQuit() {
 */
 void printMenu(enum menuOptions currentMenuOption) {
 
-	/* !!!!! TODO: implementiraj crtanje pacmana !!!!! */
-	/*crtanje ispred selektovane stavke menija*/
-
 	SDL_Color white = { 255, 255, 255 };
 	SDL_Color yellow = { 255, 255, 0 };
-	extern TTF_Font* font;
+	TTF_Font* font = TTF_OpenFont("impact.ttf", 46);
+	TTF_Font * HeadingFont = TTF_OpenFont("impact.ttf", 80);
 
-	SDL_Surface* surface[numberOfMenuOptions], * PacmanSurface;
-	extern SDL_Texture* Message[numberOfMenuOptions];
-	SDL_Texture * PacmanTexture;
-	SDL_Rect Message_rect[numberOfMenuOptions], PacmanRect;
-
+	SDL_Surface* surface[numberOfMenuOptions], * PacmanSurface, *HeadingSurface;
+	SDL_Texture* Message[numberOfMenuOptions];
+	SDL_Texture * PacmanTexture, *HeadingTexture;
+	SDL_Rect Message_rect[numberOfMenuOptions], PacmanRect, HeadingRect;
+	
 	enum MenuOptions menuOption;
 
-	
+	SDL_RenderClear(game.screen.renderer);
 	for (menuOption = 0; menuOption < numberOfMenuOptions; menuOption++) {
 
 		switch (menuOption) {
@@ -156,6 +154,7 @@ void printMenu(enum menuOptions currentMenuOption) {
 			PacmanTexture = SDL_CreateTextureFromSurface(game.screen.renderer, PacmanSurface);
 			SDL_FreeSurface(PacmanSurface);
 			SDL_RenderCopy(game.screen.renderer, PacmanTexture, NULL, &PacmanRect);
+			SDL_DestroyTexture(PacmanTexture);
 		}
 		else {
 			SDL_RenderFillRect(game.screen.renderer, &PacmanRect);
@@ -165,11 +164,19 @@ void printMenu(enum menuOptions currentMenuOption) {
 		Message_rect[menuOption].y = (5 + 3 * menuOption) * (game.screen.height / 48);	// OVDE MENJAS !!!!!!!!!!
 		Message_rect[menuOption].w = game.screen.width / 6;
 		Message_rect[menuOption].h = game.screen.height / 24;
-
-
 		SDL_RenderCopy(game.screen.renderer, Message[menuOption], NULL, &Message_rect[menuOption]);
-		
+		SDL_DestroyTexture(Message[menuOption]);
 	}
+	//Naslov u glavnom meniju
+	HeadingSurface = SDL_LoadBMP("Pictures/Heading.bmp");
+	HeadingTexture = SDL_CreateTextureFromSurface(game.screen.renderer, HeadingSurface);
+	SDL_FreeSurface(HeadingSurface);
+	HeadingRect.x = game.screen.width / 24;
+	HeadingRect.y = game.screen.height / 48;
+	HeadingRect.w = game.screen.width / 4;
+	HeadingRect.h = game.screen.height / 18;
+	SDL_RenderCopy(game.screen.renderer, HeadingTexture, NULL, &HeadingRect);
+	SDL_DestroyTexture(HeadingTexture);
 	SDL_RenderPresent(game.screen.renderer);
 	return;
 }

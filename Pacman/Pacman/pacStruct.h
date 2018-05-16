@@ -22,6 +22,7 @@ typedef struct PacStructStruct {
 	int iPosition;
 	int jPosition;
 	enum Direction direction;
+	int isEaten;
 } PacStruct;
 
 #endif

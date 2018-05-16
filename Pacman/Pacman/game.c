@@ -1,6 +1,8 @@
 #include "game.h"
 #include "testMap.h"
 
+
+
 /*
 *	Moves pacStruct on map,
 *	prevents pacStruct to be in wall
@@ -190,7 +192,7 @@ void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *l
 }
 
 extern SDL_Event event;
-
+extern SDL_Texture* ScoreBoxTexture, *LivesBoxTexture;
 /*
 *	Sets up and plays new Pacman game
 *	according to the argument difficulty
@@ -251,7 +253,9 @@ int playNewGame(enum DifficultySpeed difficulty) {
 			level++;
 			printInitMap(map, pacman);
 			initTempMap(map, testMapTemp);
-			//updateLevelBox(level);
+			updateLevelBox(level);
+			//SDL_DestroyTexture(ScoreBoxTexture);
+			//SDL_DestroyTexture(LivesBoxTexture);
 			updateScoreBox(currentScore);
 			updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
 			pacDotCount = countPacDots(testMapTemp);
