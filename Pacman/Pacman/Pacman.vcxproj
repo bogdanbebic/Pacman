@@ -158,6 +158,7 @@
     <ClCompile Include="gameGraphics.c" />
     <ClCompile Include="ghosts.c" />
     <ClCompile Include="graphicsMenu.c" />
+    <ClCompile Include="highscores.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +167,7 @@
     <ClInclude Include="gameMap.h" />
     <ClInclude Include="ghosts.h" />
     <ClInclude Include="graphicsMenu.h" />
+    <ClInclude Include="highscores.h" />
     <ClInclude Include="pacStruct.h" />
     <ClInclude Include="testMap.h" />
   </ItemGroup>

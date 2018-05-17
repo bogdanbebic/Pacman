@@ -33,6 +33,9 @@
     <ClCompile Include="ghosts.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="highscores.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="testMap.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ghosts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="highscores.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
