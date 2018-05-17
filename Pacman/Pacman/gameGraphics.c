@@ -303,11 +303,22 @@ void updateMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct
 	default:
 		break;
 	}
-	//if (ghosts[0].isEaten)
-	surface[ghosts[0].iPosition][ghosts[0].jPosition] = SDL_LoadBMP("Pictures/Blinky.bmp");
-	surface[ghosts[1].iPosition][ghosts[1].jPosition] = SDL_LoadBMP("Pictures/Inky.bmp");
-	surface[ghosts[2].iPosition][ghosts[2].jPosition] = SDL_LoadBMP("Pictures/Pinky.bmp");
-	surface[ghosts[3].iPosition][ghosts[3].jPosition] = SDL_LoadBMP("Pictures/Clyde.bmp");
+	if (ghosts[0].gameMode == Normal)
+		surface[ghosts[0].iPosition][ghosts[0].jPosition] = SDL_LoadBMP("Pictures/Blinky.bmp");
+	else if (ghosts[0].gameMode == Reverse)
+		surface[ghosts[0].iPosition][ghosts[0].jPosition] = SDL_LoadBMP("Pictures/reversedGhost.bmp");
+	if (ghosts[1].gameMode == Normal)
+		surface[ghosts[1].iPosition][ghosts[1].jPosition] = SDL_LoadBMP("Pictures/Inky.bmp");
+	else if (ghosts[1].gameMode == Reverse)
+		surface[ghosts[1].iPosition][ghosts[1].jPosition] = SDL_LoadBMP("Pictures/reversedGhost.bmp");
+	if (ghosts[2].gameMode == Normal)
+		surface[ghosts[2].iPosition][ghosts[2].jPosition] = SDL_LoadBMP("Pictures/Pinky.bmp");
+	else if (ghosts[2].gameMode == Reverse)
+		surface[ghosts[2].iPosition][ghosts[2].jPosition] = SDL_LoadBMP("Pictures/reversedGhost.bmp");
+	if (ghosts[3].gameMode == Normal)
+		surface[ghosts[3].iPosition][ghosts[3].jPosition] = SDL_LoadBMP("Pictures/Clyde.bmp");
+	else if (ghosts[3].gameMode == Reverse)
+		surface[ghosts[3].iPosition][ghosts[3].jPosition] = SDL_LoadBMP("Pictures/reversedGhost.bmp");
 
 	// TODO: uradi isto ovo za duhove
 	tile[pacman.iPosition][pacman.jPosition] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[pacman.iPosition][pacman.jPosition]);

@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
 		putchar('\n');
 	}*/
 
-	// PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC); // za potrebe proslave
+	PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC); // za potrebe proslave
 
 	enum ActiveScreen {isMenu, isDemo, isNew, isContinue, isHighscore, isSettings, isCredits, isQuit, numberOfScreens};
 

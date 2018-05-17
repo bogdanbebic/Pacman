@@ -62,20 +62,24 @@ void initTempMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int tempMap[HEIGHT_OF_MAP
 *	Initializes starting ghosts
 *	positions on map
 */
-void initGhostsPostitions(PacStruct ghosts[NUMBER_OF_GHOSTS]) {
+void initGhosts(PacStruct ghosts[NUMBER_OF_GHOSTS]) {
 	
+	ghosts[0].gameMode = Normal;
 	ghosts[0].direction = DIRECTION_NONE;
 	ghosts[0].iPosition = HEIGHT_OF_MAP / 2 - 2;
 	ghosts[0].jPosition = WIDTH_OF_MAP / 2 - 2;
 
+	ghosts[1].gameMode = Normal;
 	ghosts[1].direction = DIRECTION_NONE;
 	ghosts[1].iPosition = HEIGHT_OF_MAP / 2 - 2;
 	ghosts[1].jPosition = WIDTH_OF_MAP / 2 - 1;
 
+	ghosts[2].gameMode = Normal;
 	ghosts[2].direction = DIRECTION_NONE;
 	ghosts[2].iPosition = HEIGHT_OF_MAP / 2 - 2;
 	ghosts[2].jPosition = WIDTH_OF_MAP / 2;
 
+	ghosts[3].gameMode = Normal;
 	ghosts[3].direction = DIRECTION_NONE;
 	ghosts[3].iPosition = HEIGHT_OF_MAP / 2 - 2;
 	ghosts[3].jPosition = WIDTH_OF_MAP / 2 + 1;
@@ -116,7 +120,7 @@ int pacmanGhostCheck(PacStruct pacman, PacStruct ghost) {
 *	Reverse if pacman has eaten a power pellet
 *	gameMode (unchanged) otherwise
 */
-enum GameMode updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[], int * pacDotCount, Highscore * currentScore, enum GameMode *gameMode) {
+void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[], int * pacDotCount, Highscore * currentScore) {
 	int i;
 	if (map[pacman.iPosition][pacman.jPosition] == PAC_DOT) {
 		currentScore->points += 10;
@@ -126,21 +130,21 @@ enum GameMode updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacSt
 	else if (map[pacman.iPosition][pacman.jPosition] == POWER_PELLET) {
 		map[pacman.iPosition][pacman.jPosition] = NO_WALL;
 		currentScore->points += 50;
-		*gameMode = Reverse;
+		for (i = 0; i < NUMBER_OF_GHOSTS; i++)
+			ghosts[i].gameMode = Reverse;
 	}
-	if (*gameMode == Reverse) {
-		for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
-			if (pacmanGhostCheck(pacman, ghosts[i])) {
-				currentScore->points += 200;
-				// TODO: VRATI DUHA NA POCETNO MESTO !!!!!!!!!
-			}
+	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
+		if (pacmanGhostCheck(pacman, ghosts[i]) && (ghosts[i].gameMode == Reverse || ghosts[i].gameMode == EndReverse)) {
+			currentScore->points += 200;
+			// TODO: VRATI DUHA NA POCETNO MESTO !!!!!!!!!
 		}
 	}
+	
 
 	// TODO: update-ovanje scora kada pacman pojede vockice
 
 	updateScoreBox(*currentScore);
-	return *gameMode;
+	return;
 }
 
 /*
@@ -167,7 +171,7 @@ void initLevel(PacStruct *pacman, PacStruct *ghosts) {
 	// Crtanje Pacman-a
 	drawInitPacman(*pacman);
 	// Inicijalizuje pozicije duhova
-	initGhostsPostitions(ghosts);
+	initGhosts(ghosts);
 	return;
 }
 
@@ -176,12 +180,10 @@ void initLevel(PacStruct *pacman, PacStruct *ghosts) {
 *	with new game parameters.
 *	Sets values for all arguments except difficulty
 */
-void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, enum GameMode *gameMode, int *isStartOfNewGame) {
+void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame) {
 	*isStartOfNewGame = 1;
-	*gameMode = Normal;
 	*level = -1;
 	*delay = (int)difficulty;
-
 
 	// broj rezervisanih pozicija za zivote na mapi
 	// i broj samih zivota odredjen tezinom igre
@@ -246,7 +248,6 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 
 	PacStruct pacman;
 	PacStruct ghosts[4];
-	enum GameMode gameMode;
 	int livesCount;
 	int numberOfLivesTiles;
 	Highscore currentScore;
@@ -264,7 +265,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 	switch (gameType) {
 	case DEMO_GAME:
 	case NEW_GAME:
-		initNewGame(difficulty, &delay, &level, &livesCount, &numberOfLivesTiles, &currentScore, &gameMode, &isStartOfNewGame);
+		initNewGame(difficulty, &delay, &level, &livesCount, &numberOfLivesTiles, &currentScore, &isStartOfNewGame);
 		break;
 	case CONTINUE_GAME:
 		break;
@@ -275,10 +276,10 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 
 	while (isLevelRunning && livesCount && delay - 2 * level > 0 && game.isRunning) {
 		
-		initLevel(&pacman, ghosts);
+		initLevel(&pacman, ghosts);	// TODO: ovo popraviti, ne radi za continue game
 
 		printInitMap(testMapTemp, pacman);
-		updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore, &gameMode);
+		updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore);
 		updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
 
 		timer_tick = 0;
@@ -338,7 +339,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 			*	Popraviti ovu funkciju
 			*	da bude elegantnija
 			*/
-			gameMode = updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore, &gameMode);
+			updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore);
 
 			// provera -> pacman i duh na istom polju pre pomeranja duhova
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {

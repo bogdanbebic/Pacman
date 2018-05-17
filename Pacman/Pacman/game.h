@@ -13,7 +13,7 @@
 
 enum GameType { NEW_GAME, CONTINUE_GAME, DEMO_GAME };
 
-enum GameMode updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[], int * pacDotCount, Highscore * currentScore, enum GameMode *gameMode);
+void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[], int * pacDotCount, Highscore * currentScore);
 
 void wallCheckAndMove(int [HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *);
 
@@ -21,11 +21,11 @@ void initTempMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int tempMap[HEIGHT_OF_MAP
 
 enum Direction getPacmanDirectionFromUser(SDL_Event event);
 
-void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, enum GameMode *gameMode, int *isStartOfNewGame);
+void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame);
 
 Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty);
 
-void initGhostsPostitions(PacStruct ghosts[NUMBER_OF_GHOSTS]);
+void initGhosts(PacStruct ghosts[NUMBER_OF_GHOSTS]);
 
 void initPacmanPosition(PacStruct *pacman);
 
