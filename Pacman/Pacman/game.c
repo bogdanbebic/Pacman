@@ -5,8 +5,11 @@
 /*
 *	Moves pacStruct on map,
 *	prevents pacStruct to be in wall
+*	Return value:
+*	1 if pacStruct moved
+*	0 otherwise
 */
-void wallCheckAndMove(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct) {
+int wallCheckAndMove(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct) {
 	switch (pacStruct->direction) {
 	case DIRECTION_UP:
 		if (map[pacStruct->iPosition - 1][pacStruct->jPosition] == WALL) {
@@ -21,7 +24,7 @@ void wallCheckAndMove(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct
 			pacStruct->direction = DIRECTION_NONE;
 		}
 		else {
-			pacStruct->jPosition=(pacStruct->jPosition + 1) % WIDTH_OF_MAP;
+			pacStruct->jPosition = (pacStruct->jPosition + 1) % WIDTH_OF_MAP;
 		}
 		break;
 	case DIRECTION_DOWN:
@@ -37,11 +40,29 @@ void wallCheckAndMove(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct
 			pacStruct->direction = DIRECTION_NONE;
 		}
 		else {
-			pacStruct->jPosition=(pacStruct->jPosition - 1 + WIDTH_OF_MAP) % WIDTH_OF_MAP;
+			pacStruct->jPosition = (pacStruct->jPosition - 1 + WIDTH_OF_MAP) % WIDTH_OF_MAP;
 		}
 		break;
 	default:
 		break;
+	}
+	if (pacStruct->direction == DIRECTION_NONE)
+		return 0;
+	else
+		return 1;
+}
+
+void changeDirectionForReverseGhost(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct) {
+	pacStruct->direction = (pacStruct->direction + (NUMBER_OF_DIRECTIONS / 2)) % NUMBER_OF_DIRECTIONS;
+	PacStruct temp = *pacStruct;
+	if (!wallCheckAndMove(map, &temp)) {
+		temp.direction = (pacStruct->direction + 1) % NUMBER_OF_DIRECTIONS;
+		if (wallCheckAndMove(map, &temp)) {
+			pacStruct->direction = (pacStruct->direction + 1) % NUMBER_OF_DIRECTIONS;
+		}
+		else {
+			pacStruct->direction = (pacStruct->direction - 1) % NUMBER_OF_DIRECTIONS;
+		}
 	}
 	return;
 }
@@ -355,6 +376,12 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 				ghosts[1] = InkyAI(map, pacman, ghosts, 1);
 				ghosts[2] = PinkyAI(map, pacman, ghosts, 2);
 				ghosts[3] = ClydeAI(map, pacman, ghosts, 3);
+				for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
+					if (ghosts[i].gameMode == Reverse || ghosts[i].gameMode == EndReverse) {
+						// ghosts[i].direction = (ghosts[i].direction + (NUMBER_OF_DIRECTIONS / 2)) % NUMBER_OF_DIRECTIONS;
+						changeDirectionForReverseGhost(map, &ghosts[i]);
+					}
+				}
 				for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 					wallCheckAndMove(map, &ghosts[i]);
 				}
