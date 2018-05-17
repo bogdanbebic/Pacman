@@ -1,6 +1,7 @@
 #include "gameGraphics.h"
 #include "gameMap.h"
 #include "pacStruct.h"
+#include "highscores.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -79,7 +80,7 @@ void updateLevelBox(int level) {
 *	Updates the score box in the game screen
 *	according to the argument currentScore
 */
-void updateScoreBox(int currentScore) {
+void updateScoreBox(Highscore currentScore) {
 	SDL_Surface* ScoreBoxSurface;
 	extern SDL_Texture* ScoreBoxTexture;
 	SDL_Rect ScoreBoxRect;
@@ -90,7 +91,7 @@ void updateScoreBox(int currentScore) {
 	char bufferString[LEN_OF_SCORE_BOX];
 
 	//dopisuje broj dotova na kraj stringa scoreBox
-	_itoa_s(currentScore, bufferString, sizeof(bufferString), 10);
+	_itoa_s(currentScore.points, bufferString, sizeof(bufferString), 10);
 	strcat_s(scoreBox, LEN_OF_SCORE_BOX, bufferString);
 
 	//stampanje score box-a

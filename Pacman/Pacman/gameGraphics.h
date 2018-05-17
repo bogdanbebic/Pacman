@@ -6,13 +6,13 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include "gameMap.h"
-
+#include "highscores.h"
 #include "pacStruct.h"
 #include "game.h"
 
 #define LEN_OF_SCORE_BOX 50
 
-void updateScoreBox(int currentScore);
+void updateScoreBox(Highscore currentScore);
 
 void updateLevelBox(int level);
 

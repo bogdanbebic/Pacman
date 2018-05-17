@@ -113,19 +113,26 @@ int main(int argc, char *argv[]) {
 				printMenu(menuOption);
 				break;
 			case isDemo:
-				// TODO: implement
+				SDL_RenderClear(game.screen.renderer);
+				isGameCreated = 1;
+				playGame(DEMO_GAME, HARD);	// TODO: difficulty
+				SDL_RenderClear(game.screen.renderer);
+				activeScreen = isMenu;
 				break;
 			case isNew:
 				SDL_RenderClear(game.screen.renderer);
 				isGameCreated = 1;
-				playNewGame(MEDIUM);
+				playGame(NEW_GAME, MEDIUM);	// TODO: difficulty
 				SDL_RenderClear(game.screen.renderer);
-				// TODO: implement
 				activeScreen = isMenu;
 				break;
 			case isContinue:
 				if (isGameCreated) {
-					// TODO: implement
+					SDL_RenderClear(game.screen.renderer);
+					isGameCreated = 1;
+					playGame(CONTINUE_GAME, HARD);	// TODO: difficulty
+					SDL_RenderClear(game.screen.renderer);
+					activeScreen = isMenu;
 				}
 				else {
 					activeScreen = isMenu;
