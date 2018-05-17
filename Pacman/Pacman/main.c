@@ -118,6 +118,8 @@ int main(int argc, char *argv[]) {
 				playGame(DEMO_GAME, HARD);	// TODO: difficulty
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
+				if (game.isRunning)
+					printMenu(menuOption);
 				break;
 			case isNew:
 				SDL_RenderClear(game.screen.renderer);
@@ -125,6 +127,8 @@ int main(int argc, char *argv[]) {
 				playGame(NEW_GAME, MEDIUM);	// TODO: difficulty
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
+				if (game.isRunning)
+					printMenu(menuOption);
 				break;
 			case isContinue:
 				if (isGameCreated) {
@@ -133,6 +137,8 @@ int main(int argc, char *argv[]) {
 					playGame(CONTINUE_GAME, HARD);	// TODO: difficulty
 					SDL_RenderClear(game.screen.renderer);
 					activeScreen = isMenu;
+					if (game.isRunning)
+						printMenu(menuOption);
 				}
 				else {
 					activeScreen = isMenu;
