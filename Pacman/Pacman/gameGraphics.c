@@ -28,13 +28,13 @@ static PacStruct getOldPacPosition(PacStruct pacStruct) {
 		oldPosition.iPosition = pacStruct.iPosition + 1;
 		break;
 	case DIRECTION_RIGHT:
-		oldPosition.jPosition = pacStruct.jPosition - 1;
+		oldPosition.jPosition = (pacStruct.jPosition - 1 + WIDTH_OF_MAP) % WIDTH_OF_MAP;
 		break;
 	case DIRECTION_DOWN:
 		oldPosition.iPosition = pacStruct.iPosition - 1;
 		break;
 	case DIRECTION_LEFT:
-		oldPosition.jPosition = pacStruct.jPosition + 1;
+		oldPosition.jPosition = (pacStruct.jPosition + 1) % WIDTH_OF_MAP;
 		break;
 	default:
 		break;

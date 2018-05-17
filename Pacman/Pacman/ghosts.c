@@ -45,7 +45,7 @@ BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghos
 
 			visited[queueY[i] - 1][queueX[i]] = visited[queueY[i]][queueX[i]] + 1;
 		}
-		if (queueY[i] == ghostY && queueX[i] + 1 == ghostX && Map[queueY[i]][queueX[i]] != WALL) {
+		if (queueY[i] == ghostY && (queueX[i] + 1)% WIDTH_OF_MAP == ghostX && Map[queueY[i]][queueX[i]] != WALL) {
 			sol.direction = DIRECTION_LEFT ;
 			sol.count = visited[queueY[i]][queueX[i]];
 			return sol;
@@ -57,7 +57,14 @@ BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghos
 
 			visited[queueY[i]][queueX[i] + 1] = visited[queueY[i]][queueX[i]] + 1;
 		}
-		if (queueY[i] == ghostY && queueX[i] - 1 == ghostX && Map[queueY[i]][queueX[i]] != WALL) {
+		if (queueX[i] == WIDTH_OF_MAP - 1 && Map[queueY[i]][0] != WALL && visited[queueY[i]][0] <= 0) {
+
+			queueY[queueCount] = queueY[i];
+			queueX[queueCount++] = 0;
+
+			visited[queueY[i]][0] = visited[queueY[i]][queueX[i]] + 1;
+		}
+		if (queueY[i] == ghostY && (queueX[i] - 1+WIDTH_OF_MAP)%WIDTH_OF_MAP == ghostX && Map[queueY[i]][queueX[i]] != WALL) {
 			sol.direction = DIRECTION_RIGHT   ;
 			sol.count = visited[queueY[i]][queueX[i]];
 			return sol;
@@ -69,7 +76,13 @@ BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghos
 
 			visited[queueY[i]][queueX[i] - 1] = visited[queueY[i]][queueX[i]] + 1;
 		}
+		if (queueX[i] == 0 && Map[queueY[i]][WIDTH_OF_MAP - 1] != WALL && visited[queueY[i]][WIDTH_OF_MAP - 1] <= 0) {
 
+			queueY[queueCount] = queueY[i];
+			queueX[queueCount++] = WIDTH_OF_MAP - 1;
+
+			visited[queueY[i]][WIDTH_OF_MAP - 1] = visited[queueY[i]][queueX[i]] + 1;
+		}
 		i++;
 	}
 	sol.direction = DIRECTION_NONE;
@@ -118,6 +131,20 @@ BFS_solution PinkyAI_logic(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int
 	}
 	if (pacmanY > 0 && Map[pacmanX][pacmanY - 1] != WALL) {
 		currentSol = BFS_next(Map, ghostX, ghostY, pacmanX, pacmanY - 1);
+		if (currentSol.count < solution.count) {
+			solution.count = currentSol.count;
+			solution.direction = currentSol.direction;
+		}
+	}
+	if (pacmanY == WIDTH_OF_MAP - 1 && Map[pacmanX][0] != WALL) {
+		currentSol = BFS_next(Map, ghostX, ghostY, pacmanX, 0);
+		if (currentSol.count < solution.count) {
+			solution.count = currentSol.count;
+			solution.direction = currentSol.direction;
+		}
+	}
+	if (pacmanY == 0 && Map[pacmanX][WIDTH_OF_MAP - 1] != WALL) {
+		currentSol = BFS_next(Map, ghostX, ghostY, pacmanX, WIDTH_OF_MAP - 1);
 		if (currentSol.count < solution.count) {
 			solution.count = currentSol.count;
 			solution.direction = currentSol.direction;
@@ -179,6 +206,21 @@ PacStruct InkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStru
 			solution.direction = currentSol.direction;
 		}
 	}
+	if (pacmanY == WIDTH_OF_MAP - 1 && Map[pacmanX][0] != WALL) {
+		currentSol = PinkyAI_logic(Map, ghostX, ghostY, pacmanX, 0);
+		if (currentSol.count < solution.count) {
+			solution.count = currentSol.count;
+			solution.direction = currentSol.direction;
+		}
+	}
+	if (pacmanY == 0 && Map[pacmanX][WIDTH_OF_MAP - 1] != WALL) {
+		currentSol = PinkyAI_logic(Map, ghostX, ghostY, pacmanX, WIDTH_OF_MAP - 1);
+		if (currentSol.count < solution.count) {
+			solution.count = currentSol.count;
+			solution.direction = currentSol.direction;
+		}
+	}
+
 
 	sol.direction = solution.direction;
 	

@@ -18,11 +18,11 @@ void wallCheckAndMove(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct
 		}
 		break;
 	case DIRECTION_RIGHT:
-		if (map[pacStruct->iPosition][pacStruct->jPosition + 1] == WALL) {
+		if (map[pacStruct->iPosition][((pacStruct->jPosition + 1) % WIDTH_OF_MAP)] == WALL) {
 			pacStruct->direction = DIRECTION_NONE;
 		}
 		else {
-			pacStruct->jPosition++;
+			pacStruct->jPosition=(pacStruct->jPosition + 1) % WIDTH_OF_MAP;
 		}
 		break;
 	case DIRECTION_DOWN:
@@ -34,11 +34,11 @@ void wallCheckAndMove(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct
 		}
 		break;
 	case DIRECTION_LEFT:
-		if (map[pacStruct->iPosition][pacStruct->jPosition - 1] == WALL) {
+		if (map[pacStruct->iPosition][(pacStruct->jPosition - 1 + WIDTH_OF_MAP) % WIDTH_OF_MAP] == WALL) {
 			pacStruct->direction = DIRECTION_NONE;
 		}
 		else {
-			pacStruct->jPosition--;
+			pacStruct->jPosition=(pacStruct->jPosition - 1 + WIDTH_OF_MAP) % WIDTH_OF_MAP;
 		}
 		break;
 	default:
