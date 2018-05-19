@@ -28,13 +28,17 @@ int main(int argc, char *argv[]) {
 		putchar('\n');
 	}*/
 
-	PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC); // za potrebe proslave
+	//PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC); // za potrebe proslave
 
 	enum ActiveScreen {isMenu, isDemo, isNew, isContinue, isHighscore, isSettings, isCredits, isQuit, numberOfScreens};
-
 	enum ActiveScreen activeScreen = isMenu;
 
 	game.init();
+
+	//texture initialization and heading creation
+	SDL_Texture * menuTextureWhite[numberOfMenuOptions], *menuTextureYellow[numberOfMenuOptions], *pacmanTexture;
+	initTexturesForMenu(menuTextureWhite, menuTextureYellow, &pacmanTexture);
+	createHeading();
 
 	int isGameCreated = 0;
 
@@ -110,7 +114,7 @@ int main(int argc, char *argv[]) {
 		
 			switch (activeScreen) {
 			case isMenu:
-				printMenu(menuOption);
+				printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 				break;
 			case isDemo:
 				SDL_RenderClear(game.screen.renderer);
@@ -118,8 +122,10 @@ int main(int argc, char *argv[]) {
 				playGame(DEMO_GAME, HARD);	// TODO: difficulty
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
-				if (game.isRunning)
-					printMenu(menuOption);
+				if (game.isRunning) {
+					createHeading();
+					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
+				}
 				break;
 			case isNew:
 				SDL_RenderClear(game.screen.renderer);
@@ -127,8 +133,10 @@ int main(int argc, char *argv[]) {
 				playGame(NEW_GAME, MEDIUM);	// TODO: difficulty
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
-				if (game.isRunning)
-					printMenu(menuOption);
+				if (game.isRunning) {
+					createHeading();
+					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
+				}
 				break;
 			case isContinue:
 				if (isGameCreated) {
@@ -137,8 +145,10 @@ int main(int argc, char *argv[]) {
 					playGame(CONTINUE_GAME, HARD);	// TODO: difficulty
 					SDL_RenderClear(game.screen.renderer);
 					activeScreen = isMenu;
-					if (game.isRunning)
-						printMenu(menuOption);
+					if (game.isRunning) {
+						createHeading();
+						printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
+					}
 				}
 				else {
 					activeScreen = isMenu;

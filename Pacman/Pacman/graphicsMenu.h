@@ -25,7 +25,11 @@ void gameQuit();
 
 void getScreenResolution(int *width, int *height);
 
-void printMenu(enum menuOptions currentMenuOption);
+void initTexturesForMenu(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture ** PacmanTexture);
+
+void createHeading();
+
+void printMenu(enum menuOptions currentMenuOption, SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture * PacmanTexture);
 
 SDL_Texture* Message[numberOfMenuOptions];
 

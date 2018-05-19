@@ -43,6 +43,14 @@ typedef struct ScreenStruct {
 	SDL_Renderer* renderer;
 } Screen;
 
+typedef struct GameTextureStruct {
+	SDL_Texture * pacmanOpenMouthTextures[NUMBER_OF_DIRECTIONS];
+	SDL_Texture * pacmanShutMouthTextures[NUMBER_OF_DIRECTIONS];
+	SDL_Texture * wallTexture, *noWallTexture, *pacDotTexture, *powerPelletTexture;
+	SDL_Texture * ghostTextures[NUMBER_OF_GHOSTS];
+	SDL_Texture * reverseGhostTexture;
+};
+
 typedef struct GameStruct {
 	SDL_bool isRunning;
 	Screen screen;

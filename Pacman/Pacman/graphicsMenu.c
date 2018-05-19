@@ -58,116 +58,63 @@ void gameQuit() {
 	return;
 }
 
-/*
-*	Prints the menu on the game screen
-*	using the argument enum menuOptions currentMenuOption
-*	for printing all of the menu options
-*/
-void printMenu(enum menuOptions currentMenuOption) {
-
+void initTexturesForMenu(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture ** PacmanTexture) {
+	SDL_Surface * PacmanSurface, *menuSurfaceYellow, *menuSurfaceWhite;
+	enum MenuOptions menuOption;
+	TTF_Font* font = TTF_OpenFont("impact.ttf", 46);
 	SDL_Color white = { 255, 255, 255 };
 	SDL_Color yellow = { 255, 255, 0 };
-	TTF_Font* font = TTF_OpenFont("impact.ttf", 46);
-	TTF_Font * HeadingFont = TTF_OpenFont("impact.ttf", 80);
 
-	SDL_Surface* surface[numberOfMenuOptions], * PacmanSurface, *HeadingSurface;
-	SDL_Texture* Message[numberOfMenuOptions];
-	SDL_Texture * PacmanTexture, *HeadingTexture;
-	SDL_Rect Message_rect[numberOfMenuOptions], PacmanRect, HeadingRect;
-	
-	enum MenuOptions menuOption;
-
-	SDL_RenderClear(game.screen.renderer);
 	for (menuOption = 0; menuOption < numberOfMenuOptions; menuOption++) {
 
 		switch (menuOption) {
 		case demoGame:
-			if (currentMenuOption == menuOption) {
-				surface[menuOption] = TTF_RenderText_Solid(font, "DEMO GAME", yellow);
-			}
-			else {
-				surface[menuOption] = TTF_RenderText_Solid(font, "DEMO GAME", white);
-			}
+			menuSurfaceYellow = TTF_RenderText_Solid(font, "DEMO GAME", yellow);
+			menuSurfaceWhite = TTF_RenderText_Solid(font, "DEMO GAME", white);
 			break;
 		case newGame:
-			if (currentMenuOption == menuOption) {
-				surface[menuOption] = TTF_RenderText_Solid(font, "NEW GAME", yellow);
-			}
-			else {
-				surface[menuOption] = TTF_RenderText_Solid(font, "NEW GAME", white);
-			}
+			menuSurfaceYellow = TTF_RenderText_Solid(font, "NEW GAME", yellow);
+			menuSurfaceWhite = TTF_RenderText_Solid(font, "NEW GAME", white);
 			break;
 		case continueGame:
-			if (currentMenuOption == menuOption) {
-				surface[menuOption] = TTF_RenderText_Solid(font, "CONTINUE", yellow);
-			}
-			else {
-				surface[menuOption] = TTF_RenderText_Solid(font, "CONTINUE", white);
-			}
+			menuSurfaceYellow = TTF_RenderText_Solid(font, "CONTINUE", yellow);
+			menuSurfaceWhite = TTF_RenderText_Solid(font, "CONTINUE", white);
 			break;
 		case highscore:
-			if (currentMenuOption == menuOption) {
-				surface[menuOption] = TTF_RenderText_Solid(font, "HIGHSCORE", yellow);
-			}
-			else {
-				surface[menuOption] = TTF_RenderText_Solid(font, "HIGHSCORE", white);
-			}
+			menuSurfaceYellow = TTF_RenderText_Solid(font, "HIGHSCORE", yellow);
+			menuSurfaceWhite = TTF_RenderText_Solid(font, "HIGHSCORE", white);
 			break;
 		case settings:
-			if (currentMenuOption == menuOption) {
-				surface[menuOption] = TTF_RenderText_Solid(font, "SETTINGS", yellow);
-			}
-			else {
-				surface[menuOption] = TTF_RenderText_Solid(font, "SETTINGS", white);
-			}
+			menuSurfaceYellow = TTF_RenderText_Solid(font, "SETTINGS", yellow);
+			menuSurfaceWhite = TTF_RenderText_Solid(font, "SETTINGS", white);
 			break;
 		case credits:
-			if (currentMenuOption == menuOption) {
-				surface[menuOption] = TTF_RenderText_Solid(font, "CREDITS", yellow);
-			}
-			else {
-				surface[menuOption] = TTF_RenderText_Solid(font, "CREDITS", white);
-			}
+			menuSurfaceYellow = TTF_RenderText_Solid(font, "CREDITS", yellow);
+			menuSurfaceWhite = TTF_RenderText_Solid(font, "CREDITS", white);
 			break;
 		case quitGame:
-			if (currentMenuOption == menuOption) {
-				surface[menuOption] = TTF_RenderText_Solid(font, "QUIT GAME", yellow);
-			}
-			else {
-				surface[menuOption] = TTF_RenderText_Solid(font, "QUIT GAME", white);
-			}
+			menuSurfaceYellow = TTF_RenderText_Solid(font, "QUIT GAME", yellow);
+			menuSurfaceWhite = TTF_RenderText_Solid(font, "QUIT GAME", white);
 			break;
 		default:
 			break;
 		}
-		
-		Message[menuOption] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[menuOption]);
-		SDL_FreeSurface(surface[menuOption]);
-
-		//Pacman koji stoji ispred selektovane stavke u meniju
-		PacmanRect.x = game.screen.width / 24;
-		PacmanRect.y = (5 + 3 * menuOption) * (game.screen.height / 48);
-		PacmanRect.w = game.screen.width / 30;
-		PacmanRect.h = game.screen.height / 24;
-		if (menuOption == currentMenuOption) {
-			PacmanSurface = SDL_LoadBMP("Pictures/pacmanR.bmp");
-			PacmanTexture = SDL_CreateTextureFromSurface(game.screen.renderer, PacmanSurface);
-			SDL_FreeSurface(PacmanSurface);
-			SDL_RenderCopy(game.screen.renderer, PacmanTexture, NULL, &PacmanRect);
-			SDL_DestroyTexture(PacmanTexture);
-		}
-		else {
-			SDL_RenderFillRect(game.screen.renderer, &PacmanRect);
-		}
-
-		Message_rect[menuOption].x = game.screen.width / 12;
-		Message_rect[menuOption].y = (5 + 3 * menuOption) * (game.screen.height / 48);	// OVDE MENJAS !!!!!!!!!!
-		Message_rect[menuOption].w = game.screen.width / 6;
-		Message_rect[menuOption].h = game.screen.height / 24;
-		SDL_RenderCopy(game.screen.renderer, Message[menuOption], NULL, &Message_rect[menuOption]);
-		SDL_DestroyTexture(Message[menuOption]);
+		menuTextureWhite[menuOption] = SDL_CreateTextureFromSurface(game.screen.renderer, menuSurfaceWhite);
+		menuTextureYellow[menuOption] = SDL_CreateTextureFromSurface(game.screen.renderer, menuSurfaceYellow);
+		SDL_FreeSurface(menuSurfaceYellow);
+		SDL_FreeSurface(menuSurfaceWhite);
 	}
-	//Naslov u glavnom meniju
+	PacmanSurface = SDL_LoadBMP("Pictures/pacmanR.bmp");
+	*PacmanTexture = SDL_CreateTextureFromSurface(game.screen.renderer, PacmanSurface);
+	SDL_FreeSurface(PacmanSurface);
+	return;
+}
+
+void createHeading() {
+	SDL_Surface *HeadingSurface;
+	SDL_Texture *HeadingTexture;
+	SDL_Rect HeadingRect;
+
 	HeadingSurface = SDL_LoadBMP("Pictures/Heading.bmp");
 	HeadingTexture = SDL_CreateTextureFromSurface(game.screen.renderer, HeadingSurface);
 	SDL_FreeSurface(HeadingSurface);
@@ -177,6 +124,36 @@ void printMenu(enum menuOptions currentMenuOption) {
 	HeadingRect.h = game.screen.height / 18;
 	SDL_RenderCopy(game.screen.renderer, HeadingTexture, NULL, &HeadingRect);
 	SDL_DestroyTexture(HeadingTexture);
+}
+
+/*
+*	Prints the menu on the game screen
+*	using the argument enum menuOptions currentMenuOption
+*	for printing all of the menu options
+*/
+void printMenu(enum menuOptions currentMenuOption, SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture * PacmanTexture) {
+	SDL_Rect menuRect, pacmanRect;
+	enum MenuOptions menuOption;
+
+	for (menuOption = 0; menuOption < numberOfMenuOptions; menuOption++) {
+		menuRect.x = game.screen.width / 12;
+		menuRect.y = (5 + 3 * menuOption) * (game.screen.height / 48);
+		menuRect.w = game.screen.width / 6;
+		menuRect.h = game.screen.height / 24;
+		pacmanRect.x = game.screen.width / 24;
+		pacmanRect.y = (5 + 3 * menuOption) * (game.screen.height / 48);
+		pacmanRect.w = game.screen.width / 30;
+		pacmanRect.h = game.screen.height / 24;
+		if (currentMenuOption == menuOption) {
+			SDL_RenderCopy(game.screen.renderer, menuTextureYellow[menuOption], NULL, &menuRect);
+			SDL_RenderCopy(game.screen.renderer, PacmanTexture, NULL, &pacmanRect);
+		}
+		else {
+			SDL_RenderCopy(game.screen.renderer, menuTextureWhite[menuOption], NULL, &menuRect);
+			SDL_RenderFillRect(game.screen.renderer, &pacmanRect);
+		}
+	}
 	SDL_RenderPresent(game.screen.renderer);
 	return;
 }
+
