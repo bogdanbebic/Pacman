@@ -38,14 +38,15 @@ int main(int argc, char *argv[]) {
 	//texture initialization and heading creation
 	SDL_Texture * menuTextureWhite[numberOfMenuOptions], *menuTextureYellow[numberOfMenuOptions], *pacmanTexture;
 	initTexturesForMenu(menuTextureWhite, menuTextureYellow, &pacmanTexture);
+	initGameTextures();
 	createHeading();
 
 	int isGameCreated = 0;
-
 	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
 	//SDL_Event event;
 
 	while (game.isRunning) {	
+		printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:

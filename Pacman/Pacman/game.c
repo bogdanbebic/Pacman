@@ -190,7 +190,7 @@ void initLevel(PacStruct *pacman, PacStruct *ghosts) {
 	// Inicijalizuje poziciju Pacman-a
 	initPacmanPosition(pacman);
 	// Crtanje Pacman-a
-	drawInitPacman(*pacman);
+	//drawInitPacman(*pacman);
 	// Inicijalizuje pozicije duhova
 	initGhosts(ghosts);
 	return;
@@ -294,9 +294,9 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 		break;
 	}
 	
-
+	int cnt = 0;
 	while (isLevelRunning && livesCount && delay - 2 * level > 0 && game.isRunning) {
-		
+
 		initLevel(&pacman, ghosts);	// TODO: ovo popraviti, ne radi za continue game
 
 		printInitMap(testMapTemp, pacman);
@@ -312,17 +312,14 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 			printInitMap(map, pacman);
 			initTempMap(map, testMapTemp);
 			updateLevelBox(level);
-			//SDL_DestroyTexture(ScoreBoxTexture);
-			//SDL_DestroyTexture(LivesBoxTexture);
 			updateScoreBox(currentScore);
 			updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
 			pacDotCount = countPacDots(testMapTemp);
 		}
-		
-		while (isLevelRunning && pacDotCount && livesCount && game.isRunning && !isPacmanEaten) {
 
+		while (isLevelRunning && pacDotCount && livesCount && game.isRunning && !isPacmanEaten) {
 			timer_tick++;
-			
+
 			while (SDL_PollEvent(&event) && isLevelRunning && livesCount) {
 
 				switch (event.type) {
@@ -368,7 +365,8 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 			}
 
 			// Poziv funkcije za grafiku -> iscrtavanje nove mape
-			updateMap(testMapTemp, pacman, ghosts, delay - 2 * level, timer_tick);
+			updatePacman(testMapTemp, pacman, timer_tick);
+			updateGhosts(testMapTemp, ghosts, timer_tick);
 
 			// NOVI DIRECTION-I DUHOVA
 			if (timer_tick % 7 == 0) {
@@ -391,22 +389,21 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 				isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
 			}
-
+			//isPacmanEaten = 0;
 			if (isPacmanEaten) {
 				livesCount--;
 
 				// Azurira livesBox sa trenutnim brojem zivota
 				// Moze efikasnije ako se stavi da azurira samo kada se promeni broj zivota 
 				updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
-				SDL_RenderPresent(game.screen.renderer);
 			}
+			SDL_RenderPresent(game.screen.renderer);
+			SDL_Delay(delay - 2 * level);
 		}
-		
+
 		isPacmanEaten = 0;	// KADA SE POJEDE PACMAN, MORA DA SE RESETUJE
 	}
-
 	// TODO: ispis endgame ekrana -> pobeda ili poraz
-
 	// TODO: videti da li je korisnik hteo da se unese score
 	// ako jeste, onda vracamo currentScore
 	// ako je hteo da sacuva partiju, vracamo neki flag (verovatno -1)
