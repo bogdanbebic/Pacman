@@ -66,7 +66,7 @@ void initGameTextures() {
 	gameTexturesManager.powerPelletTexture = SDL_CreateTextureFromSurface(game.screen.renderer, TempSurface);
 	SDL_FreeSurface(TempSurface);
 
-	//ghost textures and reversed ghost texture
+	//ghost textures, reversed ghost texture and eaten ghost texture
 	PacSurface = SDL_LoadBMP("Pictures/Blinky.bmp");
 	gameTexturesManager.ghostTextures[0] = SDL_CreateTextureFromSurface(game.screen.renderer, PacSurface);
 	SDL_FreeSurface(PacSurface);
@@ -82,6 +82,10 @@ void initGameTextures() {
 
 	PacSurface = SDL_LoadBMP("Pictures/reversedGhost.bmp");
 	gameTexturesManager.reverseGhostTexture = SDL_CreateTextureFromSurface(game.screen.renderer, PacSurface);
+	SDL_FreeSurface(PacSurface);
+
+	PacSurface = SDL_LoadBMP("Pictures/EatenGhost.bmp");
+	gameTexturesManager.eatenGhostTexture = SDL_CreateTextureFromSurface(game.screen.renderer, PacSurface);
 	SDL_FreeSurface(PacSurface);
 
 	//In-game box textures
@@ -358,11 +362,15 @@ void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_
 		else {
 			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.backgroundTexture, NULL, &gameTexturesManager.mapTileRects[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
 		}
+
 		if (ghosts[i].gameMode == Normal) {
 			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.ghostTextures[i], NULL, &gameTexturesManager.mapTileRects[ghosts[i].iPosition][ghosts[i].jPosition]);
 		}
-		else if (ghosts[i].gameMode == Reverse) {
+		else if (ghosts[i].gameMode == Reverse || (ghosts[0].gameMode == EndReverse && (timer_tick % 2))) {
 			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.reverseGhostTexture, NULL, &gameTexturesManager.mapTileRects[ghosts[i].iPosition][ghosts[i].jPosition]);
+		}
+		else if (ghosts[i].gameMode == GhostEaten) {
+			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.eatenGhostTexture, NULL, &gameTexturesManager.mapTileRects[ghosts[i].iPosition][ghosts[i].jPosition]);
 		}
 	}
 	return;

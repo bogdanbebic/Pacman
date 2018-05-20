@@ -52,6 +52,21 @@ int wallCheckAndMove(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct)
 		return 1;
 }
 
+//void changeDirectionForReverseGhost(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct) {
+//	pacStruct->direction = (pacStruct->direction + (NUMBER_OF_DIRECTIONS / 2)) % NUMBER_OF_DIRECTIONS;
+//	PacStruct temp = *pacStruct;
+//	if (!wallCheckAndMove(map, &temp)) {
+//		temp.direction = (pacStruct->direction + 1) % NUMBER_OF_DIRECTIONS;
+//		if (wallCheckAndMove(map, &temp)) {
+//			pacStruct->direction = (pacStruct->direction + 1) % NUMBER_OF_DIRECTIONS;
+//		}
+//		else {
+//			pacStruct->direction = (pacStruct->direction - 1) % NUMBER_OF_DIRECTIONS;
+//		}
+//	}
+//	return;
+//}
+
 void changeDirectionForReverseGhost(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct) {
 	pacStruct->direction = (pacStruct->direction + (NUMBER_OF_DIRECTIONS / 2)) % NUMBER_OF_DIRECTIONS;
 	PacStruct temp = *pacStruct;
@@ -61,7 +76,7 @@ void changeDirectionForReverseGhost(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStr
 			pacStruct->direction = (pacStruct->direction + 1) % NUMBER_OF_DIRECTIONS;
 		}
 		else {
-			pacStruct->direction = (pacStruct->direction - 1) % NUMBER_OF_DIRECTIONS;
+			pacStruct->direction = (pacStruct->direction - 1 + NUMBER_OF_DIRECTIONS) % NUMBER_OF_DIRECTIONS; //ovde je bila greska
 		}
 	}
 	return;
@@ -152,7 +167,9 @@ void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacm
 		map[pacman.iPosition][pacman.jPosition] = NO_WALL;
 		currentScore->points += 50;
 		for (i = 0; i < NUMBER_OF_GHOSTS; i++)
-			ghosts[i].gameMode = Reverse;
+			if (ghosts[i].gameMode != GhostEaten) {
+				ghosts[i].gameMode = Reverse;
+			}
 	}
 	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 		if (pacmanGhostCheck(pacman, ghosts[i]) && (ghosts[i].gameMode == Reverse || ghosts[i].gameMode == EndReverse)) {
@@ -160,10 +177,7 @@ void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacm
 			// TODO: VRATI DUHA NA POCETNO MESTO !!!!!!!!!
 		}
 	}
-	
-
 	// TODO: update-ovanje scora kada pacman pojede vockice
-
 	updateScoreBox(*currentScore);
 	return;
 }
@@ -201,7 +215,7 @@ void initLevel(PacStruct *pacman, PacStruct *ghosts) {
 *	with new game parameters.
 *	Sets values for all arguments except difficulty
 */
-void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame) {
+void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home) {
 	*isStartOfNewGame = 1;
 	*level = -1;
 	*delay = (int)difficulty;
@@ -225,6 +239,13 @@ void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *l
 	currentScore->pacDots = 0;
 	currentScore->points = 0;
 	currentScore->powerPellets = 0;
+
+	home->gameMode = Normal;
+	home->direction = DIRECTION_NONE;
+	home->iPosition = HEIGHT_OF_MAP / 2 - 1;
+	home->jPosition = WIDTH_OF_MAP / 2 - 2;
+
+	return;
 }
 
 extern SDL_Event event;
@@ -277,6 +298,8 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 	int pacDotCount;
 	int isStartOfNewGame;
 
+	PacStruct home;
+
 
 	int timer_tick = 0;
 	int i;
@@ -286,7 +309,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 	switch (gameType) {
 	case DEMO_GAME:
 	case NEW_GAME:
-		initNewGame(difficulty, &delay, &level, &livesCount, &numberOfLivesTiles, &currentScore, &isStartOfNewGame);
+		initNewGame(difficulty, &delay, &level, &livesCount, &numberOfLivesTiles, &currentScore, &isStartOfNewGame, &home);
 		break;
 	case CONTINUE_GAME:
 		break;
@@ -346,27 +369,44 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 					break;
 				}
 			}
+
 			if (timer_tick % 4 == 0) {
 				wallCheckAndMove(testMapTemp, &pacman);
 			}
 
-			// TODO: updateovanje gamemode-a igre, ko koga juri!!!!
-
 			// azuriranje Score-a, da li je Pacman pojeo nesto
-			/*
-			*	Popraviti ovu funkciju
-			*	da bude elegantnija
-			*/
 			updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore);
 
 			// provera -> pacman i duh na istom polju pre pomeranja duhova
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
-				isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
+				if (ghosts[i].gameMode == Normal) {
+					isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
+				}
+				else if (pacmanGhostCheck(pacman, ghosts[i]) && (ghosts[i].gameMode == Reverse || ghosts[i].gameMode == EndReverse)) {
+					ghosts[i].gameMode = GhostEaten;
+				}
 			}
 
-			// Poziv funkcije za grafiku -> iscrtavanje nove mape
-			updatePacman(testMapTemp, pacman, timer_tick);
+			// Poziv funkcije za updateovanje pacmana i duhova 			
 			updateGhosts(testMapTemp, ghosts, timer_tick);
+			updatePacman(testMapTemp, pacman, timer_tick);
+
+			// NOVI DIRECTION-I DUHOVA
+			//if (timer_tick % 7 == 0) {
+			//	ghosts[0] = BlinkyAI(map, pacman, ghosts, 0);
+			//	ghosts[1] = InkyAI(map, pacman, ghosts, 1);
+			//	ghosts[2] = PinkyAI(map, pacman, ghosts, 2);
+			//	ghosts[3] = ClydeAI(map, pacman, ghosts, 3);
+			//	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
+			//		if (ghosts[i].gameMode == Reverse || ghosts[i].gameMode == EndReverse) {
+			//			// ghosts[i].direction = (ghosts[i].direction + (NUMBER_OF_DIRECTIONS / 2)) % NUMBER_OF_DIRECTIONS;
+			//			changeDirectionForReverseGhost(map, &ghosts[i]);
+			//		}
+			//	}
+			//	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
+			//		wallCheckAndMove(map, &ghosts[i]);
+			//	}
+			//}
 
 			// NOVI DIRECTION-I DUHOVA
 			if (timer_tick % 7 == 0) {
@@ -376,8 +416,13 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 				ghosts[3] = ClydeAI(map, pacman, ghosts, 3);
 				for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 					if (ghosts[i].gameMode == Reverse || ghosts[i].gameMode == EndReverse) {
-						// ghosts[i].direction = (ghosts[i].direction + (NUMBER_OF_DIRECTIONS / 2)) % NUMBER_OF_DIRECTIONS;
+						// ghosts[i].direction = (ghosts[i].direction + (NUMBER_OF_DIRECTIONS / 2))  % NUMBER_OF_DIRECTIONS;
 						changeDirectionForReverseGhost(map, &ghosts[i]);
+					}
+					else if (ghosts[i].gameMode == GhostEaten) {
+						ghosts[i] = BlinkyAI(map, home, ghosts, i);
+						if (ghosts[i].iPosition == home.iPosition && ghosts[i].jPosition == home.jPosition)
+							ghosts[i].gameMode = Normal;
 					}
 				}
 				for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
@@ -387,16 +432,20 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 
 			// provera -> pacman i duh na istom polju kad se pomere duhovi
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
-				isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
+				if (ghosts[i].gameMode == Normal) {
+					isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
+				}
+				else if (pacmanGhostCheck(pacman, ghosts[i]) && (ghosts[i].gameMode == Reverse || ghosts[i].gameMode == EndReverse) ) {
+					ghosts[i].gameMode = GhostEaten;
+				}
 			}
-			//isPacmanEaten = 0;
+			//provera broja zivota pacman-a
 			if (isPacmanEaten) {
 				livesCount--;
-
 				// Azurira livesBox sa trenutnim brojem zivota
-				// Moze efikasnije ako se stavi da azurira samo kada se promeni broj zivota 
 				updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
 			}
+
 			SDL_RenderPresent(game.screen.renderer);
 			SDL_Delay(delay - 2 * level);
 		}
