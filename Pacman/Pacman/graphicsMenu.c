@@ -44,6 +44,7 @@ void gameInit() {
 void gameQuit() {
 	extern SDL_Texture* Message[numberOfMenuOptions];
 	enum MenuOptions menuOption;
+	extern Game game;
 	for (menuOption = 0; menuOption < numberOfMenuOptions; menuOption++) { // za brisanje teksture i rendera
 		SDL_DestroyTexture(Message[menuOption]);
 	}
@@ -111,6 +112,7 @@ void initTexturesForMenu(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTex
 }
 
 void createHeading() {
+	extern Game game;
 	SDL_Surface *HeadingSurface;
 	SDL_Texture *HeadingTexture;
 	SDL_Rect HeadingRect;
@@ -124,6 +126,275 @@ void createHeading() {
 	HeadingRect.h = game.screen.height / 18;
 	SDL_RenderCopy(game.screen.renderer, HeadingTexture, NULL, &HeadingRect);
 	SDL_DestroyTexture(HeadingTexture);
+}
+
+void createSettingsHeading() {
+	SDL_Surface *HeadingSurface;
+	extern Game game;
+	SDL_Texture *HeadingTexture;
+	SDL_Rect HeadingRect;
+	TTF_Font* font = TTF_OpenFont("impact.ttf", 50);
+	TTF_Font * fontHeader = TTF_OpenFont("impact.ttf", 80);
+	SDL_Color white = { 255, 255, 255 };
+
+	HeadingSurface = TTF_RenderText_Solid(fontHeader, "SETTINGS", white);
+	HeadingTexture = SDL_CreateTextureFromSurface(game.screen.renderer, HeadingSurface);
+	SDL_FreeSurface(HeadingSurface);
+	HeadingRect.x = game.screen.width / 22;
+	HeadingRect.y = game.screen.height / 22;
+	HeadingRect.w = game.screen.width / 4;
+	HeadingRect.h = game.screen.height / 18;
+	SDL_RenderCopy(game.screen.renderer, HeadingTexture, NULL, &HeadingRect);
+	SDL_DestroyTexture(HeadingTexture);
+}
+
+void initSettingsTextures() {
+	SDL_Surface * PacmanSurface, *menuSurfaceYellow, *menuSurfaceWhite, *tempSurface;
+	extern SettingsMenuTextures settingsTextureManager;
+	enum SettingsOptions menuOption;
+	extern Game game;
+	TTF_Font* font = TTF_OpenFont("impact.ttf", 46);
+	SDL_Color white = { 255, 255, 255 };
+	SDL_Color yellow = { 255, 255, 0 };
+
+	for (menuOption = 0; menuOption < numberOfSettingsOptions; menuOption++) {
+		switch (menuOption) {
+		case gameDifficulty:
+			menuSurfaceYellow = TTF_RenderText_Solid(font, "DIFFICULTY", yellow);
+			menuSurfaceWhite = TTF_RenderText_Solid(font, "DIFFICULTY", white);
+			settingsTextureManager.whiteTextures[menuOption] = SDL_CreateTextureFromSurface(game.screen.renderer, menuSurfaceWhite);
+			settingsTextureManager.yellowTextures[menuOption] = SDL_CreateTextureFromSurface(game.screen.renderer, menuSurfaceYellow);
+			SDL_FreeSurface(menuSurfaceYellow);
+			SDL_FreeSurface(menuSurfaceWhite);
+			break;
+		case music:
+			menuSurfaceYellow = TTF_RenderText_Solid(font, "MUSIC OPTION", yellow);
+			menuSurfaceWhite = TTF_RenderText_Solid(font, "MUSIC OPTION", white);
+			settingsTextureManager.whiteTextures[menuOption] = SDL_CreateTextureFromSurface(game.screen.renderer, menuSurfaceWhite);
+			settingsTextureManager.yellowTextures[menuOption] = SDL_CreateTextureFromSurface(game.screen.renderer, menuSurfaceYellow);
+			SDL_FreeSurface(menuSurfaceYellow);
+			SDL_FreeSurface(menuSurfaceWhite);
+			break;
+		case diffOption:
+			tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+			settingsTextureManager.whiteDifficulty[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+			settingsTextureManager.whiteDifficulty[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+			settingsTextureManager.whiteDifficulty[2] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+			settingsTextureManager.yellowDifficulty[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+			settingsTextureManager.yellowDifficulty[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+			settingsTextureManager.yellowDifficulty[2] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+			settingsTextureManager.whiteFilledDiff[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+			settingsTextureManager.whiteFilledDiff[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+			settingsTextureManager.whiteFilledDiff[2] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+			settingsTextureManager.yellowFilledDiff[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+			settingsTextureManager.yellowFilledDiff[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+			settingsTextureManager.yellowFilledDiff[2] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			break;
+		default:
+			break;
+		}
+	}
+	PacmanSurface = SDL_LoadBMP("Pictures/pacmanR.bmp");
+	settingsTextureManager.pacmanTexture = SDL_CreateTextureFromSurface(game.screen.renderer, PacmanSurface);
+	SDL_FreeSurface(PacmanSurface);
+
+	/*tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+	settingsTextureManager.whiteDifficulty[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
+	tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+	settingsTextureManager.whiteDifficulty[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
+	tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+	settingsTextureManager.whiteDifficulty[2] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
+	tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+	settingsTextureManager.yellowDifficulty[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
+	tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+	settingsTextureManager.yellowDifficulty[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
+	tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+	settingsTextureManager.yellowDifficulty[2] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
+	tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+	settingsTextureManager.whiteFilledDiff[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
+	tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+	settingsTextureManager.whiteFilledDiff[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
+	tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+	settingsTextureManager.whiteFilledDiff[2] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
+	tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+	settingsTextureManager.yellowFilledDiff[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
+	tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+	settingsTextureManager.yellowFilledDiff[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
+	tempSurface = SDL_LoadBMP("Pictures/hardWhite.bmp");
+	settingsTextureManager.yellowFilledDiff[2] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);*/
+	return;
+}
+
+void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed currentDifficulty, enum DifficultySpeed hoveringDiff) {
+	extern Game game;
+	extern SettingsMenuTextures settingsTextureManager;
+	SDL_Rect menuRect, pacmanRect;
+	enum SettingsOptions menuOption;
+	enum DifficultySpeed temp;
+
+	for (menuOption = 0; menuOption < numberOfSettingsOptions; menuOption++) {
+		menuRect.x = game.screen.width / 12;
+		menuRect.y = (8 + 3 * menuOption) * (game.screen.height / 44);
+		menuRect.w = game.screen.width / 6;
+		menuRect.h = game.screen.height / 22;
+		pacmanRect.x = game.screen.width / 24;
+		pacmanRect.y = (8 + 3 * menuOption) * (game.screen.height / 44);
+		pacmanRect.w = game.screen.width / 30;
+		pacmanRect.h = game.screen.height / 22;
+		if (menuOption != diffOption) {
+			if (currentMenuOption == menuOption) {
+				SDL_RenderCopy(game.screen.renderer, settingsTextureManager.yellowTextures[menuOption], NULL, &menuRect);
+				SDL_RenderCopy(game.screen.renderer, settingsTextureManager.pacmanTexture, NULL, &pacmanRect);
+			}
+			else {
+				SDL_RenderCopy(game.screen.renderer, settingsTextureManager.whiteTextures[menuOption], NULL, &menuRect);
+				SDL_RenderFillRect(game.screen.renderer, &pacmanRect);
+			}
+		}
+		if (menuOption == diffOption) {
+			for (temp = EASY; temp < numberOfDifficulties; temp++) {
+				menuRect.x = game.screen.width / 12 + temp * game.screen.width / 18;
+				menuRect.w = game.screen.width / 18;
+				if (temp == currentDifficulty && temp == hoveringDiff) {
+					SDL_RenderCopy(game.screen.renderer, settingsTextureManager.yellowFilledDiff[temp], NULL, &menuRect);
+				}
+				else if (temp == currentDifficulty) {
+					SDL_RenderCopy(game.screen.renderer, settingsTextureManager.whiteFilledDiff[temp], NULL, &menuRect);
+				}
+				else if (temp == hoveringDiff) {
+					SDL_RenderCopy(game.screen.renderer, settingsTextureManager.yellowDifficulty[temp], NULL, &menuRect);
+				}
+				else {
+					SDL_RenderCopy(game.screen.renderer, settingsTextureManager.whiteDifficulty[temp], NULL, &menuRect);
+				}
+			}
+			if (currentMenuOption == menuOption) {
+				SDL_RenderCopy(game.screen.renderer, settingsTextureManager.pacmanTexture, NULL, &pacmanRect);
+			}
+			else {
+				SDL_RenderFillRect(game.screen.renderer, &pacmanRect);
+			}
+		}
+	}
+	SDL_RenderPresent(game.screen.renderer);
+
+	return;
+}
+
+void activateSettings(enum DifficultySpeed * currentDifficulty) {
+	SDL_Event event;
+	extern Game game;
+	int settingsRunning = 1;
+	enum SettingsOptions selectedOption = gameDifficulty;
+	enum DifficultySpeed hoveringDiff = EASY;
+	createSettingsHeading();
+	while (game.isRunning) {
+		printSettings(selectedOption, *currentDifficulty, hoveringDiff);
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+
+				case SDLK_ESCAPE:
+					settingsRunning = 0;
+					return;
+					break;
+
+				case SDLK_UP:
+					if (settingsRunning) {
+
+						selectedOption = selectedOption ? selectedOption - 1 : numberOfSettingsOptions - 1;
+					}
+					break;
+
+				case SDLK_DOWN:
+					if (settingsRunning) {
+						selectedOption = (selectedOption + 1) % numberOfSettingsOptions;
+					}
+					break;
+
+				case SDLK_RETURN:
+					if (settingsRunning) {
+						if (selectedOption == diffOption) {
+							*currentDifficulty = hoveringDiff;
+						}
+					}
+					break;
+				case SDLK_RIGHT:
+					if (settingsRunning) {
+						if (selectedOption == diffOption) {
+							switch (hoveringDiff) {
+							case EASY:
+								hoveringDiff = MEDIUM;
+							case MEDIUM:
+								hoveringDiff = HARD;
+							case HARD:
+								hoveringDiff = EASY;
+							}
+						}
+					}
+					break;
+				case SDLK_LEFT:
+					if (settingsRunning) {
+						if (selectedOption == diffOption) {
+							switch (hoveringDiff) {
+							case EASY:
+								hoveringDiff = HARD;
+							case MEDIUM:
+								hoveringDiff = EASY;
+							case HARD:
+								hoveringDiff = MEDIUM;
+							}
+						}
+					}
+					break;
+				}
+			break;
+			case SDL_QUIT: //ne radi
+					game.isRunning = SDL_FALSE;
+					settingsRunning = 0;
+					return;
+					break;
+			}
+		}
+	}
+	settingsRunning = 0;
+	return;
 }
 
 /*
@@ -156,4 +427,5 @@ void printMenu(enum menuOptions currentMenuOption, SDL_Texture * menuTextureWhit
 	SDL_RenderPresent(game.screen.renderer);
 	return;
 }
+
 

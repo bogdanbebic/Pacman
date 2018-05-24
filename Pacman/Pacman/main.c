@@ -1,13 +1,11 @@
 #include <stdio.h>
-
 #include <Windows.h>
 #pragma comment(lib, "winmm.lib")
-
 #include <SDL.h>
 #include <SDL_ttf.h>
-
 #include "graphicsMenu.h"
 #include "game.h"
+#include "pauseMenuGraphics.h"
 
 //extern map[29][28];
 
@@ -40,9 +38,12 @@ int main(int argc, char *argv[]) {
 	initTexturesForMenu(menuTextureWhite, menuTextureYellow, &pacmanTexture);
 	initGameTextures();
 	createHeading();
+	initPauseMenuTextures();
+	initSettingsTextures();
 
 	int isGameCreated = 0;
 	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
+	enum DifficulySpeed difficulty = MEDIUM;
 	//SDL_Event event;
 
 	while (game.isRunning) {	
@@ -120,7 +121,7 @@ int main(int argc, char *argv[]) {
 			case isDemo:
 				SDL_RenderClear(game.screen.renderer);
 				isGameCreated = 1;
-				playGame(DEMO_GAME, HARD);	// TODO: difficulty
+				playGame(DEMO_GAME, difficulty);	// TODO: difficulty
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
 				if (game.isRunning) {
@@ -131,7 +132,7 @@ int main(int argc, char *argv[]) {
 			case isNew:
 				SDL_RenderClear(game.screen.renderer);
 				isGameCreated = 1;
-				playGame(NEW_GAME, MEDIUM);	// TODO: difficulty
+				playGame(NEW_GAME, difficulty);	// TODO: difficulty
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
 				if (game.isRunning) {
@@ -143,7 +144,7 @@ int main(int argc, char *argv[]) {
 				if (isGameCreated) {
 					SDL_RenderClear(game.screen.renderer);
 					isGameCreated = 1;
-					playGame(CONTINUE_GAME, HARD);	// TODO: difficulty
+					playGame(CONTINUE_GAME, difficulty);	// TODO: difficulty
 					SDL_RenderClear(game.screen.renderer);
 					activeScreen = isMenu;
 					if (game.isRunning) {
@@ -159,7 +160,14 @@ int main(int argc, char *argv[]) {
 				// TODO: implement
 				break;
 			case isSettings:
-				// TODO: implement
+				SDL_RenderClear(game.screen.renderer);
+				activateSettings(&difficulty);
+				SDL_RenderClear(game.screen.renderer);
+				activeScreen = isMenu;
+				if (game.isRunning) {
+					createHeading();
+					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
+				}
 				break;
 			case isCredits:
 				// TODO: implement

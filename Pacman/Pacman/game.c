@@ -1,5 +1,6 @@
 #include "game.h"
 #include "testMap.h"
+#include "pauseMenuGraphics.h"
 
 
 /*
@@ -287,7 +288,9 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 	int testMapTemp[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 
 	SDL_bool isLevelRunning = SDL_TRUE;
+	SDL_bool isPauseMenu = SDL_FALSE;
 
+	enum PauseMenuOptions selectedOption;
 	PacStruct pacman;
 	PacStruct ghosts[4];
 	int livesCount;
@@ -297,6 +300,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 	int delay;
 	int pacDotCount;
 	int isStartOfNewGame;
+	int gameContinuation = 0;//dodati u funkciju za inicijalizaciju
 
 	PacStruct home;
 
@@ -320,8 +324,9 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 	int cnt = 0;
 	while (isLevelRunning && livesCount && delay - 2 * level > 0 && game.isRunning) {
 
-		initLevel(&pacman, ghosts);	// TODO: ovo popraviti, ne radi za continue game
-
+			// TODO: ovo popraviti, ne radi za continue game
+		if (!gameContinuation || isStartOfNewGame)
+			initLevel(&pacman, ghosts);
 		printInitMap(testMapTemp, pacman);
 		updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore);
 		updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
@@ -358,6 +363,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 					switch (event.key.keysym.sym) {
 					case SDLK_ESCAPE:
 						isLevelRunning = SDL_FALSE;
+						isPauseMenu = SDL_TRUE;
 						break;
 					default:
 						break;
@@ -448,6 +454,41 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 
 			SDL_RenderPresent(game.screen.renderer);
 			SDL_Delay(delay - 2 * level);
+		}
+		if (isPauseMenu && !isLevelRunning && game.isRunning && livesCount) {
+			SDL_RenderClear(game.screen.renderer);
+			selectedOption = ActivatePauseMenu(difficulty);
+			SDL_RenderClear(game.screen.renderer);
+			switch (selectedOption) {
+			case continueWithGame:
+				isLevelRunning = SDL_TRUE;
+				gameContinuation = 1;
+				break;
+			case settingsInGame:
+				SDL_RenderClear(game.screen.renderer);
+				activateSettings(&difficulty);
+				SDL_RenderClear(game.screen.renderer);
+				isLevelRunning = SDL_TRUE;
+				gameContinuation = 1;
+			/*	switch (difficulty) { //resiti problem oko menjanja zivota u igri
+				case EASY:
+					numberOfLivesTiles = 5;
+					break;
+				case MEDIUM:
+					numberOfLivesTiles = 3;
+					break;
+				case HARD:
+					numberOfLivesTiles = 1;
+					break;
+				default:
+					break;
+				}*/
+				break;
+			case mainMenu:
+				break;
+			case finishGame:
+				break;
+			}
 		}
 
 		isPacmanEaten = 0;	// KADA SE POJEDE PACMAN, MORA DA SE RESETUJE

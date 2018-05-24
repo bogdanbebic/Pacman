@@ -160,6 +160,7 @@
     <ClCompile Include="graphicsMenu.c" />
     <ClCompile Include="highscores.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="pauseMenuGraphics.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="graphicsMenu.h" />
     <ClInclude Include="highscores.h" />
     <ClInclude Include="pacStruct.h" />
+    <ClInclude Include="pauseMenuGraphics.h" />
     <ClInclude Include="testMap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
