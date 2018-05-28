@@ -397,6 +397,58 @@ void activateSettings(enum DifficultySpeed * currentDifficulty) {
 	return;
 }
 
+void initEndGameTextures() {
+	extern EndGameTextures endGameTextureManager;
+	extern Game game;
+	TTF_Font* font1 = TTF_OpenFont("impact.ttf", 80);
+	TTF_Font * font2 = TTF_OpenFont("impact.ttf", 80);
+	SDL_Color white = { 255, 255, 255 };
+	SDL_Color yellow = { 255, 255, 0 };
+	SDL_Surface *surface;
+	surface = TTF_RenderText_Solid(font1, "GAME OVER", yellow);
+	endGameTextureManager.gameOverTexture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_FreeSurface(surface);
+	surface = TTF_RenderText_Solid(font2, "PRESS ANY BUTTON TO CONTINUE", white);
+	endGameTextureManager.pressAnyButtonTexture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_FreeSurface(surface);
+	return;
+}
+
+void endGameScreen() {
+	SDL_Rect rect;
+	SDL_Event event;
+	int activeScreen = 1;
+	extern EndGameTextures endGameTextureManager;
+	extern Game game;
+	rect.x = game.screen.width / 24;
+	rect.y = game.screen.height / 10;
+	rect.w = game.screen.width / 4;
+	rect.h = game.screen.height / 6;
+	SDL_RenderCopy(game.screen.renderer, endGameTextureManager.gameOverTexture, NULL, &rect);
+	rect.x = game.screen.width / 24;
+	rect.y = 15 * (game.screen.height / 40);
+	rect.w = game.screen.width / 4;
+	rect.h = game.screen.height / 12;
+	SDL_RenderCopy(game.screen.renderer, endGameTextureManager.pressAnyButtonTexture, NULL, &rect);
+	SDL_RenderPresent(game.screen.renderer);
+	while(activeScreen)
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+				default:
+					activeScreen = 0;
+					return;
+				}
+			case SDL_QUIT:
+				game.isRunning = 0;
+				return;
+			}
+
+		}
+
+}
+
 /*
 *	Prints the menu on the game screen
 *	using the argument enum menuOptions currentMenuOption

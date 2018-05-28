@@ -470,19 +470,6 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 				SDL_RenderClear(game.screen.renderer);
 				isLevelRunning = SDL_TRUE;
 				gameContinuation = 1;
-			/*	switch (difficulty) { //resiti problem oko menjanja zivota u igri
-				case EASY:
-					numberOfLivesTiles = 5;
-					break;
-				case MEDIUM:
-					numberOfLivesTiles = 3;
-					break;
-				case HARD:
-					numberOfLivesTiles = 1;
-					break;
-				default:
-					break;
-				}*/
 				break;
 			case mainMenu:
 				break;
@@ -493,7 +480,11 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 
 		isPacmanEaten = 0;	// KADA SE POJEDE PACMAN, MORA DA SE RESETUJE
 	}
-	// TODO: ispis endgame ekrana -> pobeda ili poraz
+	if ((!isLevelRunning || !livesCount) && game.isRunning) {
+		SDL_RenderClear(game.screen.renderer);
+		endGameScreen();
+		SDL_RenderClear(game.screen.renderer);
+	}
 	// TODO: videti da li je korisnik hteo da se unese score
 	// ako jeste, onda vracamo currentScore
 	// ako je hteo da sacuva partiju, vracamo neki flag (verovatno -1)

@@ -345,7 +345,7 @@ void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int ti
 }
 
 void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_OF_GHOSTS], int timer_tick) {
-	int i;
+	int i, j;
 	extern Game game;
 	PacStruct oldPositionGhost;
 	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
@@ -359,8 +359,15 @@ void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_
 		else if (map[oldPositionGhost.iPosition][oldPositionGhost.jPosition] == WALL) {
 			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.wallTexture, NULL, &gameTexturesManager.mapTileRects[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
 		}
-		else {
+		else if (map[oldPositionGhost.iPosition][oldPositionGhost.jPosition] == NO_WALL){
 			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.backgroundTexture, NULL, &gameTexturesManager.mapTileRects[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
+		}
+		else {
+			/*for (j = 0; j < NUMBER_OF_GHOSTS; i++) {
+				if (i != j) {
+					if ()
+				}
+			}*/ 
 		}
 
 		if (ghosts[i].gameMode == Normal) {

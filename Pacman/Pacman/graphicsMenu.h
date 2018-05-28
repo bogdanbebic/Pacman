@@ -43,6 +43,10 @@ void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed 
 
 SDL_Texture* Message[numberOfMenuOptions];
 
+void initEndGameTextures();
+
+void endGameScreen();
+
 typedef struct SettingsTexturesStruct {
 	SDL_Texture * whiteTextures[numberOfSettingsOptions];
 	SDL_Texture * yellowTextures[numberOfSettingsOptions];
@@ -53,6 +57,13 @@ typedef struct SettingsTexturesStruct {
 	SDL_Texture * pacmanTexture;
 }SettingsMenuTextures;
 
+typedef struct EndGameTextureStruct {
+	SDL_Texture * gameOverTexture;
+	SDL_Texture * pressAnyButtonTexture;
+}EndGameTextures;
+
 SettingsMenuTextures settingsTextureManager;
+
+EndGameTextures endGameTextureManager;
 
 #endif

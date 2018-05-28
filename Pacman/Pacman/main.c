@@ -40,6 +40,7 @@ int main(int argc, char *argv[]) {
 	createHeading();
 	initPauseMenuTextures();
 	initSettingsTextures();
+	initEndGameTextures();
 
 	int isGameCreated = 0;
 	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
