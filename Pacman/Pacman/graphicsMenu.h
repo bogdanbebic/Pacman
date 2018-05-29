@@ -50,10 +50,10 @@ void endGameScreen();
 typedef struct SettingsTexturesStruct {
 	SDL_Texture * whiteTextures[numberOfSettingsOptions];
 	SDL_Texture * yellowTextures[numberOfSettingsOptions];
-	SDL_Texture * whiteDifficulty[numberOfDifficulties];
-	SDL_Texture * yellowDifficulty[numberOfDifficulties];
-	SDL_Texture * whiteFilledDiff[numberOfDifficulties];
-	SDL_Texture * yellowFilledDiff[numberOfDifficulties];
+	SDL_Texture * whiteDifficulty[3];
+	SDL_Texture * yellowDifficulty[3];
+	SDL_Texture * whiteFilledDiff[3];
+	SDL_Texture * yellowFilledDiff[3];
 	SDL_Texture * pacmanTexture;
 }SettingsMenuTextures;
 
