@@ -46,6 +46,8 @@ int main(int argc, char *argv[]) {
 	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
 	enum DifficulySpeed difficulty = MEDIUM;
 	//SDL_Event event;
+	
+	PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 
 	while (game.isRunning) {	
 		printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);

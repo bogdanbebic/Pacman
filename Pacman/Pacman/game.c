@@ -1,7 +1,7 @@
 #include "game.h"
 #include "testMap.h"
 #include "pauseMenuGraphics.h"
-
+#include <Windows.h>
 
 /*
 *	Moves pacStruct on map,
@@ -304,6 +304,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 
 	PacStruct home;
 
+	int srbendaMod = 0;
 
 	int timer_tick = 0;
 	int i;
@@ -352,9 +353,25 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 
 				switch (event.type) {
 				case SDL_KEYDOWN:
+					
+					// SRBENDA MOD
+					switch (event.key.keysym.sym) {
+					case SDLK_SPACE:
+						srbendaMod ^= -1;	// MUST BE ALL 1 IN BINARY FORM FOR XOR
+						if (srbendaMod)
+							PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC);
+						else
+							PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
+						break;
+					default:
+						break;
+					}
 
 					if (gameType != DEMO_GAME) {
-						pacman.direction = getPacmanDirectionFromUser(event);
+						enum Direction temp;
+						temp = getPacmanDirectionFromUser(event);
+						if (temp != DIRECTION_NONE)
+							pacman.direction = temp;
 					}
 					else {
 						// TODO: Implement Pacman AI for demo game
