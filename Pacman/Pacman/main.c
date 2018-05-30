@@ -6,13 +6,16 @@
 #include "graphicsMenu.h"
 #include "game.h"
 #include "pauseMenuGraphics.h"
+#include "saveGame.h"
 
 //extern map[29][28];
 
 SDL_Event event;
 
-int main(int argc, char *argv[]) {
+extern SaveGame saveGame;
 
+int main(int argc, char *argv[]) {
+	extern SaveGame saveGame;
 	extern Game game;
 	game.init = gameInit;
 	game.quit = gameQuit;
@@ -38,6 +41,8 @@ int main(int argc, char *argv[]) {
 	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
 	enum DifficulySpeed difficulty = MEDIUM;
 	//SDL_Event event;
+
+	PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 
 	while (game.isRunning) {	
 		printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
@@ -113,7 +118,10 @@ int main(int argc, char *argv[]) {
 				break;
 			case isDemo:
 				SDL_RenderClear(game.screen.renderer);
+
+				// OVO PROMENITI AKO NE ZELIMO DA MOZE IGRAC DA NASTAVI DEMO
 				isGameCreated = 1;
+
 				playGame(DEMO_GAME, difficulty);	
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
@@ -121,6 +129,7 @@ int main(int argc, char *argv[]) {
 					createHeading();
 					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 				}
+				PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 				break;
 			case isNew:
 				SDL_RenderClear(game.screen.renderer);
@@ -132,9 +141,10 @@ int main(int argc, char *argv[]) {
 					createHeading();
 					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 				}
+				PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 				break;
 			case isContinue:
-				if (isGameCreated) {
+				if (isGameCreated && saveGame.level != -1) {
 					SDL_RenderClear(game.screen.renderer);
 					isGameCreated = 1;
 					playGame(CONTINUE_GAME, difficulty);	
@@ -144,6 +154,7 @@ int main(int argc, char *argv[]) {
 						createHeading();
 						printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 					}
+					PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 				}
 				else {
 					activeScreen = isMenu;
