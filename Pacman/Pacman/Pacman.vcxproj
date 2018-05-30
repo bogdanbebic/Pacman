@@ -171,6 +171,7 @@
     <ClInclude Include="highscores.h" />
     <ClInclude Include="pacStruct.h" />
     <ClInclude Include="pauseMenuGraphics.h" />
+    <ClInclude Include="saveGame.h" />
     <ClInclude Include="testMap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

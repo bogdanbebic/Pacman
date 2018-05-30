@@ -68,5 +68,8 @@
     <ClInclude Include="pauseMenuGraphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="saveGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
