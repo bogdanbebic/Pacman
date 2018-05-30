@@ -402,7 +402,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 		printInitMap(testMapTemp, pacman);
 		updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore);
 		updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
-
+		updateLevelBox(level);
 		timer_tick = 0;
 		if (isStartOfNewGame || pacDotCount == 0) { // OVO JE ZA NOVI NIVO
 			if (isStartOfNewGame) {
