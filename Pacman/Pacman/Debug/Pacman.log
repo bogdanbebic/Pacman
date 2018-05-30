@@ -1,2 +1,5 @@
-﻿  game.c
+﻿  gameGraphics.c
+c:\users\uros\documents\github\pacman\pacman\pacman\gamegraphics.c(348): warning C4101: 'j': unreferenced local variable
+  game.c
+  Generating Code...
   Pacman.vcxproj -> C:\Users\Uros\Documents\GitHub\Pacman\Pacman\Debug\Pacman.exe

@@ -153,17 +153,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AI_ghost.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="gameGraphics.c" />
+    <ClCompile Include="ghosts.c" />
     <ClCompile Include="graphicsMenu.c" />
+    <ClCompile Include="highscores.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="pauseMenuGraphics.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
     <ClInclude Include="gameGraphics.h" />
     <ClInclude Include="gameMap.h" />
+    <ClInclude Include="ghosts.h" />
     <ClInclude Include="graphicsMenu.h" />
+    <ClInclude Include="highscores.h" />
     <ClInclude Include="pacStruct.h" />
+    <ClInclude Include="pauseMenuGraphics.h" />
     <ClInclude Include="testMap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

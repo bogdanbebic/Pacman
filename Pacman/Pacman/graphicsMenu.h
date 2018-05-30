@@ -19,16 +19,51 @@
 
 enum MenuOptions { demoGame, newGame, continueGame, highscore, settings, credits, quitGame, numberOfMenuOptions };
 
+enum SettingsOptions {gameDifficulty, diffOption, music, numberOfSettingsOptions}; //dodace se jos vrednosti
+
 void gameInit();
 
 void gameQuit();
 
 void getScreenResolution(int *width, int *height);
 
-void printMenu(enum menuOptions currentMenuOption);
+void initTexturesForMenu(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture ** PacmanTexture);
 
-TTF_Font* font;
+void createHeading();
+
+void printMenu(enum menuOptions currentMenuOption, SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture * PacmanTexture);
+
+void initSettingsTextures();
+
+void createSettingsHeading();
+
+void activateSettings(enum DifficultySpeed * currentDifficulty);
+
+void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed currentDifficulty, enum DifficultySpeed hoveringDiff);
 
 SDL_Texture* Message[numberOfMenuOptions];
+
+void initEndGameTextures();
+
+void endGameScreen();
+
+typedef struct SettingsTexturesStruct {
+	SDL_Texture * whiteTextures[numberOfSettingsOptions];
+	SDL_Texture * yellowTextures[numberOfSettingsOptions];
+	SDL_Texture * whiteDifficulty[numberOfDifficulties];
+	SDL_Texture * yellowDifficulty[numberOfDifficulties];
+	SDL_Texture * whiteFilledDiff[numberOfDifficulties];
+	SDL_Texture * yellowFilledDiff[numberOfDifficulties];
+	SDL_Texture * pacmanTexture;
+}SettingsMenuTextures;
+
+typedef struct EndGameTextureStruct {
+	SDL_Texture * gameOverTexture;
+	SDL_Texture * pressAnyButtonTexture;
+}EndGameTextures;
+
+SettingsMenuTextures settingsTextureManager;
+
+EndGameTextures endGameTextureManager;
 
 #endif

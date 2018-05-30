@@ -1,14 +1,13 @@
 #include <stdio.h>
-
 #include <Windows.h>
 #pragma comment(lib, "winmm.lib")
-
 #include <SDL.h>
 #include <SDL_ttf.h>
-
 #include "graphicsMenu.h"
 #include "game.h"
+#include "pauseMenuGraphics.h"
 
+//extern map[29][28];
 
 SDL_Event event;
 
@@ -19,27 +18,39 @@ int main(int argc, char *argv[]) {
 	game.quit = gameQuit;
 	getScreenResolution(&game.screen.width, &game.screen.height);
 	ShowWindow(GetConsoleWindow(), SW_HIDE);
+	/*int i, j;
+	for (i = 0; i < 29; i++) {
+		for (j = 0; j < 28; j++) {
+			printf("%3d ", map[i][j]);
+		}
+		putchar('\n');
+	}*/
 
-	// PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC); // za potrebe proslave
+	//PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC); // za potrebe proslave
 
 	enum ActiveScreen {isMenu, isDemo, isNew, isContinue, isHighscore, isSettings, isCredits, isQuit, numberOfScreens};
-
 	enum ActiveScreen activeScreen = isMenu;
 
 	game.init();
 
-	int isGameCreated = 0;
+	//texture initialization and heading creation
+	SDL_Texture * menuTextureWhite[numberOfMenuOptions], *menuTextureYellow[numberOfMenuOptions], *pacmanTexture;
+	initTexturesForMenu(menuTextureWhite, menuTextureYellow, &pacmanTexture);
+	initGameTextures();
+	createHeading();
+	initPauseMenuTextures();
+	initSettingsTextures();
+	initEndGameTextures();
 
+	int isGameCreated = 0;
 	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
+	enum DifficulySpeed difficulty = MEDIUM;
 	//SDL_Event event;
 
-
-	while (game.isRunning) {
-							   // Mora ovde printMenu !!!!!!
-		printMenu(menuOption); // ako je van isRunning while-a ne prikaze meni nakon
-							   // zavrsavanja igre, vec tek nakon bilo kog klika		
+	while (game.isRunning) {	
+		printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 		while (SDL_PollEvent(&event)) {
-			switch(event.type) {
+			switch (event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
 
@@ -103,26 +114,44 @@ int main(int argc, char *argv[]) {
 				game.isRunning = SDL_FALSE;
 				break;
 			}
-
+		
 			switch (activeScreen) {
 			case isMenu:
-				printMenu(menuOption);
+				printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 				break;
 			case isDemo:
-				// TODO: implement
+				SDL_RenderClear(game.screen.renderer);
+				isGameCreated = 1;
+				playGame(DEMO_GAME, difficulty);	// TODO: difficulty
+				SDL_RenderClear(game.screen.renderer);
+				activeScreen = isMenu;
+				if (game.isRunning) {
+					createHeading();
+					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
+				}
 				break;
 			case isNew:
 				SDL_RenderClear(game.screen.renderer);
 				isGameCreated = 1;
-				playNewGame(MEDIUM);
+				playGame(NEW_GAME, difficulty);	// TODO: difficulty
 				SDL_RenderClear(game.screen.renderer);
-				//printMenu(menuOption); // da bi se odmah pojavio meni nakon zavrsene igre
-				// TODO: implement
 				activeScreen = isMenu;
+				if (game.isRunning) {
+					createHeading();
+					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
+				}
 				break;
 			case isContinue:
 				if (isGameCreated) {
-					// TODO: implement
+					SDL_RenderClear(game.screen.renderer);
+					isGameCreated = 1;
+					playGame(CONTINUE_GAME, difficulty);	// TODO: difficulty
+					SDL_RenderClear(game.screen.renderer);
+					activeScreen = isMenu;
+					if (game.isRunning) {
+						createHeading();
+						printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
+					}
 				}
 				else {
 					activeScreen = isMenu;
@@ -132,7 +161,14 @@ int main(int argc, char *argv[]) {
 				// TODO: implement
 				break;
 			case isSettings:
-				// TODO: implement
+				SDL_RenderClear(game.screen.renderer);
+				activateSettings(&difficulty);
+				SDL_RenderClear(game.screen.renderer);
+				activeScreen = isMenu;
+				if (game.isRunning) {
+					createHeading();
+					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
+				}
 				break;
 			case isCredits:
 				// TODO: implement

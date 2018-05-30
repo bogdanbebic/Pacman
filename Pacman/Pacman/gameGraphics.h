@@ -6,22 +6,28 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include "gameMap.h"
-
+#include "highscores.h"
 #include "pacStruct.h"
 #include "game.h"
 
-#define LEN_OF_SCORE_BOX 15
+#define LEN_OF_SCORE_BOX 50
 
-void updateScoreBox(int currentScore);
+void initGameTextures();
+
+void updateScoreBox(Highscore currentScore);
+
+void updateLevelBox(int level);
 
 void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles, int livesCount);
 
-void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int pacDotCount);
+void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman);
 
-enum GameMode updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int * pacDotCount, int * currentScore);
+void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int timer_tick);
 
-void updateMap(int map[HEIGHT_OF_MAP][HEIGHT_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int delay);
+void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_OF_GHOSTS], int timer_tick);
 
-void deletePacmanGhost(int iPosition, int jPosition);
+void deletePacmanGhost(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacStruct);
+
+void drawInitPacman(PacStruct pacman);
 
 #endif
