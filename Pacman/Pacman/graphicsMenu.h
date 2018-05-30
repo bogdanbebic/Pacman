@@ -15,10 +15,9 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 #define SCREEN_SCALE 1
-#define SCREEN_NAME "Pacman"
+#define SCREEN_NAME ("Pacman")
 #define MAX_STRING_LINE 20
-#define NUMBER_OF_CHARACTERS 'Z'
-#define NAME_LEN 12
+#define NUMBER_OF_CHARACTERS ('Z')
 
 enum MenuOptions { demoGame, newGame, continueGame, highscore, settings, credits, quitGame, numberOfMenuOptions };
 

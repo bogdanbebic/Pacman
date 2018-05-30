@@ -345,7 +345,7 @@ void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int ti
 }
 
 void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_OF_GHOSTS], int timer_tick) {
-	int i, j;
+	int i;
 	extern Game game;
 	PacStruct oldPositionGhost;
 	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {

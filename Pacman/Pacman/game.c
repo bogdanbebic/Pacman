@@ -289,6 +289,8 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 
 	SDL_bool isLevelRunning = SDL_TRUE;
 	SDL_bool isPauseMenu = SDL_FALSE;
+	
+	int isGameFinished = 0;
 
 	enum PauseMenuOptions selectedOption;
 	PacStruct pacman;
@@ -301,7 +303,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 	int pacDotCount;
 	int isStartOfNewGame;
 	int gameContinuation = 0;//dodati u funkciju za inicijalizaciju
-	char name[NAME_LEN];
+	
 	PacStruct home;
 
 
@@ -475,24 +477,24 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 			case mainMenu:
 				break;
 			case finishGame:
+				isGameFinished = 1;
 				break;
 			}
 		}
 
 		isPacmanEaten = 0;	// KADA SE POJEDE PACMAN, MORA DA SE RESETUJE
 	}
-	if ((!isLevelRunning || !livesCount) && game.isRunning) {
+	if ((isGameFinished || !livesCount) && game.isRunning) {
 		SDL_RenderClear(game.screen.renderer);
 		endGameScreen();
 		if (game.isRunning) {
-			nameSave = 1; //da li zelimo ili ne da sacuvamo ime sa konacnim score-om
+			nameSave = 1; // da li zelimo ili ne da sacuvamo ime sa konacnim score-om
 			SDL_RenderClear(game.screen.renderer);
-			finalScoreScreen(currentScore.points, name, &nameSave);
+			finalScoreScreen(currentScore.points, currentScore.name, &nameSave);
 			SDL_RenderClear(game.screen.renderer);
 		}
 	}
-	// TODO: videti da li je korisnik hteo da se unese score
-	// ako jeste, onda vracamo currentScore
+	
 	// ako je hteo da sacuva partiju, vracamo neki flag (verovatno -1)
 	// ako je sacuvao partiju, moramo da sacuvamo partiju u binaran fajl
 	return currentScore;

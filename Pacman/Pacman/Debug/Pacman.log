@@ -1,2 +1,4 @@
-﻿  graphicsMenu.c
-  Pacman.vcxproj -> C:\Users\Uros\Documents\GitHub\Pacman\Pacman\Debug\Pacman.exe
+﻿  game.c
+c:\users\bogdan\documents\github\pacman\pacman\pacman\game.c(306): warning C4101: 'name': unreferenced local variable
+  Pacman.vcxproj -> C:\Users\Bogdan\Documents\GitHub\Pacman\Pacman\Debug\Pacman.exe
+  Pacman.vcxproj -> C:\Users\Bogdan\Documents\GitHub\Pacman\Pacman\Debug\Pacman.pdb (Partial PDB)
