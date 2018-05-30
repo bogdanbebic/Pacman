@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 
 	int isGameCreated = 0;
 	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
-	enum DifficulySpeed difficulty = MEDIUM;
+	enum DifficulySpeed difficulty = HARD;
 	//SDL_Event event;
 	
 	PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
@@ -123,7 +123,10 @@ int main(int argc, char *argv[]) {
 				break;
 			case isDemo:
 				SDL_RenderClear(game.screen.renderer);
+
+				// OVO PROMENITI AKO NE ZELIMO DA MOZE IGRAC DA NASTAVI DEMO
 				isGameCreated = 1;
+
 				playGame(DEMO_GAME, difficulty);	// TODO: difficulty
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
@@ -131,6 +134,7 @@ int main(int argc, char *argv[]) {
 					createHeading();
 					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 				}
+				PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 				break;
 			case isNew:
 				SDL_RenderClear(game.screen.renderer);
@@ -142,6 +146,7 @@ int main(int argc, char *argv[]) {
 					createHeading();
 					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 				}
+				PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 				break;
 			case isContinue:
 				if (isGameCreated) {
@@ -154,6 +159,7 @@ int main(int argc, char *argv[]) {
 						createHeading();
 						printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 					}
+					PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 				}
 				else {
 					activeScreen = isMenu;

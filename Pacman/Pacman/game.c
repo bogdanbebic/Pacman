@@ -398,6 +398,9 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 			// TODO: ovo popraviti, ne radi za continue game
 		if (!gameContinuation || isStartOfNewGame)
 			initLevel(&pacman, ghosts);
+		else {
+			gameContinuation = 0;
+		}
 
 		printInitMap(testMapTemp, pacman);
 		updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore);
@@ -429,10 +432,14 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 					switch (event.key.keysym.sym) {
 					case SDLK_SPACE:
 						srbendaMod ^= -1;	// MUST BE ALL 1 IN BINARY FORM FOR XOR
-						if (srbendaMod)
+						if (srbendaMod) {
+							PlaySound(NULL, NULL, SND_ASYNC);
 							PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC);
-						else
+						}
+						else {
+							PlaySound(NULL, NULL, SND_ASYNC);
 							PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
+						}
 						break;
 					default:
 						break;
@@ -560,6 +567,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 				gameContinuation = 1;
 				break;
 			case mainMenu:
+				// OVO PROMENITI AKO NE ZELIMO DA MOZE IGRAC DA NASTAVI DEMO
 				saveGameForContinue(difficulty, delay, level, livesCount, numberOfLivesTiles, currentScore, isStartOfNewGame, home, pacman, ghosts, testMapTemp, pacDotCount);
 				break;
 			case finishGame:
@@ -569,7 +577,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 
 		isPacmanEaten = 0;	// KADA SE POJEDE PACMAN, MORA DA SE RESETUJE
 	}
-	if ((!isLevelRunning || !livesCount) && game.isRunning) {
+	if (!livesCount && game.isRunning) {
 		SDL_RenderClear(game.screen.renderer);
 		endGameScreen();
 		SDL_RenderClear(game.screen.renderer);
