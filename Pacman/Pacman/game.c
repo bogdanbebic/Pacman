@@ -301,13 +301,14 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 	int pacDotCount;
 	int isStartOfNewGame;
 	int gameContinuation = 0;//dodati u funkciju za inicijalizaciju
-
+	char name[NAME_LEN];
 	PacStruct home;
 
 
 	int timer_tick = 0;
 	int i;
 	int isPacmanEaten = 0;
+	int nameSave;
 	pacDotCount = countPacDots(map); // Power Pellet-i nisu u broju dotova!!!
 
 	switch (gameType) {
@@ -483,7 +484,12 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 	if ((!isLevelRunning || !livesCount) && game.isRunning) {
 		SDL_RenderClear(game.screen.renderer);
 		endGameScreen();
-		SDL_RenderClear(game.screen.renderer);
+		if (game.isRunning) {
+			nameSave = 1; //da li zelimo ili ne da sacuvamo ime sa konacnim score-om
+			SDL_RenderClear(game.screen.renderer);
+			finalScoreScreen(currentScore.points, name, &nameSave);
+			SDL_RenderClear(game.screen.renderer);
+		}
 	}
 	// TODO: videti da li je korisnik hteo da se unese score
 	// ako jeste, onda vracamo currentScore

@@ -34,6 +34,14 @@ void gameInit() {
 	game.screen.renderer = SDL_CreateRenderer(game.screen.window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	game.isRunning = SDL_TRUE;
+
+	//texture initialization and heading creation
+	initGameTextures();
+	createHeading();
+	initPauseMenuTextures();
+	initSettingsTextures();
+	initEndGameTextures();
+	initFinalScoreTextures();
 	return;
 }
 
@@ -41,13 +49,8 @@ void gameInit() {
 *	Quits the game and destroys the
 *	renderers and windows
 */
-void gameQuit() {
-	extern SDL_Texture* Message[numberOfMenuOptions];
-	enum MenuOptions menuOption;
+void gameQuit() { //TODO: Delete all textures at the end
 	extern Game game;
-	for (menuOption = 0; menuOption < numberOfMenuOptions; menuOption++) { // za brisanje teksture i rendera
-		SDL_DestroyTexture(Message[menuOption]);
-	}
 	SDL_DestroyRenderer(game.screen.renderer);
 	SDL_DestroyWindow(game.screen.window);
 
@@ -57,7 +60,7 @@ void gameQuit() {
 
 	SDL_Quit();
 	return;
-}
+} 
 
 void initTexturesForMenu(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture ** PacmanTexture) {
 	SDL_Surface * PacmanSurface, *menuSurfaceYellow, *menuSurfaceWhite;
@@ -176,42 +179,6 @@ void initSettingsTextures() {
 			SDL_FreeSurface(menuSurfaceWhite);
 			break;
 		case diffOption:
-			/*tempSurface = SDL_LoadBMP("Pictures/PacmanR.bmp");
-			settingsTextureManager.whiteDifficulty[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
-			SDL_FreeSurface(tempSurface);
-			tempSurface = SDL_LoadBMP("Pictures/PacmanR.bmp");
-			settingsTextureManager.whiteDifficulty[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
-			SDL_FreeSurface(tempSurface);
-			tempSurface = SDL_LoadBMP("Pictures/PacmanR.bmp");
-			settingsTextureManager.whiteDifficulty[2] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
-			SDL_FreeSurface(tempSurface);
-			tempSurface = SDL_LoadBMP("Pictures/PacmanR.bmp");
-			settingsTextureManager.yellowDifficulty[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
-			SDL_FreeSurface(tempSurface);
-			tempSurface = SDL_LoadBMP("Pictures/PacmanR.bmp");
-			settingsTextureManager.yellowDifficulty[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
-			SDL_FreeSurface(tempSurface);
-			tempSurface = SDL_LoadBMP("Pictures/PacmanR.bmp");
-			settingsTextureManager.yellowDifficulty[2] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
-			SDL_FreeSurface(tempSurface);
-			tempSurface = SDL_LoadBMP("Pictures/PacmanR.bmp");
-			settingsTextureManager.whiteFilledDiff[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
-			SDL_FreeSurface(tempSurface);
-			tempSurface = SDL_LoadBMP("Pictures/PacmanR.bmp");
-			settingsTextureManager.whiteFilledDiff[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
-			SDL_FreeSurface(tempSurface);
-			tempSurface = SDL_LoadBMP("Pictures/PacmanR.bmp");
-			settingsTextureManager.whiteFilledDiff[2] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
-			SDL_FreeSurface(tempSurface);
-			tempSurface = SDL_LoadBMP("Pictures/PacmanR.bmp");
-			settingsTextureManager.yellowFilledDiff[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
-			SDL_FreeSurface(tempSurface);
-			tempSurface = SDL_LoadBMP("Pictures/PacmanR.bmp");
-			settingsTextureManager.yellowFilledDiff[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
-			SDL_FreeSurface(tempSurface);
-			tempSurface = SDL_LoadBMP("Pictures/PacmanR.bmp");
-			settingsTextureManager.yellowFilledDiff[2] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
-			SDL_FreeSurface(tempSurface);*/
 			tempSurface = SDL_LoadBMP("Pictures/easyWhite.bmp");
 			settingsTextureManager.whiteDifficulty[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
 			SDL_FreeSurface(tempSurface);
@@ -266,7 +233,7 @@ void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed 
 	extern SettingsMenuTextures settingsTextureManager;
 	SDL_Rect menuRect, pacmanRect, diffRect;
 	enum SettingsOptions menuOption;
-	enum DifficultySpeed tempDiffArray[3] = {EASY, MEDIUM, HARD};
+	enum DifficultySpeed tempDiffArray[NUMBER_OF_DIFFICULTIES] = {EASY, MEDIUM, HARD};
 	int i;
 
 	for (menuOption = 0; menuOption < numberOfSettingsOptions; menuOption++) {
@@ -289,7 +256,7 @@ void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed 
 			}
 		}
 		if (menuOption == diffOption) {
-			for (i = 0; i < 3; i++) {
+			for (i = 0; i < NUMBER_OF_DIFFICULTIES; i++) {
 				diffRect.x = game.screen.width / 12 + i * game.screen.width / 18;
 				diffRect.y = (8 + 3 * menuOption) * (game.screen.height / 44);
 				diffRect.w = game.screen.width / 18;
@@ -297,7 +264,7 @@ void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed 
 				if (tempDiffArray[i] == currentDifficulty && tempDiffArray[i] == hoveringDiff && currentMenuOption == menuOption) {
 					SDL_RenderCopy(game.screen.renderer, settingsTextureManager.yellowFilledDiff[i], NULL, &diffRect);
 				}
-				else if (tempDiffArray[i] == currentDifficulty && tempDiffArray[i] != hoveringDiff) {
+				else if ((tempDiffArray[i] == currentDifficulty && tempDiffArray[i] != hoveringDiff) ||(tempDiffArray[i] == currentDifficulty && currentMenuOption != menuOption)) {
 					SDL_RenderCopy(game.screen.renderer, settingsTextureManager.whiteFilledDiff[i], NULL, &diffRect);
 				}
 				else if (tempDiffArray[i] == hoveringDiff && tempDiffArray[i] != currentDifficulty && currentMenuOption == menuOption) {
@@ -328,7 +295,6 @@ void activateSettings(enum DifficultySpeed * currentDifficulty) {
 	enum DifficultySpeed hoveringDiff = EASY;
 	createSettingsHeading(); 
 	while (game.isRunning) {
-		//printSettings(selectedOption, *currentDifficulty, hoveringDiff);
 		while (SDL_PollEvent(&event)) {
 			printSettings(selectedOption, *currentDifficulty, hoveringDiff);
 			switch (event.type) {
@@ -396,7 +362,7 @@ void activateSettings(enum DifficultySpeed * currentDifficulty) {
 					break;
 				}
 			break;
-			case SDL_QUIT: //ne radi
+			case SDL_QUIT: 
 					game.isRunning = SDL_FALSE;
 					settingsRunning = 0;
 					return;
@@ -442,7 +408,7 @@ void endGameScreen() {
 	rect.h = game.screen.height / 12;
 	SDL_RenderCopy(game.screen.renderer, endGameTextureManager.pressAnyButtonTexture, NULL, &rect);
 	SDL_RenderPresent(game.screen.renderer);
-	while(activeScreen)
+	while (activeScreen) {
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
@@ -457,7 +423,329 @@ void endGameScreen() {
 			}
 
 		}
+	}
+	return;
+}
 
+void initFinalScoreTextures() {
+	char temp[2], c;
+	extern FinalScoreTextures finalScoreTextureManager;
+	TTF_Font* font = TTF_OpenFont("impact.ttf", 80);
+	SDL_Color white = { 255, 255, 255 };
+	SDL_Color yellow = { 255, 255, 0 };
+	SDL_Surface * tempSurface;
+	int i = 0;
+	temp[1] = '\0';
+	for (c = '0'; c <= '9'; c++) {
+		temp[0] = c;
+		tempSurface = TTF_RenderText_Solid(font, temp, white);
+		finalScoreTextureManager.characterTextures[c] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+		SDL_FreeSurface(tempSurface);
+	}
+	for (c = 'A'; c <= 'Z'; c++) {
+		temp[0] = c;
+		tempSurface = TTF_RenderText_Solid(font, temp, white);
+		finalScoreTextureManager.characterTextures[c] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+		SDL_FreeSurface(tempSurface);
+	}
+	tempSurface = SDL_LoadBMP("Pictures/blankChar.bmp");
+	finalScoreTextureManager.blankTexture = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
+	tempSurface = TTF_RenderText_Solid(font, "TYPE IN YOUR NAME:", white);
+	finalScoreTextureManager.typeInYourNameTexture = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+	SDL_FreeSurface(tempSurface); 
+	return;
+}
+
+void finalScoreScreen(int currScore, char * name, int * nameSave) {
+	int currPos = 0, finalScoreActive = 1, i;
+	SDL_Event event;
+	SDL_Rect rect;
+	SDL_Surface *surface;
+	SDL_Texture *tex;
+	TTF_Font* font = TTF_OpenFont("impact.ttf", 80);
+	SDL_Color white = { 255, 255, 255 };
+	char buffer[10], string[50] = "YOUR FINAL SCORE IS: ";
+
+	_itoa_s(currScore, buffer, 10, 10);
+	strcat_s(string, 50, buffer);
+	surface = TTF_RenderText_Solid(font, string, white);
+	tex = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_FreeSurface(surface);
+
+	rect.x = game.screen.width / 15;
+	rect.y = 4 * (game.screen.height / 40);
+	rect.w = game.screen.width / 5;
+	rect.h = game.screen.height / 12;
+	SDL_RenderCopy(game.screen.renderer, tex, NULL, &rect);
+	SDL_DestroyTexture(tex);
+
+	rect.x = game.screen.width / 15;
+	rect.y = 10 * (game.screen.height / 40);
+	rect.w = game.screen.width / 5;
+	rect.h = game.screen.height / 12;
+	SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.typeInYourNameTexture, NULL, &rect);
+
+	rect.y = 14 * (game.screen.height / 40);
+	rect.w = game.screen.width / 50;
+	rect.h = game.screen.height / 18;
+	for (i = currPos; i <= NAME_LEN - 1; i++) {
+		rect.x = game.screen.width / 18 + i * game.screen.width / 50;
+		SDL_RenderFillRect(game.screen.renderer, &rect);
+		if (i != NAME_LEN - 1)
+			SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.blankTexture, NULL, &rect);
+	}
+	while (finalScoreActive) {
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_KEYDOWN:
+				rect.x = game.screen.width / 18 + currPos * game.screen.width / 50;
+				switch (event.key.keysym.sym) {
+				case SDLK_0:
+					name[currPos] = '0';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['0'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = '0'; currPos++; } 
+					break;
+				case SDLK_1:
+					name[currPos] = '1';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['1'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = '1'; currPos++; }
+					break;
+				case SDLK_2:
+					name[currPos] = '2';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['2'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = '2'; currPos++; }
+					break;
+				case SDLK_3:
+					name[currPos] = '3';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['3'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = '3'; currPos++; }
+					break;
+				case SDLK_4:
+					name[currPos] = '4';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['4'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = '4'; currPos++; }
+					break;
+				case SDLK_5:
+					name[currPos] = '5';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['5'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = '5'; currPos++; }
+					break;
+				case SDLK_6:
+					name[currPos] = '6';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['6'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = '6'; currPos++; }
+					break;
+				case SDLK_7:
+					name[currPos] = '7';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['7'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = '7'; currPos++; }
+					break;
+				case SDLK_8:
+					name[currPos] = '8';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['8'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = '8'; currPos++; }
+					break;
+				case SDLK_9:
+					name[currPos] = '9';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['9'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = '9'; currPos++; }
+					break;
+				case SDLK_a:
+					name[currPos] = 'A';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['A'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'A'; currPos++; }
+					break;
+				case SDLK_b:
+					name[currPos] = 'B';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['B'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'B'; currPos++; }
+					break;
+				case SDLK_c:
+					name[currPos] = 'C';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['C'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'C'; currPos++; }
+					break;
+				case SDLK_d:
+					name[currPos] = 'D';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['D'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'D'; currPos++; }
+					break;
+				case SDLK_e:
+					name[currPos] = 'E';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['E'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'E'; currPos++; }
+					break;
+				case SDLK_f:
+					name[currPos] = 'F';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['F'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'F'; currPos++; }
+					break;
+				case SDLK_g:
+					name[currPos] = 'G';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['G'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'G'; currPos++; }
+					break;
+				case SDLK_h:
+					name[currPos] = 'H';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['H'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'H'; currPos++; }
+					break;
+				case SDLK_i:
+					name[currPos] = 'I';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['I'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'I'; currPos++; }
+					break;
+				case SDLK_j:
+					name[currPos] = 'J';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['J'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'J'; currPos++; }
+					break;
+				case SDLK_k:
+					name[currPos] = 'K';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['K'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'K'; currPos++; }
+					break;
+				case SDLK_l:
+					name[currPos] = 'L';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['L'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'L'; currPos++; }
+					break;
+				case SDLK_m:
+					name[currPos] = 'M';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['M'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'M'; currPos++; }
+					break;
+				case SDLK_n:
+					name[currPos] = 'N';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['N'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'N'; currPos++; }
+					break;
+				case SDLK_o:
+					name[currPos] = 'O';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['O'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'O'; currPos++; }
+					break;
+				case SDLK_p:
+					name[currPos] = 'P';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['P'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'P'; currPos++; }
+					break;
+				case SDLK_q:
+					name[currPos] = 'Q';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['Q'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'Q'; currPos++; }
+					break;
+				case SDLK_r:
+					name[currPos] = 'R';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['R'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'R'; currPos++; }
+					break;
+				case SDLK_s:
+					name[currPos] = 'S';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['S'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'S'; currPos++; }
+					break;
+				case SDLK_t:
+					name[currPos] = 'T';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['T'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'T'; currPos++; }
+					break;
+				case SDLK_u:
+					name[currPos] = 'U';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['U'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'U'; currPos++; }
+					break;
+				case SDLK_v:
+					name[currPos] = 'V';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['V'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'V'; currPos++; }
+					break;
+				case SDLK_w:
+					name[currPos] = 'W';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['W'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'W'; currPos++; }
+					break;
+				case SDLK_x:
+					name[currPos] = 'X';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['X'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'X'; currPos++; }
+					break;
+				case SDLK_y:
+					name[currPos] = 'Y';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['Y'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'Y'; currPos++; }
+					break;
+				case SDLK_z:
+					name[currPos] = 'Z';
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['Z'], NULL, &rect);
+					if (currPos < NAME_LEN - 1) { name[currPos] = 'Z'; currPos++; }
+					break;
+				case SDLK_BACKSPACE:
+					name[currPos] = '\0';
+					currPos = currPos ? currPos - 1 : currPos;
+					break;
+				case SDLK_RETURN:
+					finalScoreActive = 0;
+					break;
+				case SDLK_ESCAPE:
+					finalScoreActive = 0;
+					*nameSave = 0;
+					break;
+				}
+				
+				for (i = currPos; i <= NAME_LEN - 1; i++) {
+					rect.x = game.screen.width / 18 + i * game.screen.width / 50;
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					if (i != NAME_LEN - 1)
+						SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.blankTexture, NULL, &rect);
+				}
+				break;
+			case SDL_QUIT:
+				game.isRunning = 0;
+				return;
+			}
+		}
+		SDL_RenderPresent(game.screen.renderer);
+	}
+	name[currPos] = '\0';
+	return;
 }
 
 /*

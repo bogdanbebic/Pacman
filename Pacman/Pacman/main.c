@@ -30,17 +30,9 @@ int main(int argc, char *argv[]) {
 
 	enum ActiveScreen {isMenu, isDemo, isNew, isContinue, isHighscore, isSettings, isCredits, isQuit, numberOfScreens};
 	enum ActiveScreen activeScreen = isMenu;
-
 	game.init();
-
-	//texture initialization and heading creation
 	SDL_Texture * menuTextureWhite[numberOfMenuOptions], *menuTextureYellow[numberOfMenuOptions], *pacmanTexture;
 	initTexturesForMenu(menuTextureWhite, menuTextureYellow, &pacmanTexture);
-	initGameTextures();
-	createHeading();
-	initPauseMenuTextures();
-	initSettingsTextures();
-	initEndGameTextures();
 
 	int isGameCreated = 0;
 	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
@@ -122,7 +114,7 @@ int main(int argc, char *argv[]) {
 			case isDemo:
 				SDL_RenderClear(game.screen.renderer);
 				isGameCreated = 1;
-				playGame(DEMO_GAME, difficulty);	// TODO: difficulty
+				playGame(DEMO_GAME, difficulty);	
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
 				if (game.isRunning) {
@@ -133,7 +125,7 @@ int main(int argc, char *argv[]) {
 			case isNew:
 				SDL_RenderClear(game.screen.renderer);
 				isGameCreated = 1;
-				playGame(NEW_GAME, difficulty);	// TODO: difficulty
+				playGame(NEW_GAME, difficulty);	
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
 				if (game.isRunning) {
@@ -145,7 +137,7 @@ int main(int argc, char *argv[]) {
 				if (isGameCreated) {
 					SDL_RenderClear(game.screen.renderer);
 					isGameCreated = 1;
-					playGame(CONTINUE_GAME, difficulty);	// TODO: difficulty
+					playGame(CONTINUE_GAME, difficulty);	
 					SDL_RenderClear(game.screen.renderer);
 					activeScreen = isMenu;
 					if (game.isRunning) {
