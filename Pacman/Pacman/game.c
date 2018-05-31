@@ -168,7 +168,7 @@ int pacmanGhostCheck(PacStruct pacman, PacStruct ghost) {
 *	Reverse if pacman has eaten a power pellet
 *	gameMode (unchanged) otherwise
 */
-void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[], int * pacDotCount, Highscore * currentScore) {
+void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[], int * pacDotCount, Highscore * currentScore, int *timer_tick, int *isPowerPelletEaten) {
 	int i;
 	if (map[pacman.iPosition][pacman.jPosition] == PAC_DOT) {
 		currentScore->points += 10;
@@ -178,6 +178,8 @@ void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacm
 	else if (map[pacman.iPosition][pacman.jPosition] == POWER_PELLET) {
 		map[pacman.iPosition][pacman.jPosition] = NO_WALL;
 		currentScore->points += 50;
+		*timer_tick = 0;
+		*isPowerPelletEaten = 1;
 		for (i = 0; i < NUMBER_OF_GHOSTS; i++)
 			if (ghosts[i].gameMode != GhostEaten) {
 				ghosts[i].gameMode = Reverse;
@@ -365,6 +367,8 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 	int srbendaMod = 0;
 
 	int timer_tick = 0;
+	int timer_tick_POWER_PELLET = 0;
+	int isPowerPelletEaten = 0;
 	int i;
 	int isPacmanEaten = 0;
 	int nameSave;
@@ -403,7 +407,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 			gameContinuation = 0;
 		}
 		printInitMap(testMapTemp, pacman);
-		updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore);
+		updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore, &timer_tick_POWER_PELLET, &isPowerPelletEaten);
 		updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
 		updateLevelBox(level);
 
@@ -423,7 +427,23 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 
 		while (isLevelRunning && pacDotCount && livesCount && game.isRunning && !isPacmanEaten) {
 			timer_tick++;
-
+			if (isPowerPelletEaten) {
+				timer_tick_POWER_PELLET++;
+				if (timer_tick_POWER_PELLET > 120) {
+					for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
+						if (ghosts[i].gameMode == Reverse)
+							ghosts[i].gameMode = EndReverse;
+					}
+				}
+				if (timer_tick_POWER_PELLET == 150) {
+					for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
+						if (ghosts[i].gameMode == EndReverse)
+							ghosts[i].gameMode = Normal;
+					}
+					timer_tick_POWER_PELLET = 0;
+					isPowerPelletEaten = 0;
+				}
+			}
 			while (SDL_PollEvent(&event) && isLevelRunning && livesCount) {
 
 				switch (event.type) {
@@ -456,7 +476,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 							pacman.direction = temp;
 					}
 					else {
-						// TODO: Implement Pacman AI for demo game
+						pacman = PacmanDemo(map, pacman, ghosts, timer_tick);// TODO: Implement Pacman AI for demo game
 					}
 
 					switch (event.key.keysym.sym) {
@@ -476,11 +496,15 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 			}
 
 			if (timer_tick % 4 == 0) {
+				PacStruct pacTry = pacman;
+				pacTry = PacmanDemo(testMapTemp, pacman, ghosts, timer_tick);
+				if(wallCheckAndMove(testMapTemp, &pacTry))
+					pacman= PacmanDemo(testMapTemp, pacman, ghosts, timer_tick);
 				wallCheckAndMove(testMapTemp, &pacman);
 			}
 
 			// azuriranje Score-a, da li je Pacman pojeo nesto
-			updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore);
+			updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore, &timer_tick_POWER_PELLET, &isPowerPelletEaten);
 
 			// provera -> pacman i duh na istom polju pre pomeranja duhova
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
