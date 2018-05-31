@@ -1,7 +1,29 @@
 #include "game.h"
 #include "testMap.h"
 #include "pauseMenuGraphics.h"
+#include "saveGame.h"
+#include <Windows.h>
 
+SaveGame saveGame;
+
+/*
+ *	Initializes continue game
+ *	with saved game parameters.
+ *	Sets values for all arguments except difficulty
+ */
+void initContinueGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home, int *pacDotCount) {
+	extern SaveGame saveGame;
+	
+	*delay = saveGame.delay;
+	*level = saveGame.level;
+	*livesCount = saveGame.livesCount;
+	*numberOfLivesTiles = saveGame.numberOfLivesTiles;
+	*currentScore = saveGame.currentScore;
+	*isStartOfNewGame = saveGame.isStartOfNewGame;
+	*home = saveGame.home;
+	*pacDotCount = saveGame.pacDotCount;
+	return;
+}
 
 /*
 *	Moves pacStruct on map,
@@ -53,21 +75,10 @@ int wallCheckAndMove(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct)
 		return 1;
 }
 
-//void changeDirectionForReverseGhost(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct) {
-//	pacStruct->direction = (pacStruct->direction + (NUMBER_OF_DIRECTIONS / 2)) % NUMBER_OF_DIRECTIONS;
-//	PacStruct temp = *pacStruct;
-//	if (!wallCheckAndMove(map, &temp)) {
-//		temp.direction = (pacStruct->direction + 1) % NUMBER_OF_DIRECTIONS;
-//		if (wallCheckAndMove(map, &temp)) {
-//			pacStruct->direction = (pacStruct->direction + 1) % NUMBER_OF_DIRECTIONS;
-//		}
-//		else {
-//			pacStruct->direction = (pacStruct->direction - 1) % NUMBER_OF_DIRECTIONS;
-//		}
-//	}
-//	return;
-//}
-
+/*
+*	Changes direction for ghost
+*	in reverse mode
+*/
 void changeDirectionForReverseGhost(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct) {
 	pacStruct->direction = (pacStruct->direction + (NUMBER_OF_DIRECTIONS / 2)) % NUMBER_OF_DIRECTIONS;
 	PacStruct temp = *pacStruct;
@@ -77,7 +88,7 @@ void changeDirectionForReverseGhost(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStr
 			pacStruct->direction = (pacStruct->direction + 1) % NUMBER_OF_DIRECTIONS;
 		}
 		else {
-			pacStruct->direction = (pacStruct->direction - 1 + NUMBER_OF_DIRECTIONS) % NUMBER_OF_DIRECTIONS; //ovde je bila greska
+			pacStruct->direction = (pacStruct->direction - 1 + NUMBER_OF_DIRECTIONS) % NUMBER_OF_DIRECTIONS;
 		}
 	}
 	return;
@@ -201,6 +212,11 @@ int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]) {
 	return pacDotCount;
 }
 
+/*
+*	Initializes a new level
+*	with new level pacman and ghost 
+*	parameters
+*/
 void initLevel(PacStruct *pacman, PacStruct *ghosts) {
 	// Inicijalizuje poziciju Pacman-a
 	initPacmanPosition(pacman);
@@ -252,6 +268,13 @@ void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *l
 extern SDL_Event event;
 extern SDL_Texture* ScoreBoxTexture, *LivesBoxTexture;
 
+/*
+*	Gets pacman direction from user
+*	Return value:
+*	enum Direction which marks direction that
+*	the user has given as input or DIRECTION_NONE
+*	if user has given input whhich is not correct
+*/
 enum Direction getPacmanDirectionFromUser(SDL_Event event) {
 	switch (event.key.keysym.sym) {
 	case SDLK_UP:
@@ -276,6 +299,35 @@ enum Direction getPacmanDirectionFromUser(SDL_Event event) {
 }
 
 /*
+*	Saves current game
+*	and makes it possible
+*	to continue game
+*/
+void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, int numberOfLivesTiles, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount) {
+	extern SaveGame saveGame;
+	int i, j;
+	saveGame.difficulty = difficulty;
+	saveGame.delay = delay;
+	saveGame.level = level;
+	saveGame.livesCount = livesCount;
+	saveGame.numberOfLivesTiles = numberOfLivesTiles;
+	saveGame.currentScore = currentScore;
+	saveGame.isStartOfNewGame = isStartOfNewGame;
+	saveGame.home = home;
+	saveGame.pacman = pacman;
+	saveGame.pacDotCount = pacDotCount;
+	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
+		saveGame.ghosts[i] = ghosts[i];
+	}
+	for (i = 0; i < HEIGHT_OF_MAP; i++) {
+		for (j = 0; j < WIDTH_OF_MAP; j++) {
+			saveGame.map[i][j] = map[i][j];
+		}
+	}
+	return;
+}
+
+/*
 *	Sets up and plays new Pacman game
 *	according to the argument difficulty
 *	Return value:
@@ -287,27 +339,35 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 
 	int testMapTemp[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 
+	extern SaveGame saveGame;
+
 	SDL_bool isLevelRunning = SDL_TRUE;
 	SDL_bool isPauseMenu = SDL_FALSE;
+	
+	int isGameFinished = 0;
 
 	enum PauseMenuOptions selectedOption;
 	PacStruct pacman;
 	PacStruct ghosts[4];
 	int livesCount;
 	int numberOfLivesTiles;
-	Highscore currentScore;
 	int level;
 	int delay;
 	int pacDotCount;
 	int isStartOfNewGame;
 	int gameContinuation = 0;//dodati u funkciju za inicijalizaciju
-
+	
 	PacStruct home;
 
+	Highscore currentScore;
+	currentScore.name[0] = '\0';
+
+	int srbendaMod = 0;
 
 	int timer_tick = 0;
 	int i;
 	int isPacmanEaten = 0;
+	int nameSave;
 	pacDotCount = countPacDots(map); // Power Pellet-i nisu u broju dotova!!!
 
 	switch (gameType) {
@@ -316,6 +376,18 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 		initNewGame(difficulty, &delay, &level, &livesCount, &numberOfLivesTiles, &currentScore, &isStartOfNewGame, &home);
 		break;
 	case CONTINUE_GAME:
+		gameContinuation = 1;
+		initContinueGame(difficulty, &delay, &level, &livesCount, &numberOfLivesTiles, &currentScore, &isStartOfNewGame, &home, &pacDotCount);
+		int i, j;
+		for (i = 0; i < HEIGHT_OF_MAP; i++) {
+			for (j = 0; j < WIDTH_OF_MAP; j++) {
+				testMapTemp[i][j] = saveGame.map[i][j];
+			}
+		}
+		pacman = saveGame.pacman;
+		for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
+			ghosts[i] = saveGame.ghosts[i];
+		}
 		break;
 	default:
 		break;
@@ -327,9 +399,13 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 			// TODO: ovo popraviti, ne radi za continue game
 		if (!gameContinuation || isStartOfNewGame)
 			initLevel(&pacman, ghosts);
+		else {
+			gameContinuation = 0;
+		}
 		printInitMap(testMapTemp, pacman);
 		updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore);
 		updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
+		updateLevelBox(level);
 
 		timer_tick = 0;
 		if (isStartOfNewGame || pacDotCount == 0) { // OVO JE ZA NOVI NIVO
@@ -353,8 +429,29 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 				switch (event.type) {
 				case SDL_KEYDOWN:
 
+					// SRBENDA MOD
+					switch (event.key.keysym.sym) {
+						case SDLK_SPACE:
+							srbendaMod ^= -1;	// MUST BE ALL 1 IN BINARY FORM FOR XOR
+							if (srbendaMod) {
+								PlaySound(NULL, NULL, SND_ASYNC);
+								PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC);
+							}
+							else {
+								PlaySound(NULL, NULL, SND_ASYNC);
+								PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
+							}
+							break;
+							default:
+								break;
+								
+					}
+
 					if (gameType != DEMO_GAME) {
-						pacman.direction = getPacmanDirectionFromUser(event);
+						enum Direction temp;
+						temp = getPacmanDirectionFromUser(event);
+						if (temp != DIRECTION_NONE)
+							pacman.direction = temp;
 					}
 					else {
 						// TODO: Implement Pacman AI for demo game
@@ -396,23 +493,6 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 			// Poziv funkcije za updateovanje pacmana i duhova 			
 			updateGhosts(testMapTemp, ghosts, timer_tick);
 			updatePacman(testMapTemp, pacman, timer_tick);
-
-			// NOVI DIRECTION-I DUHOVA
-			//if (timer_tick % 7 == 0) {
-			//	ghosts[0] = BlinkyAI(map, pacman, ghosts, 0);
-			//	ghosts[1] = InkyAI(map, pacman, ghosts, 1);
-			//	ghosts[2] = PinkyAI(map, pacman, ghosts, 2);
-			//	ghosts[3] = ClydeAI(map, pacman, ghosts, 3);
-			//	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
-			//		if (ghosts[i].gameMode == Reverse || ghosts[i].gameMode == EndReverse) {
-			//			// ghosts[i].direction = (ghosts[i].direction + (NUMBER_OF_DIRECTIONS / 2)) % NUMBER_OF_DIRECTIONS;
-			//			changeDirectionForReverseGhost(map, &ghosts[i]);
-			//		}
-			//	}
-			//	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
-			//		wallCheckAndMove(map, &ghosts[i]);
-			//	}
-			//}
 
 			// NOVI DIRECTION-I DUHOVA
 			if (timer_tick % 7 == 0) {
@@ -472,21 +552,29 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 				gameContinuation = 1;
 				break;
 			case mainMenu:
+				// OVO PROMENITI AKO NE ZELIMO DA MOZE IGRAC DA NASTAVI DEMO
+				saveGameForContinue(difficulty, delay, level, livesCount, numberOfLivesTiles, currentScore, isStartOfNewGame, home, pacman, ghosts, testMapTemp, pacDotCount);
 				break;
 			case finishGame:
+				isGameFinished = 1;
+				saveGame.level = -1;
 				break;
 			}
 		}
 
 		isPacmanEaten = 0;	// KADA SE POJEDE PACMAN, MORA DA SE RESETUJE
 	}
-	if ((!isLevelRunning || !livesCount) && game.isRunning) {
+	if ((isGameFinished || !livesCount) && game.isRunning) {
 		SDL_RenderClear(game.screen.renderer);
 		endGameScreen();
-		SDL_RenderClear(game.screen.renderer);
+		if (game.isRunning) {
+			nameSave = 1; // da li zelimo ili ne da sacuvamo ime sa konacnim score-om
+			SDL_RenderClear(game.screen.renderer);
+			finalScoreScreen(currentScore.points, currentScore.name, &nameSave);
+			SDL_RenderClear(game.screen.renderer);
+		}
 	}
-	// TODO: videti da li je korisnik hteo da se unese score
-	// ako jeste, onda vracamo currentScore
+	
 	// ako je hteo da sacuva partiju, vracamo neki flag (verovatno -1)
 	// ako je sacuvao partiju, moramo da sacuvamo partiju u binaran fajl
 	return currentScore;

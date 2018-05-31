@@ -37,6 +37,10 @@ int pacmanGhostCheck(PacStruct pacman, PacStruct ghost);
 
 int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]);
 
+void initContinueGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home, int *pacDotCount);
+
+void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, int numberOfLivesTiles, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount);
+
 typedef struct ScreenStruct {
 	unsigned int width;
 	unsigned int height;

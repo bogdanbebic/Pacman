@@ -6,13 +6,17 @@
 #include "graphicsMenu.h"
 #include "game.h"
 #include "pauseMenuGraphics.h"
+#include "saveGame.h"
+#include "highscores.h"
 
 //extern map[29][28];
 
 SDL_Event event;
 
-int main(int argc, char *argv[]) {
+extern SaveGame saveGame;
 
+int main(int argc, char *argv[]) {
+	extern SaveGame saveGame;
 	extern Game game;
 	game.init = gameInit;
 	game.quit = gameQuit;
@@ -30,22 +34,23 @@ int main(int argc, char *argv[]) {
 
 	enum ActiveScreen {isMenu, isDemo, isNew, isContinue, isHighscore, isSettings, isCredits, isQuit, numberOfScreens};
 	enum ActiveScreen activeScreen = isMenu;
-
 	game.init();
-
-	//texture initialization and heading creation
 	SDL_Texture * menuTextureWhite[numberOfMenuOptions], *menuTextureYellow[numberOfMenuOptions], *pacmanTexture;
 	initTexturesForMenu(menuTextureWhite, menuTextureYellow, &pacmanTexture);
-	initGameTextures();
-	createHeading();
-	initPauseMenuTextures();
-	initSettingsTextures();
-	initEndGameTextures();
 
 	int isGameCreated = 0;
 	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
 	enum DifficulySpeed difficulty = MEDIUM;
 	//SDL_Event event;
+
+	Highscore newHighscore;
+
+	newHighscore.name[0] = '\0';
+	
+	// TODO: READ HIGHSCORES FROM FILE, NOT ALWAYS LIKE THIS
+	makeGenericHighscores();
+
+	PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 
 	while (game.isRunning) {	
 		printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
@@ -121,37 +126,43 @@ int main(int argc, char *argv[]) {
 				break;
 			case isDemo:
 				SDL_RenderClear(game.screen.renderer);
+
+				// OVO PROMENITI AKO NE ZELIMO DA MOZE IGRAC DA NASTAVI DEMO
 				isGameCreated = 1;
-				playGame(DEMO_GAME, difficulty);	// TODO: difficulty
+
+				playGame(DEMO_GAME, difficulty);	
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
 				if (game.isRunning) {
 					createHeading();
 					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 				}
+				PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 				break;
 			case isNew:
 				SDL_RenderClear(game.screen.renderer);
 				isGameCreated = 1;
-				playGame(NEW_GAME, difficulty);	// TODO: difficulty
+				newHighscore = playGame(NEW_GAME, difficulty);	
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
 				if (game.isRunning) {
 					createHeading();
 					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 				}
+				PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 				break;
 			case isContinue:
-				if (isGameCreated) {
+				if (isGameCreated && saveGame.level != -1) {
 					SDL_RenderClear(game.screen.renderer);
 					isGameCreated = 1;
-					playGame(CONTINUE_GAME, difficulty);	// TODO: difficulty
+					newHighscore = playGame(CONTINUE_GAME, difficulty);
 					SDL_RenderClear(game.screen.renderer);
 					activeScreen = isMenu;
 					if (game.isRunning) {
 						createHeading();
 						printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 					}
+					PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 				}
 				else {
 					activeScreen = isMenu;
@@ -178,6 +189,10 @@ int main(int argc, char *argv[]) {
 				break;
 			default:
 				break;
+			}
+			if (newHighscore.name[0] != '\0') {
+				updateHighscores(newHighscore);
+				newHighscore.name[0] = '\0';
 			}
 		}
 	}
