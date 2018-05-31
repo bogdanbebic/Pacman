@@ -7,6 +7,7 @@
 #include "game.h"
 #include "pauseMenuGraphics.h"
 #include "saveGame.h"
+#include "highscores.h"
 
 //extern map[29][28];
 
@@ -41,6 +42,11 @@ int main(int argc, char *argv[]) {
 	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
 	enum DifficulySpeed difficulty = MEDIUM;
 	//SDL_Event event;
+
+	Highscore newHighscore;
+
+	// TODO: READ HIGHSCORES FROM FILE, NOT ALWAYS LIKE THIS
+	makeGenericHighscores();
 
 	PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 
@@ -134,7 +140,7 @@ int main(int argc, char *argv[]) {
 			case isNew:
 				SDL_RenderClear(game.screen.renderer);
 				isGameCreated = 1;
-				playGame(NEW_GAME, difficulty);	
+				newHighscore = playGame(NEW_GAME, difficulty);	
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
 				if (game.isRunning) {
@@ -147,7 +153,7 @@ int main(int argc, char *argv[]) {
 				if (isGameCreated && saveGame.level != -1) {
 					SDL_RenderClear(game.screen.renderer);
 					isGameCreated = 1;
-					playGame(CONTINUE_GAME, difficulty);	
+					newHighscore = playGame(CONTINUE_GAME, difficulty);
 					SDL_RenderClear(game.screen.renderer);
 					activeScreen = isMenu;
 					if (game.isRunning) {
@@ -181,6 +187,9 @@ int main(int argc, char *argv[]) {
 				break;
 			default:
 				break;
+			}
+			if (newHighscore.name[0] != '\0') {
+				updateHighscores(newHighscore);
 			}
 		}
 	}

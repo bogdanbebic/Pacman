@@ -351,7 +351,6 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 	PacStruct ghosts[4];
 	int livesCount;
 	int numberOfLivesTiles;
-	Highscore currentScore;
 	int level;
 	int delay;
 	int pacDotCount;
@@ -359,6 +358,9 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 	int gameContinuation = 0;//dodati u funkciju za inicijalizaciju
 	
 	PacStruct home;
+
+	Highscore currentScore;
+	currentScore.name[0] = '\0';
 
 	int srbendaMod = 0;
 
