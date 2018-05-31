@@ -334,7 +334,7 @@ void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, 
 *	currentScore is the score that 
 *	the player has accumulated in the game
 */
-Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
+Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum YesNo isMusicOn) {
 	extern int map[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 
 	int testMapTemp[HEIGHT_OF_MAP][WIDTH_OF_MAP];
@@ -435,11 +435,13 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 							srbendaMod ^= -1;	// MUST BE ALL 1 IN BINARY FORM FOR XOR
 							if (srbendaMod) {
 								PlaySound(NULL, NULL, SND_ASYNC);
-								PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC);
+								if (isMusicOn)
+									PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC);
 							}
 							else {
 								PlaySound(NULL, NULL, SND_ASYNC);
-								PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
+								if (isMusicOn)
+									PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 							}
 							break;
 							default:

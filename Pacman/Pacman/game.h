@@ -27,7 +27,7 @@ enum Direction getPacmanDirectionFromUser(SDL_Event event);
 
 void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home);
 
-Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty);
+Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum YesNo isMusicOn);
 
 void initGhosts(PacStruct ghosts[NUMBER_OF_GHOSTS]);
 

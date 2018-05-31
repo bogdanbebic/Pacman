@@ -392,6 +392,12 @@ void activateSettings(enum DifficultySpeed * currentDifficulty, enum YesNo * cur
 						if (selectedOption == music) {
 							selectedOption = musicOption;
 						}
+						if (*currentMusicOption) {
+							PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
+						}
+						else {
+							PlaySound(NULL, NULL, SND_ASYNC);
+						}
 					}
 					break;
 				case SDLK_RIGHT:

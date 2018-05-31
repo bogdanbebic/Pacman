@@ -131,39 +131,42 @@ int main(int argc, char *argv[]) {
 				// OVO PROMENITI AKO NE ZELIMO DA MOZE IGRAC DA NASTAVI DEMO
 				isGameCreated = 1;
 
-				playGame(DEMO_GAME, difficulty);	
+				playGame(DEMO_GAME, difficulty, isMusicOn);	
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
 				if (game.isRunning) {
 					createHeading();
 					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 				}
-				PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
+				if (isMusicOn)
+					PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 				break;
 			case isNew:
 				SDL_RenderClear(game.screen.renderer);
 				isGameCreated = 1;
-				newHighscore = playGame(NEW_GAME, difficulty);	
+				newHighscore = playGame(NEW_GAME, difficulty, isMusicOn);
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
 				if (game.isRunning) {
 					createHeading();
 					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 				}
-				PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
+				if (isMusicOn)
+					PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 				break;
 			case isContinue:
 				if (isGameCreated && saveGame.level != -1) {
 					SDL_RenderClear(game.screen.renderer);
 					isGameCreated = 1;
-					newHighscore = playGame(CONTINUE_GAME, difficulty);
+					newHighscore = playGame(CONTINUE_GAME, difficulty, isMusicOn);
 					SDL_RenderClear(game.screen.renderer);
 					activeScreen = isMenu;
 					if (game.isRunning) {
 						createHeading();
 						printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 					}
-					PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
+					if (isMusicOn)
+						PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 				}
 				else {
 					activeScreen = isMenu;
