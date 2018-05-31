@@ -1,11 +1,3 @@
-﻿  pauseMenuGraphics.c
-  main.c
-  highscores.c
-  graphicsMenu.c
-  ghosts.c
-  gameGraphics.c
-  game.c
-  AI_ghost.c
-  Generating Code...
+﻿  highscores.c
   Pacman.vcxproj -> C:\Users\Bogdan\Documents\GitHub\Pacman\Pacman\Debug\Pacman.exe
   Pacman.vcxproj -> C:\Users\Bogdan\Documents\GitHub\Pacman\Pacman\Debug\Pacman.pdb (Partial PDB)

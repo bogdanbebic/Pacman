@@ -45,6 +45,8 @@ int main(int argc, char *argv[]) {
 
 	Highscore newHighscore;
 
+	newHighscore.name[0] = '\0';
+	
 	// TODO: READ HIGHSCORES FROM FILE, NOT ALWAYS LIKE THIS
 	makeGenericHighscores();
 
@@ -190,6 +192,7 @@ int main(int argc, char *argv[]) {
 			}
 			if (newHighscore.name[0] != '\0') {
 				updateHighscores(newHighscore);
+				newHighscore.name[0] = '\0';
 			}
 		}
 	}

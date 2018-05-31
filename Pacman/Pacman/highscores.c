@@ -27,22 +27,24 @@ void makeGenericHighscores() {
 void updateHighscores(Highscore newHighscore) {
 	extern Highscore highscores[MAX_HIGHSCORES];
 	int i;
-	Highscore temp;
 
 	i = MAX_HIGHSCORES - 1;
 	
 	if (newHighscore.points > highscores[i].points) {
 		highscores[i] = newHighscore;
 	}
+	else {
+		return;
+	}
+
 	i--;
 
-	// OVO NE RADI, IZDEBAGUJ
 	while (i >= 0 && newHighscore.points > highscores[i].points) {
-		temp = highscores[i];
-		highscores[i] = newHighscore;
-		highscores[i + 1] = temp;
+		highscores[i + 1] = highscores[i];
 		i--;
 	}
+	i = (i == -1 ? 0 : i + 1);
+	highscores[i] = newHighscore;
 
 	return;
 }
