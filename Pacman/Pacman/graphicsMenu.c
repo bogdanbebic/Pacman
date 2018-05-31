@@ -216,6 +216,32 @@ void initSettingsTextures() {
 			settingsTextureManager.yellowFilledDiff[2] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
 			SDL_FreeSurface(tempSurface);
 			break;
+		case musicOption:
+			tempSurface = SDL_LoadBMP("Pictures/noWhite.bmp");
+			settingsTextureManager.yesNoWhite[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/yesWhite.bmp");
+			settingsTextureManager.yesNoWhite[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/noYellow.bmp");
+			settingsTextureManager.yesNoYellow[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/yesYellow.bmp");
+			settingsTextureManager.yesNoYellow[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/noWhiteFilled.bmp");
+			settingsTextureManager.yesNoWhiteFilled[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/yesWhiteFilled.bmp");
+			settingsTextureManager.yesNoWhiteFilled[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/noYellowFilled.bmp");
+			settingsTextureManager.yesNoYellowFilled[0] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			tempSurface = SDL_LoadBMP("Pictures/yesYellowFilled.bmp");
+			settingsTextureManager.yesNoYellowFilled[1] = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
+			SDL_FreeSurface(tempSurface);
+			break;
 		default:
 			break;
 		}
@@ -228,12 +254,13 @@ void initSettingsTextures() {
 	return;
 }
 
-void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed currentDifficulty, enum DifficultySpeed hoveringDiff) {
+void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed currentDifficulty, enum DifficultySpeed hoveringDiff, enum YesNo currentMusicOption, enum YesNo hoveringMusicOption) {
 	extern Game game;
 	extern SettingsMenuTextures settingsTextureManager;
 	SDL_Rect menuRect, pacmanRect, diffRect;
 	enum SettingsOptions menuOption;
 	enum DifficultySpeed tempDiffArray[NUMBER_OF_DIFFICULTIES] = {EASY, MEDIUM, HARD};
+	enum YesNo tempMusicArray[numberOfMusicOptions] = { no, yes };
 	int i;
 
 	for (menuOption = 0; menuOption < numberOfSettingsOptions; menuOption++) {
@@ -281,22 +308,54 @@ void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed 
 				SDL_RenderFillRect(game.screen.renderer, &pacmanRect);
 			}
 		}
+		if (menuOption == musicOption) {
+			for (i = numberOfMusicOptions - 1; i >= 0; i--) {
+				if (i == 1) {
+					diffRect.x = game.screen.width / 12;
+				}
+				else {
+					diffRect.x = game.screen.width / 12 + game.screen.width / 18;
+				}
+				diffRect.y = (8 + 3 * menuOption) * (game.screen.height / 44);
+				diffRect.w = game.screen.width / 18;
+				diffRect.h = game.screen.height / 22;
+				if (tempMusicArray[i] == currentMusicOption && tempMusicArray[i] == hoveringMusicOption && currentMenuOption == menuOption) {
+					SDL_RenderCopy(game.screen.renderer, settingsTextureManager.yesNoYellowFilled[i], NULL, &diffRect);
+				}
+				else if ((tempMusicArray[i] == currentMusicOption && tempMusicArray[i] != hoveringMusicOption) || (tempMusicArray[i] == currentMusicOption && currentMenuOption != menuOption)) {
+					SDL_RenderCopy(game.screen.renderer, settingsTextureManager.yesNoWhiteFilled[i], NULL, &diffRect);
+				}
+				else if (tempMusicArray[i] == hoveringMusicOption && tempMusicArray[i] != currentMusicOption && currentMenuOption == menuOption) {
+					SDL_RenderCopy(game.screen.renderer, settingsTextureManager.yesNoYellow[i], NULL, &diffRect);
+				}
+				else {
+					SDL_RenderCopy(game.screen.renderer, settingsTextureManager.yesNoWhite[i], NULL, &diffRect);
+				}
+			}
+			if (currentMenuOption == menuOption) {
+				SDL_RenderCopy(game.screen.renderer, settingsTextureManager.pacmanTexture, NULL, &pacmanRect);
+			}
+			else {
+				SDL_RenderFillRect(game.screen.renderer, &pacmanRect);
+			}
+		}
 	}
 	SDL_RenderPresent(game.screen.renderer);
 
 	return;
 }
 
-void activateSettings(enum DifficultySpeed * currentDifficulty) {
+void activateSettings(enum DifficultySpeed * currentDifficulty, enum YesNo * currentMusicOption) {
 	SDL_Event event;
 	extern Game game;
 	int settingsRunning = 1;
 	enum SettingsOptions selectedOption = gameDifficulty;
 	enum DifficultySpeed hoveringDiff = EASY;
+	enum YesNo hoveringMusicOption = yes;
 	createSettingsHeading(); 
 	while (game.isRunning) {
 		while (SDL_PollEvent(&event)) {
-			printSettings(selectedOption, *currentDifficulty, hoveringDiff);
+			printSettings(selectedOption, *currentDifficulty, hoveringDiff, *currentMusicOption, hoveringMusicOption);
 			switch (event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
@@ -324,6 +383,15 @@ void activateSettings(enum DifficultySpeed * currentDifficulty) {
 						if (selectedOption == diffOption) {
 							*currentDifficulty = hoveringDiff;
 						}
+						if (selectedOption == musicOption) {
+							*currentMusicOption = hoveringMusicOption;
+						}
+						if (selectedOption == gameDifficulty) {
+							selectedOption = diffOption;
+						}
+						if (selectedOption == music) {
+							selectedOption = musicOption;
+						}
 					}
 					break;
 				case SDLK_RIGHT:
@@ -341,6 +409,16 @@ void activateSettings(enum DifficultySpeed * currentDifficulty) {
 								break;
 							}
 						}
+						if (selectedOption == musicOption) {
+							switch (hoveringMusicOption) {
+							case yes:
+								hoveringMusicOption = no;
+								break;
+							case no:
+								hoveringMusicOption = yes;
+								break;
+							}
+						}
 					}
 					break;
 				case SDLK_LEFT:
@@ -355,6 +433,16 @@ void activateSettings(enum DifficultySpeed * currentDifficulty) {
 								break;
 							case HARD:
 								hoveringDiff = MEDIUM;
+								break;
+							}
+						}
+						if (selectedOption == musicOption) {
+							switch (hoveringMusicOption) {
+							case yes:
+								hoveringMusicOption = no;
+								break;
+							case no:
+								hoveringMusicOption = yes;
 								break;
 							}
 						}
@@ -746,6 +834,85 @@ void finalScoreScreen(int currScore, char * name, int * nameSave) {
 	}
 	name[currPos] = '\0';
 	return;
+}
+
+void createHighScoreHeading() {
+	SDL_Surface *HeadingSurface;
+	extern Game game;
+	SDL_Texture *HeadingTexture;
+	SDL_Rect HeadingRect;
+	TTF_Font* font = TTF_OpenFont("impact.ttf", 50);
+	TTF_Font * fontHeader = TTF_OpenFont("impact.ttf", 80);
+	SDL_Color white = { 255, 255, 255 };
+
+	HeadingSurface = TTF_RenderText_Solid(fontHeader, "HIGHSCORES", white);
+	HeadingTexture = SDL_CreateTextureFromSurface(game.screen.renderer, HeadingSurface);
+	SDL_FreeSurface(HeadingSurface);
+	HeadingRect.x = game.screen.width / 22;
+	HeadingRect.y = game.screen.height / 22;
+	HeadingRect.w = game.screen.width / 4;
+	HeadingRect.h = game.screen.height / 18;
+	SDL_RenderCopy(game.screen.renderer, HeadingTexture, NULL, &HeadingRect);
+	SDL_DestroyTexture(HeadingTexture);
+}
+
+void printHighScore() {
+	extern Highscore highscores[MAX_HIGHSCORES];
+	SDL_Event event;
+	SDL_Surface *surface;
+	SDL_Rect rect;
+	SDL_Texture *texture;
+	TTF_Font* font = TTF_OpenFont("impact.ttf", 80);
+	SDL_Color white = { 255, 255, 255 };
+	int i, highScoreRunning = 1, j;
+	char buffer[40] = {0}, temp[40], temp2[40], buffer1[40] = { 0 };
+	char string[3] = ". \0", whiteSpace[2] = " ";
+
+	createHighScoreHeading();
+
+	for (i = 0; i < MAX_HIGHSCORES; i++) {
+		j = i + 1;
+		_itoa_s(j, buffer, 40, 10);
+		strcat_s(buffer, 40, string);
+		_itoa_s(highscores[i].points, buffer1, 40, 10);
+		strcpy_s(temp, 40, highscores[i].name);
+		strcat_s(temp, 40, whiteSpace);
+		strcpy_s(temp2, 40, buffer);
+		strcat_s(temp, 40, buffer1);
+		strcat_s(temp2, 40, temp);
+
+		surface = TTF_RenderText_Solid(font, temp2, white);
+		texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+		SDL_FreeSurface(surface);
+
+		rect.x = game.screen.width / 12;
+		rect.y = (5 + 3 * i) * (game.screen.height / 48);
+		rect.w = game.screen.width / 6;
+		rect.h = game.screen.height / 24;
+		SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
+		SDL_DestroyTexture(texture);
+	}
+	SDL_RenderPresent(game.screen.renderer);
+	while (game.isRunning && highScoreRunning) {
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+				case SDLK_ESCAPE:
+					highScoreRunning = 0;
+					return;
+					break;
+				}
+				break;
+			case SDL_QUIT:
+				game.isRunning = SDL_FALSE;
+				highScoreRunning = 0;
+				return;
+				break;
+			}
+		}
+	}
+
 }
 
 /*

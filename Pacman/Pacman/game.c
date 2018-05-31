@@ -544,13 +544,6 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty) {
 				isLevelRunning = SDL_TRUE;
 				gameContinuation = 1;
 				break;
-			case settingsInGame:
-				SDL_RenderClear(game.screen.renderer);
-				activateSettings(&difficulty);
-				SDL_RenderClear(game.screen.renderer);
-				isLevelRunning = SDL_TRUE;
-				gameContinuation = 1;
-				break;
 			case mainMenu:
 				// OVO PROMENITI AKO NE ZELIMO DA MOZE IGRAC DA NASTAVI DEMO
 				saveGameForContinue(difficulty, delay, level, livesCount, numberOfLivesTiles, currentScore, isStartOfNewGame, home, pacman, ghosts, testMapTemp, pacDotCount);

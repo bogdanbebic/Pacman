@@ -11,6 +11,7 @@
 #include "game.h"
 #include "pauseMenuGraphics.h"
 #include "gameMap.h"
+#include "highscores.h"
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
@@ -21,7 +22,9 @@
 
 enum MenuOptions { demoGame, newGame, continueGame, highscore, settings, credits, quitGame, numberOfMenuOptions };
 
-enum SettingsOptions {gameDifficulty, diffOption, music, numberOfSettingsOptions}; //dodace se jos vrednosti
+enum SettingsOptions {gameDifficulty, diffOption, music, musicOption, numberOfSettingsOptions};
+
+enum YesOrNo {no, yes, numberOfMusicOptions};
 
 void gameInit();
 
@@ -39,9 +42,9 @@ void initSettingsTextures();
 
 void createSettingsHeading();
 
-void activateSettings(enum DifficultySpeed * currentDifficulty);
+void activateSettings(enum DifficultySpeed * currentDifficulty, enum YesNo * currentMusicOption);
 
-void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed currentDifficulty, enum DifficultySpeed hoveringDiff);
+void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed currentDifficulty, enum DifficultySpeed hoveringDiff, enum YesNo currentMusicOption, enum YesNo hoveringMusicOption);
 
 void initEndGameTextures();
 
@@ -51,6 +54,10 @@ void initFinalScoreTextures();
 
 void finalScoreScreen(int currScore, char * name, int *nameSave);
 
+void createHighScoreHeading();
+
+void printHighScore();
+
 typedef struct SettingsTexturesStruct {
 	SDL_Texture * whiteTextures[numberOfSettingsOptions];
 	SDL_Texture * yellowTextures[numberOfSettingsOptions];
@@ -58,6 +65,10 @@ typedef struct SettingsTexturesStruct {
 	SDL_Texture * yellowDifficulty[NUMBER_OF_DIFFICULTIES];
 	SDL_Texture * whiteFilledDiff[NUMBER_OF_DIFFICULTIES];
 	SDL_Texture * yellowFilledDiff[NUMBER_OF_DIFFICULTIES];
+	SDL_Texture * yesNoWhite[numberOfMusicOptions];
+	SDL_Texture * yesNoYellow[numberOfMusicOptions];
+	SDL_Texture * yesNoWhiteFilled[numberOfMusicOptions];
+	SDL_Texture * yesNoYellowFilled[numberOfMusicOptions];
 	SDL_Texture * pacmanTexture;
 }SettingsMenuTextures;
 

@@ -8,7 +8,7 @@
 #include "game.h"
 #include "gameMap.h"
 
-enum PauseMenuOptions { continueWithGame, settingsInGame, mainMenu, finishGame, numberOfPauseMenuOptions, quitInGame};
+enum PauseMenuOptions { continueWithGame, mainMenu, finishGame, numberOfPauseMenuOptions, quitInGame};
 
 enum PauseMenuOptions ActivatePauseMenu(int difficulty);
 

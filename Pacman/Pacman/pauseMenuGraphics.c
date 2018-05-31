@@ -16,10 +16,6 @@ void initPauseMenuTextures() {
 			tempSurfaceYellow = TTF_RenderText_Solid(font, "CONTINUE", yellow);
 			tempSurfaceWhite = TTF_RenderText_Solid(font, "CONTINUE", white);
 			break;
-		case settingsInGame:
-			tempSurfaceYellow = TTF_RenderText_Solid(font, "SETTINGS", yellow);
-			tempSurfaceWhite = TTF_RenderText_Solid(font, "SETTINGS", white);
-			break;
 		case mainMenu:
 			tempSurfaceYellow = TTF_RenderText_Solid(font, "MAIN MENU", yellow);
 			tempSurfaceWhite = TTF_RenderText_Solid(font, "MAIN MENU", white);
@@ -124,8 +120,6 @@ enum PauseMenuOptions ActivatePauseMenu(int difficulty) {
 					switch (selectedOption) {
 					case continueWithGame:
 						return continueWithGame;
-					case settingsInGame:
-						return settingsInGame;
 					case mainMenu:
 						return mainMenu;
 					case finishGame:

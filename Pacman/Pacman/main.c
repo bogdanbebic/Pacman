@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
 	int isGameCreated = 0;
 	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
 	enum DifficulySpeed difficulty = MEDIUM;
+	enum YesNo isMusicOn = yes;
 	//SDL_Event event;
 
 	Highscore newHighscore;
@@ -169,11 +170,19 @@ int main(int argc, char *argv[]) {
 				}
 				break;
 			case isHighscore:
-				// TODO: implement
+				SDL_RenderClear(game.screen.renderer);
+				printHighScore();
+				SDL_RenderClear(game.screen.renderer);
+				activeScreen = isMenu;
+				if (game.isRunning) {
+					createHeading();
+					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
+				}
+				break;
 				break;
 			case isSettings:
 				SDL_RenderClear(game.screen.renderer);
-				activateSettings(&difficulty);
+				activateSettings(&difficulty, &isMusicOn);
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
 				if (game.isRunning) {
