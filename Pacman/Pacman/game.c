@@ -188,10 +188,8 @@ void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacm
 	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 		if (pacmanGhostCheck(pacman, ghosts[i]) && (ghosts[i].gameMode == Reverse || ghosts[i].gameMode == EndReverse)) {
 			currentScore->points += 200;
-			// TODO: VRATI DUHA NA POCETNO MESTO !!!!!!!!!
 		}
 	}
-	// TODO: update-ovanje scora kada pacman pojede vockice
 	updateScoreBox(*currentScore);
 	return;
 }
@@ -220,11 +218,7 @@ int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]) {
 *	parameters
 */
 void initLevel(PacStruct *pacman, PacStruct *ghosts) {
-	// Inicijalizuje poziciju Pacman-a
 	initPacmanPosition(pacman);
-	// Crtanje Pacman-a
-	//drawInitPacman(*pacman);
-	// Inicijalizuje pozicije duhova
 	initGhosts(ghosts);
 	return;
 }
@@ -238,9 +232,6 @@ void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *l
 	*isStartOfNewGame = 1;
 	*level = -1;
 	*delay = (int)difficulty;
-
-	// broj rezervisanih pozicija za zivote na mapi
-	// i broj samih zivota odredjen tezinom igre
 	switch (difficulty) {
 	case EASY:
 		*numberOfLivesTiles = *livesCount = 5;
@@ -357,7 +348,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 	int delay;
 	int pacDotCount;
 	int isStartOfNewGame;
-	int gameContinuation = 0;//dodati u funkciju za inicijalizaciju
+	int gameContinuation = 0;
 	
 	PacStruct home;
 
@@ -372,7 +363,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 	int i;
 	int isPacmanEaten = 0;
 	int nameSave;
-	pacDotCount = countPacDots(map); // Power Pellet-i nisu u broju dotova!!!
+	pacDotCount = countPacDots(map); // Power Pellets are not counted as pacDots!!!
 
 	switch (gameType) {
 	case DEMO_GAME:
@@ -399,8 +390,6 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 	
 	int cnt = 0;
 	while (isLevelRunning && livesCount && delay - 2 * level > 0 && game.isRunning) {
-
-			// TODO: ovo popraviti, ne radi za continue game
 		if (!gameContinuation || isStartOfNewGame)
 			initLevel(&pacman, ghosts);
 		else {
@@ -412,7 +401,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 		updateLevelBox(level);
 
 		timer_tick = 0;
-		if (isStartOfNewGame || pacDotCount == 0) { // OVO JE ZA NOVI NIVO
+		if (isStartOfNewGame || pacDotCount == 0) {
 			if (isStartOfNewGame) {
 				isStartOfNewGame = 0;
 			}
@@ -503,10 +492,8 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 				wallCheckAndMove(testMapTemp, &pacman);
 			}
 
-			// azuriranje Score-a, da li je Pacman pojeo nesto
 			updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore, &timer_tick_POWER_PELLET, &isPowerPelletEaten);
 
-			// provera -> pacman i duh na istom polju pre pomeranja duhova
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 				if (ghosts[i].gameMode == Normal) {
 					isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
@@ -515,12 +502,11 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 					ghosts[i].gameMode = GhostEaten;
 				}
 			}
-
-			// Poziv funkcije za updateovanje pacmana i duhova 			
+		
 			updateGhosts(testMapTemp, ghosts, timer_tick);
 			updatePacman(testMapTemp, pacman, timer_tick);
 
-			// NOVI DIRECTION-I DUHOVA
+			// NEW GHOSTS DIRECTIONS
 			if (timer_tick % 6 == 0) {
 				ghosts[0] = BlinkyAI(map, pacman, ghosts, 0);
 				ghosts[1] = InkyAI(map, pacman, ghosts, 1);
@@ -528,7 +514,6 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 				ghosts[3] = ClydeAI(map, pacman, ghosts, 3);
 				for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 					if (ghosts[i].gameMode == Reverse || ghosts[i].gameMode == EndReverse) {
-						// ghosts[i].direction = (ghosts[i].direction + (NUMBER_OF_DIRECTIONS / 2))  % NUMBER_OF_DIRECTIONS;
 						changeDirectionForReverseGhost(map, &ghosts[i]);
 					}
 					else if (ghosts[i].gameMode == GhostEaten) {
@@ -542,7 +527,6 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 				}
 			}
 
-			// provera -> pacman i duh na istom polju kad se pomere duhovi
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 				if (ghosts[i].gameMode == Normal) {
 					isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
@@ -551,10 +535,9 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 					ghosts[i].gameMode = GhostEaten;
 				}
 			}
-			//provera broja zivota pacman-a
+
 			if (isPacmanEaten) {
 				livesCount--;
-				// Azurira livesBox sa trenutnim brojem zivota
 				updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
 			}
 
@@ -581,20 +564,18 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 			}
 		}
 
-		isPacmanEaten = 0;	// KADA SE POJEDE PACMAN, MORA DA SE RESETUJE
+		isPacmanEaten = 0;
 	}
 	if ((isGameFinished || !livesCount) && game.isRunning) {
 		SDL_RenderClear(game.screen.renderer);
 		endGameScreen();
 		if (game.isRunning) {
-			nameSave = 1; // da li zelimo ili ne da sacuvamo ime sa konacnim score-om
+			nameSave = 1;
 			SDL_RenderClear(game.screen.renderer);
 			finalScoreScreen(currentScore.points, currentScore.name, &nameSave);
 			SDL_RenderClear(game.screen.renderer);
 		}
 	}
 	
-	// ako je hteo da sacuva partiju, vracamo neki flag (verovatno -1)
-	// ako je sacuvao partiju, moramo da sacuvamo partiju u binaran fajl
 	return currentScore;
 }

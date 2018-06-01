@@ -49,7 +49,7 @@ void gameInit() {
 *	Quits the game and destroys the
 *	renderers and windows
 */
-void gameQuit() { //TODO: Delete all textures at the end
+void gameQuit() { // TODO: Delete all textures at the end
 	extern Game game;
 	SDL_DestroyRenderer(game.screen.renderer);
 	SDL_DestroyWindow(game.screen.window);
@@ -62,6 +62,9 @@ void gameQuit() { //TODO: Delete all textures at the end
 	return;
 } 
 
+/*
+*	Initializes the textures for menu
+*/
 void initTexturesForMenu(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture ** PacmanTexture) {
 	SDL_Surface * PacmanSurface, *menuSurfaceYellow, *menuSurfaceWhite;
 	enum MenuOptions menuOption;
@@ -113,6 +116,7 @@ void initTexturesForMenu(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTex
 	SDL_FreeSurface(PacmanSurface);
 	return;
 }
+
 
 void createHeading() {
 	extern Game game;

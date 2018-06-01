@@ -12,11 +12,8 @@ SDL_Texture* ScoreBoxTexture, *LivesBoxTexture;
 extern GameTextures gameTexturesManager;
 
 /*
-*	Returns the previous position of pacStruct
-*	Return value:
-*	PacStruct containing the previous position
+*	Initializes all game textures
 */
-
 void initGameTextures() {
 	int i, j;
 	SDL_Surface * PacSurface, *TempSurface;
@@ -24,7 +21,7 @@ void initGameTextures() {
 	SDL_Color yellow = { 255, 255, 0 };
 	char buffer[2];
 
-	//pacman open mouth textures
+	// Pacman open mouth textures
 	PacSurface = SDL_LoadBMP("Pictures/pacmanU.bmp");
 	gameTexturesManager.pacmanOpenMouthTextures[DIRECTION_UP] = SDL_CreateTextureFromSurface(game.screen.renderer, PacSurface);
 	SDL_FreeSurface(PacSurface);
@@ -38,7 +35,7 @@ void initGameTextures() {
 	gameTexturesManager.pacmanOpenMouthTextures[DIRECTION_DOWN] = SDL_CreateTextureFromSurface(game.screen.renderer, PacSurface);
 	SDL_FreeSurface(PacSurface);
 
-	//pacman closed mouth textures
+	// Pacman closed mouth textures
 	PacSurface = SDL_LoadBMP("Pictures/pacmanUC.bmp");
 	gameTexturesManager.pacmanShutMouthTextures[DIRECTION_UP] = SDL_CreateTextureFromSurface(game.screen.renderer, PacSurface);
 	SDL_FreeSurface(PacSurface);
@@ -52,7 +49,7 @@ void initGameTextures() {
 	gameTexturesManager.pacmanShutMouthTextures[DIRECTION_DOWN] = SDL_CreateTextureFromSurface(game.screen.renderer, PacSurface);
 	SDL_FreeSurface(PacSurface);
 
-	//static environment textures
+	// Static environment textures
 	TempSurface = SDL_LoadBMP("Pictures/WallGreenEmpty.bmp");
 	gameTexturesManager.wallTexture = SDL_CreateTextureFromSurface(game.screen.renderer, TempSurface);
 	SDL_FreeSurface(TempSurface);
@@ -66,7 +63,7 @@ void initGameTextures() {
 	gameTexturesManager.powerPelletTexture = SDL_CreateTextureFromSurface(game.screen.renderer, TempSurface);
 	SDL_FreeSurface(TempSurface);
 
-	//ghost textures, reversed ghost texture and eaten ghost texture
+	// Ghost textures, reversed ghost texture and eaten ghost texture
 	PacSurface = SDL_LoadBMP("Pictures/Blinky.bmp");
 	gameTexturesManager.ghostTextures[0] = SDL_CreateTextureFromSurface(game.screen.renderer, PacSurface);
 	SDL_FreeSurface(PacSurface);
@@ -88,7 +85,7 @@ void initGameTextures() {
 	gameTexturesManager.eatenGhostTexture = SDL_CreateTextureFromSurface(game.screen.renderer, PacSurface);
 	SDL_FreeSurface(PacSurface);
 
-	//In-game box textures
+	// In-game box textures
 	TempSurface = SDL_LoadBMP("Pictures/pacmanR.bmp");
 	gameTexturesManager.livesBoxTexture = SDL_CreateTextureFromSurface(game.screen.renderer, TempSurface);
 	SDL_FreeSurface(TempSurface);
@@ -100,7 +97,7 @@ void initGameTextures() {
 	SDL_FreeSurface(TempSurface);
 
 
-	//in-game rects for score and level
+	// In-game rects for score and level
 	gameTexturesManager.levelBoxRect.x = (WIDTH_OF_MAP - 5) * game.screen.width / (WIDTH_OF_MAP * 3);
 	gameTexturesManager.levelBoxRect.y = 0;
 	gameTexturesManager.levelBoxRect.w = 2 * game.screen.width / (WIDTH_OF_MAP * 3);
@@ -111,7 +108,7 @@ void initGameTextures() {
 	gameTexturesManager.scoreBoxRect.w = 4 * game.screen.width / (WIDTH_OF_MAP * 3);
 	gameTexturesManager.scoreBoxRect.h = 2 * game.screen.height / (HEIGHT_OF_MAP * 2);
 
-	//textures and rects for score digits
+	// Textures and rects for score digits
 	for (i = 0; i < NUMBER_OF_DIGITS; i++) {
 		gameTexturesManager.scoreDigitRect[i].x = 4 * game.screen.width / (WIDTH_OF_MAP * 3) + 2 * i * game.screen.width / (WIDTH_OF_MAP * 9);
 		gameTexturesManager.scoreDigitRect[i].y = 0;
@@ -123,7 +120,7 @@ void initGameTextures() {
 		SDL_FreeSurface(TempSurface);
 	}
 
-	//rects for lvl digits
+	// Rects for lvl digits
 	for (i = 0; i < NUMBER_OF_LVL_DIGITS; i++) {
 		gameTexturesManager.levelDigitRect[i].x = (WIDTH_OF_MAP - 3) * game.screen.width / (WIDTH_OF_MAP * 3) + 2 * i * game.screen.width / (WIDTH_OF_MAP * 9);
 		gameTexturesManager.levelDigitRect[i].y = 0;
@@ -131,7 +128,7 @@ void initGameTextures() {
 		gameTexturesManager.levelDigitRect[i].h = 2 * game.screen.height / (HEIGHT_OF_MAP * 2);
 	}
 
-	//rectangles representing the map
+	// Rectangles representing the map
 	for (i = 0; i < HEIGHT_OF_MAP; i++) {
 		for (j = 0; j < WIDTH_OF_MAP; j++) {
 			gameTexturesManager.mapTileRects[i][j].x = j * game.screen.width / (WIDTH_OF_MAP * 3);
@@ -143,6 +140,11 @@ void initGameTextures() {
 	return;
 }
 
+/*
+*	Gets old position of pacStruct
+*	Return value:
+*	PacStruct with old postition
+*/
 static PacStruct getOldPacPosition(PacStruct pacStruct) {
 	PacStruct oldPosition;
 
@@ -172,7 +174,10 @@ static PacStruct getOldPacPosition(PacStruct pacStruct) {
 	return oldPosition;
 }
 
-
+/*
+*	Updates GUI level box
+*	according to the argument level
+*/
 void updateLevelBox(int level) {
 	extern Game game;
 	int i = 0, j = 0, bufferArray[NUMBER_OF_LVL_DIGITS] = { 0 };
@@ -266,68 +271,15 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman) {
 		SDL_RenderPresent(game.screen.renderer);
 	}
 	SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanOpenMouthTextures[DIRECTION_RIGHT], NULL, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
-	SDL_RenderPresent(game.screen.renderer); //ako je unutar for-ova koji prave mapu, uspori znatno, zato je pomeren ovde
-	return;
-}
-
-/*	
-*	Unused function kept for historical purposes
-*
-*	Deletes pacStruct from the game screen,
-*	draws background instead of pacStruct
-*/
-void deletePacmanGhost(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacStruct) {
-
-	extern SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
-	extern SDL_Texture* tile[HEIGHT_OF_MAP][WIDTH_OF_MAP];
-	extern SDL_Rect tile_rect[HEIGHT_OF_MAP][WIDTH_OF_MAP];
-
-	if (map[pacStruct.iPosition][pacStruct.jPosition] == WALL)
-		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/WallGreenEmpty.bmp");
-	else if (map[pacStruct.iPosition][pacStruct.jPosition] == PAC_DOT)
-		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/pacDot.bmp");
-	else if (map[pacStruct.iPosition][pacStruct.jPosition] == POWER_PELLET)
-		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/powerPellet1.bmp");
-	else
-		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/background.bmp");
-
-	pacStruct = getOldPacPosition(pacStruct);
-
-	if (map[pacStruct.iPosition][pacStruct.jPosition] == WALL)
-		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/WallGreenEmpty.bmp");
-	else if (map[pacStruct.iPosition][pacStruct.jPosition] == PAC_DOT)
-		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/pacDot.bmp");
-	else if (map[pacStruct.iPosition][pacStruct.jPosition] == POWER_PELLET)
-		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/powerPellet1.bmp");
-	else
-		surface[pacStruct.iPosition][pacStruct.jPosition] = SDL_LoadBMP("Pictures/background.bmp");
-
-	SDL_RenderFillRect(game.screen.renderer, &tile_rect[pacStruct.iPosition][pacStruct.jPosition]);
-
-	tile[pacStruct.iPosition][pacStruct.jPosition] = SDL_CreateTextureFromSurface(game.screen.renderer, surface[pacStruct.iPosition][pacStruct.jPosition]);
-
-	SDL_RenderCopy(game.screen.renderer, tile[pacStruct.iPosition][pacStruct.jPosition], NULL, &tile_rect[pacStruct.iPosition][pacStruct.jPosition]);
-	SDL_FreeSurface(surface[pacStruct.iPosition][pacStruct.jPosition]);
-	SDL_DestroyTexture(tile[pacStruct.iPosition][pacStruct.jPosition]);
 	SDL_RenderPresent(game.screen.renderer);
 	return;
 }
 
 /*
-*	Draws pacman on it's initial position
-*	on the game screen
-*/
-void drawInitPacman(PacStruct pacman) {
-	surface[pacman.iPosition][pacman.jPosition] = SDL_LoadBMP("Pictures/pacmanR.bmp");
-	return;
-}
-
-/*
-*	Updates arguments map and pacman and ghosts
-*	according to their values and values of
+*	Updates arguments map and pacman
+*	according to its values and values of
 *	arguments delay and timer_tick
 */
-
 void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int timer_tick) {
 	extern Game game;
 	PacStruct oldPosition = getOldPacPosition(pacman);
@@ -344,6 +296,11 @@ void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int ti
 	return;
 }
 
+/*
+*	Updates arguments map and ghosts
+*	according to their values and values of
+*	arguments delay and timer_tick
+*/
 void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_OF_GHOSTS], int timer_tick) {
 	int i;
 	extern Game game;
@@ -361,13 +318,6 @@ void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_
 		}
 		else if (map[oldPositionGhost.iPosition][oldPositionGhost.jPosition] == NO_WALL){
 			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.backgroundTexture, NULL, &gameTexturesManager.mapTileRects[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
-		}
-		else {
-			/*for (j = 0; j < NUMBER_OF_GHOSTS; i++) {
-				if (i != j) {
-					if ()
-				}
-			}*/ 
 		}
 
 		if (ghosts[i].gameMode == Normal) {

@@ -27,9 +27,6 @@
     <ClCompile Include="gameGraphics.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AI_ghost.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ghosts.c">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -153,7 +153,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AI_ghost.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="gameGraphics.c" />
     <ClCompile Include="ghosts.c" />

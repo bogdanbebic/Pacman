@@ -7,6 +7,11 @@ typedef struct {
 	int count;
 } BFS_solution;
 
+/*
+*	Finds next position using BFS
+*	Return value:
+*	BFS_solution (direction and number of steps in solution)
+*/
 BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghostY, int pacmanX, int pacmanY) {
 	short visited[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 	int x, y;
@@ -91,6 +96,11 @@ BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghos
 	return sol;
 }
 
+/*
+*	Finds next AI move for Blinky
+*	Return value:
+*	PacStruct containing next position of Blinky
+*/
 PacStruct BlinkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int currentGhostIndex) {
 	PacStruct sol = ghosts[currentGhostIndex];
 	int ghostY = ghosts[currentGhostIndex].iPosition;
@@ -156,6 +166,11 @@ BFS_solution PinkyAI_logic(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int
 	return solution;
 }
 
+/*
+*	Finds next AI move for Pinky
+*	Return value:
+*	PacStruct containing next position of Pinky
+*/
 PacStruct PinkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int currentGhostIndex) {
 	PacStruct sol = ghosts[currentGhostIndex];
 	int ghostY = ghosts[currentGhostIndex].iPosition;
@@ -168,6 +183,11 @@ PacStruct PinkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStr
 	return sol;
 }
 
+/*
+*	Finds next AI move for Inky
+*	Return value:
+*	PacStruct containing next position of Inky
+*/
 PacStruct InkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int currentGhostIndex) {
 	PacStruct sol = ghosts[currentGhostIndex];
 	int ghostY = ghosts[currentGhostIndex].iPosition;
@@ -228,6 +248,11 @@ PacStruct InkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStru
 	return sol;
 }
 
+/*
+*	Finds next AI move for Clyde
+*	Return value:
+*	PacStruct containing next position of Clyde
+*/
 PacStruct ClydeAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int currentGhostIndex) {
 	PacStruct sol = ghosts[currentGhostIndex];
 	int ghostY = ghosts[currentGhostIndex].iPosition;
