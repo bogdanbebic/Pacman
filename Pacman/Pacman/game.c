@@ -11,9 +11,10 @@ SaveGame saveGame;
  *	with saved game parameters.
  *	Sets values for all arguments except difficulty
  */
-void initContinueGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home, int *pacDotCount) {
+void initContinueGame(enum DifficultySpeed *difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home, int *pacDotCount) {
 	extern SaveGame saveGame;
 	
+	*difficulty = saveGame.difficulty;
 	*delay = saveGame.delay;
 	*level = saveGame.level;
 	*livesCount = saveGame.livesCount;
@@ -168,16 +169,30 @@ int pacmanGhostCheck(PacStruct pacman, PacStruct ghost) {
 *	Reverse if pacman has eaten a power pellet
 *	gameMode (unchanged) otherwise
 */
-void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[], int * pacDotCount, Highscore * currentScore, int *timer_tick, int *isPowerPelletEaten) {
+void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[], int * pacDotCount, Highscore * currentScore, int *timer_tick, int *isPowerPelletEaten, enum DifficultySpeed difficulty) {
 	int i;
+	int difficultyCoefficient;
+	switch (difficulty) {
+	case EASY:
+		difficultyCoefficient = 1;
+		break;
+	case MEDIUM:
+		difficultyCoefficient = 2;
+		break;
+	case HARD:
+		difficultyCoefficient = 4;
+		break;
+	default:
+		break;
+	}
 	if (map[pacman.iPosition][pacman.jPosition] == PAC_DOT) {
-		currentScore->points += 10;
+		currentScore->points += 5 * difficultyCoefficient;
 		map[pacman.iPosition][pacman.jPosition] = NO_WALL;
 		(*pacDotCount)--;
 	}
 	else if (map[pacman.iPosition][pacman.jPosition] == POWER_PELLET) {
 		map[pacman.iPosition][pacman.jPosition] = NO_WALL;
-		currentScore->points += 50;
+		currentScore->points += 25 * difficultyCoefficient;
 		*timer_tick = 0;
 		*isPowerPelletEaten = 1;
 		for (i = 0; i < NUMBER_OF_GHOSTS; i++)
@@ -187,7 +202,7 @@ void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacm
 	}
 	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 		if (pacmanGhostCheck(pacman, ghosts[i]) && (ghosts[i].gameMode == Reverse || ghosts[i].gameMode == EndReverse)) {
-			currentScore->points += 200;
+			currentScore->points += 100 * difficultyCoefficient;
 		}
 	}
 	updateScoreBox(*currentScore);
@@ -372,7 +387,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 		break;
 	case CONTINUE_GAME:
 		gameContinuation = 1;
-		initContinueGame(difficulty, &delay, &level, &livesCount, &numberOfLivesTiles, &currentScore, &isStartOfNewGame, &home, &pacDotCount);
+		initContinueGame(&difficulty, &delay, &level, &livesCount, &numberOfLivesTiles, &currentScore, &isStartOfNewGame, &home, &pacDotCount);
 		int i, j;
 		for (i = 0; i < HEIGHT_OF_MAP; i++) {
 			for (j = 0; j < WIDTH_OF_MAP; j++) {
@@ -396,7 +411,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 			gameContinuation = 0;
 		}
 		printInitMap(testMapTemp, pacman);
-		updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore, &timer_tick_POWER_PELLET, &isPowerPelletEaten);
+		updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore, &timer_tick_POWER_PELLET, &isPowerPelletEaten, difficulty);
 		updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
 		updateLevelBox(level);
 
@@ -492,7 +507,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 				wallCheckAndMove(testMapTemp, &pacman);
 			}
 
-			updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore, &timer_tick_POWER_PELLET, &isPowerPelletEaten);
+			updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore, &timer_tick_POWER_PELLET, &isPowerPelletEaten, difficulty);
 
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 				if (ghosts[i].gameMode == Normal) {

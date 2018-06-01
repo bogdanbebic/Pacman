@@ -1,4 +1,7 @@
 #include "highscores.h"
+#include <stdio.h>
+
+#define HIGHSCORES_FILE_PATH ("highscores.hsc")
 
 Highscore highscores[MAX_HIGHSCORES];
 
@@ -54,8 +57,22 @@ void updateHighscores(Highscore newHighscore) {
 */
 void readHighscoresFromFile() {
 	extern Highscore highscores[MAX_HIGHSCORES];
+	int i;
+	FILE *highscoresFile;
 
-	// TODO: implement
+	fopen_s(&highscoresFile, HIGHSCORES_FILE_PATH, "rb");
+
+	if (highscoresFile != NULL) {
+		for (i = 0; i < MAX_HIGHSCORES; i++) {
+			fread(&highscores[i], sizeof(highscores[i]), 1, highscoresFile);
+		}
+		fclose(highscoresFile);
+	}
+	else {
+		makeGenericHighscores();
+	}
+
+	// TODO: implement decryption
 
 	return;
 }
@@ -65,8 +82,18 @@ void readHighscoresFromFile() {
 */
 void writeHighscoresToFile() {
 	extern Highscore highscores[MAX_HIGHSCORES];
-	
-	// TODO: implement
+	int i;
+	FILE *highscoresFile;
+
+	fopen_s(&highscoresFile, HIGHSCORES_FILE_PATH, "wb");
+
+	// TODO: implement encryption
+
+	for (i = 0; i < MAX_HIGHSCORES; i++) {
+		fwrite(&highscores[i], sizeof(highscores[i]), 1, highscoresFile);
+	}
+
+	fclose(highscoresFile);
 
 	return;
 }

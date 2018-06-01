@@ -15,7 +15,7 @@
 
 enum GameType { NEW_GAME, CONTINUE_GAME, DEMO_GAME };
 
-void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[], int * pacDotCount, Highscore * currentScore, int *timer_tick, int *isPowerPelletEaten);
+void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[], int * pacDotCount, Highscore * currentScore, int *timer_tick, int *isPowerPelletEaten, enum DifficultySpeed difficulty);
 
 int wallCheckAndMove(int [HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *);
 
@@ -37,7 +37,7 @@ int pacmanGhostCheck(PacStruct pacman, PacStruct ghost);
 
 int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]);
 
-void initContinueGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home, int *pacDotCount);
+void initContinueGame(enum DifficultySpeed *difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home, int *pacDotCount);
 
 void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, int numberOfLivesTiles, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount);
 

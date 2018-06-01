@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
 	newHighscore.name[0] = '\0';
 	
 	// TODO: READ HIGHSCORES FROM FILE, NOT ALWAYS LIKE THIS
-	makeGenericHighscores();
+	readHighscoresFromFile();
 
 	PlaySound(TEXT("Music/PacmanFever"), NULL, SND_LOOP | SND_ASYNC);
 
@@ -208,7 +208,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-
+	writeHighscoresToFile();
 	game.quit();
 
 	return 0;
