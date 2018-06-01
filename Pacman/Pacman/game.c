@@ -456,12 +456,12 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 							if (srbendaMod) {
 								PlaySound(NULL, NULL, SND_ASYNC);
 								if (isMusicOn)
-									PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC);
+									PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_LOOP | SND_ASYNC);
 							}
 							else {
 								PlaySound(NULL, NULL, SND_ASYNC);
 								if (isMusicOn)
-									PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
+									PlaySound(TEXT("Music/PacmanFever"), NULL, SND_LOOP | SND_ASYNC);
 							}
 							break;
 							default:
