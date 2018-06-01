@@ -373,8 +373,11 @@ void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_
 		if (ghosts[i].gameMode == Normal) {
 			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.ghostTextures[i], NULL, &gameTexturesManager.mapTileRects[ghosts[i].iPosition][ghosts[i].jPosition]);
 		}
-		else if (ghosts[i].gameMode == Reverse || (ghosts[0].gameMode == EndReverse && (timer_tick % 2))) {
+		else if (ghosts[i].gameMode == Reverse || (ghosts[i].gameMode == EndReverse && (timer_tick % 2))) {
 			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.reverseGhostTexture, NULL, &gameTexturesManager.mapTileRects[ghosts[i].iPosition][ghosts[i].jPosition]);
+		}
+		else if (ghosts[i].gameMode == EndReverse && (timer_tick % 2 == 0)) {
+			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.backgroundTexture, NULL, &gameTexturesManager.mapTileRects[ghosts[i].iPosition][ghosts[i].jPosition]);
 		}
 		else if (ghosts[i].gameMode == GhostEaten) {
 			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.eatenGhostTexture, NULL, &gameTexturesManager.mapTileRects[ghosts[i].iPosition][ghosts[i].jPosition]);

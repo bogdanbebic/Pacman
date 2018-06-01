@@ -475,9 +475,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 						if (temp != DIRECTION_NONE)
 							pacman.direction = temp;
 					}
-					else {
-						pacman = PacmanDemo(map, pacman, ghosts, timer_tick);// TODO: Implement Pacman AI for demo game
-					}
+					
 
 					switch (event.key.keysym.sym) {
 					case SDLK_ESCAPE:
@@ -496,10 +494,12 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 			}
 
 			if (timer_tick % 4 == 0) {
-				PacStruct pacTry = pacman;
-				pacTry = PacmanDemo(testMapTemp, pacman, ghosts, timer_tick);
-				if(wallCheckAndMove(testMapTemp, &pacTry))
-					pacman= PacmanDemo(testMapTemp, pacman, ghosts, timer_tick);
+				if (gameType == DEMO_GAME) {
+					PacStruct pacTry = pacman;
+					pacTry = PacmanDemo(testMapTemp, pacman, ghosts, timer_tick);
+					if (wallCheckAndMove(testMapTemp, &pacTry))
+						pacman = PacmanDemo(testMapTemp, pacman, ghosts, timer_tick);
+				}
 				wallCheckAndMove(testMapTemp, &pacman);
 			}
 
@@ -521,7 +521,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 			updatePacman(testMapTemp, pacman, timer_tick);
 
 			// NOVI DIRECTION-I DUHOVA
-			if (timer_tick % 7 == 0) {
+			if (timer_tick % 6 == 0) {
 				ghosts[0] = BlinkyAI(map, pacman, ghosts, 0);
 				ghosts[1] = InkyAI(map, pacman, ghosts, 1);
 				ghosts[2] = PinkyAI(map, pacman, ghosts, 2);

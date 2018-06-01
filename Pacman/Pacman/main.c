@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
 				// OVO PROMENITI AKO NE ZELIMO DA MOZE IGRAC DA NASTAVI DEMO
 				isGameCreated = 1;
 
-				playGame(DEMO_GAME, difficulty, isMusicOn);	
+				playGame(DEMO_GAME, difficulty, isMusicOn);
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
 				if (game.isRunning) {

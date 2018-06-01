@@ -1,3 +1,3 @@
-﻿  ghosts.c
-c:\users\user\documents\github\pacman\pacman\pacman\ghosts.c(323): warning C4013: 'countPacDots' undefined; assuming extern returning int
-  Pacman.vcxproj -> C:\Users\User\Documents\GitHub\Pacman\Pacman\Debug\Pacman.exe
+﻿  gameGraphics.c
+  Pacman.vcxproj -> C:\Users\Bogdan\Documents\GitHub\Pacman\Pacman\Debug\Pacman.exe
+  Pacman.vcxproj -> C:\Users\Bogdan\Documents\GitHub\Pacman\Pacman\Debug\Pacman.pdb (Partial PDB)

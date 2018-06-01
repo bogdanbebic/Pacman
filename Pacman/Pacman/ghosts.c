@@ -1,5 +1,6 @@
 #include "ghosts.h"
 
+extern int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]);
 
 typedef struct {
 	int direction;
