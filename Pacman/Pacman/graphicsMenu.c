@@ -117,7 +117,6 @@ void initTexturesForMenu(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTex
 	return;
 }
 
-
 void createHeading() {
 	extern Game game;
 	SDL_Surface *HeadingSurface;
@@ -133,6 +132,37 @@ void createHeading() {
 	HeadingRect.h = game.screen.height / 18;
 	SDL_RenderCopy(game.screen.renderer, HeadingTexture, NULL, &HeadingRect);
 	SDL_DestroyTexture(HeadingTexture);
+}
+
+/*
+*	Prints the menu on the game screen
+*	using the argument enum menuOptions currentMenuOption
+*	for printing all of the menu options
+*/
+void printMenu(enum menuOptions currentMenuOption, SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture * PacmanTexture) {
+	SDL_Rect menuRect, pacmanRect;
+	enum MenuOptions menuOption;
+
+	for (menuOption = 0; menuOption < numberOfMenuOptions; menuOption++) {
+		menuRect.x = game.screen.width / 12;
+		menuRect.y = (5 + 3 * menuOption) * (game.screen.height / 48);
+		menuRect.w = game.screen.width / 6;
+		menuRect.h = game.screen.height / 24;
+		pacmanRect.x = game.screen.width / 24;
+		pacmanRect.y = (5 + 3 * menuOption) * (game.screen.height / 48);
+		pacmanRect.w = game.screen.width / 30;
+		pacmanRect.h = game.screen.height / 24;
+		if (currentMenuOption == menuOption) {
+			SDL_RenderCopy(game.screen.renderer, menuTextureYellow[menuOption], NULL, &menuRect);
+			SDL_RenderCopy(game.screen.renderer, PacmanTexture, NULL, &pacmanRect);
+		}
+		else {
+			SDL_RenderCopy(game.screen.renderer, menuTextureWhite[menuOption], NULL, &menuRect);
+			SDL_RenderFillRect(game.screen.renderer, &pacmanRect);
+		}
+	}
+	SDL_RenderPresent(game.screen.renderer);
+	return;
 }
 
 void createSettingsHeading() {
@@ -925,35 +955,66 @@ void printHighScore() {
 
 }
 
-/*
-*	Prints the menu on the game screen
-*	using the argument enum menuOptions currentMenuOption
-*	for printing all of the menu options
-*/
-void printMenu(enum menuOptions currentMenuOption, SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture * PacmanTexture) {
-	SDL_Rect menuRect, pacmanRect;
-	enum MenuOptions menuOption;
+void createCreditsHeading() {
+	extern Game game;
+	SDL_Surface *HeadingSurface;
+	SDL_Texture *HeadingTexture;
+	SDL_Rect HeadingRect;
+	TTF_Font * fontHeader = TTF_OpenFont("impact.ttf", 80);
+	SDL_Color white = { 255, 255, 255 };
 
-	for (menuOption = 0; menuOption < numberOfMenuOptions; menuOption++) {
-		menuRect.x = game.screen.width / 12;
-		menuRect.y = (5 + 3 * menuOption) * (game.screen.height / 48);
-		menuRect.w = game.screen.width / 6;
-		menuRect.h = game.screen.height / 24;
-		pacmanRect.x = game.screen.width / 24;
-		pacmanRect.y = (5 + 3 * menuOption) * (game.screen.height / 48);
-		pacmanRect.w = game.screen.width / 30;
-		pacmanRect.h = game.screen.height / 24;
-		if (currentMenuOption == menuOption) {
-			SDL_RenderCopy(game.screen.renderer, menuTextureYellow[menuOption], NULL, &menuRect);
-			SDL_RenderCopy(game.screen.renderer, PacmanTexture, NULL, &pacmanRect);
-		}
-		else {
-			SDL_RenderCopy(game.screen.renderer, menuTextureWhite[menuOption], NULL, &menuRect);
-			SDL_RenderFillRect(game.screen.renderer, &pacmanRect);
+	HeadingSurface = TTF_RenderText_Solid(fontHeader, "CREDITS", white);
+	HeadingTexture = SDL_CreateTextureFromSurface(game.screen.renderer, HeadingSurface);
+	SDL_FreeSurface(HeadingSurface);
+	HeadingRect.x = game.screen.width / 24;
+	HeadingRect.y = game.screen.height / 48;
+	HeadingRect.w = game.screen.width / 4;
+	HeadingRect.h = game.screen.height / 18;
+	SDL_RenderCopy(game.screen.renderer, HeadingTexture, NULL, &HeadingRect);
+	SDL_DestroyTexture(HeadingTexture);
+}
+
+void printCredits() {
+	extern Game game;
+	SDL_Surface *surface;
+	SDL_Texture *texture;
+	SDL_Rect rect;
+	TTF_Font* font = TTF_OpenFont("impact.ttf", 46);
+	SDL_Color white = { 255, 255, 255 };
+	int creditsRunning = 1;
+	SDL_Event event;
+	char creditsText[5000] = "";
+	createCreditsHeading();
+
+	rect.x = game.screen.width / 24;
+	rect.y = game.screen.height / 30;
+	rect.w = game.screen.width / 4;
+	rect.h = 3 * game.screen.height / 5;
+
+	surface = TTF_RenderText_Solid(font, creditsText, white);
+	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
+	SDL_RenderPresent(game.screen.renderer);
+
+	while (game.isRunning && creditsRunning) {
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+				case SDLK_ESCAPE:
+					creditsRunning = 0;
+					return;
+					break;
+				}
+				break;
+			case SDL_QUIT:
+				game.isRunning = SDL_FALSE;
+				creditsRunning = 0;
+				return;
+				break;
+			}
 		}
 	}
-	SDL_RenderPresent(game.screen.renderer);
-	return;
 }
 
 

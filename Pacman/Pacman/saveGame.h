@@ -19,6 +19,7 @@ typedef struct SaveGameStruct {
 	PacStruct pacman;
 	PacStruct ghosts[NUMBER_OF_GHOSTS];
 	int pacDotCount;
+	int srbendaMod;
 	
 } SaveGame;
 

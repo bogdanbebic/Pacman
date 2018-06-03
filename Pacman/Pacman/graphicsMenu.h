@@ -58,6 +58,10 @@ void createHighScoreHeading();
 
 void printHighScore();
 
+void createCreditsHeading();
+
+void printCredits();
+
 typedef struct SettingsTexturesStruct {
 	SDL_Texture * whiteTextures[numberOfSettingsOptions];
 	SDL_Texture * yellowTextures[numberOfSettingsOptions];

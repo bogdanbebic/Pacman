@@ -39,7 +39,7 @@ int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]);
 
 void initContinueGame(enum DifficultySpeed *difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home, int *pacDotCount);
 
-void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, int numberOfLivesTiles, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount);
+void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, int numberOfLivesTiles, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount, int srbendaMod);
 
 typedef struct ScreenStruct {
 	unsigned int width;
@@ -53,10 +53,13 @@ typedef struct GameTextureStruct {
 	SDL_Texture * pacmanOpenMouthTextures[NUMBER_OF_DIRECTIONS];
 	SDL_Texture * pacmanShutMouthTextures[NUMBER_OF_DIRECTIONS];
 	SDL_Texture * wallTexture, *backgroundTexture, *pacDotTexture, *powerPelletTexture;
+	SDL_Texture * wallSrbendaTexture, *powerPelletSrbendaTexture;
 	SDL_Texture * ghostTextures[NUMBER_OF_GHOSTS];
 	SDL_Texture * reverseGhostTexture, * eatenGhostTexture;
 	SDL_Texture * scoreBoxTexture, *livesBoxTexture, *levelBoxTexture;
 	SDL_Texture * scoreDigitTextures[NUMBER_OF_DIGITS];
+	SDL_Texture * pacmanSrbendaOpenMouth[NUMBER_OF_DIRECTIONS];
+	SDL_Texture * pacmanSrbendaShutMouth[NUMBER_OF_DIRECTIONS];
 	SDL_Rect levelBoxRect, scoreBoxRect;
 	SDL_Rect mapTileRects[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 	SDL_Rect scoreDigitRect[NUMBER_OF_DIGITS];

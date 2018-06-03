@@ -311,7 +311,7 @@ enum Direction getPacmanDirectionFromUser(SDL_Event event) {
 *	and makes it possible
 *	to continue game
 */
-void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, int numberOfLivesTiles, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount) {
+void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, int numberOfLivesTiles, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount, int srbendaMod) {
 	extern SaveGame saveGame;
 	int i, j;
 	saveGame.difficulty = difficulty;
@@ -324,6 +324,7 @@ void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, 
 	saveGame.home = home;
 	saveGame.pacman = pacman;
 	saveGame.pacDotCount = pacDotCount;
+	saveGame.srbendaMod = srbendaMod;
 	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 		saveGame.ghosts[i] = ghosts[i];
 	}
@@ -367,6 +368,8 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 	
 	PacStruct home;
 
+	extern SaveGame saveGame;
+
 	Highscore currentScore;
 	currentScore.name[0] = '\0';
 
@@ -375,6 +378,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 	int timer_tick = 0;
 	int timer_tick_POWER_PELLET = 0;
 	int isPowerPelletEaten = 0;
+	int newLevel;
 	int i;
 	int isPacmanEaten = 0;
 	int nameSave;
@@ -388,6 +392,12 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 	case CONTINUE_GAME:
 		gameContinuation = 1;
 		initContinueGame(&difficulty, &delay, &level, &livesCount, &numberOfLivesTiles, &currentScore, &isStartOfNewGame, &home, &pacDotCount);
+		srbendaMod = saveGame.srbendaMod;
+		if (srbendaMod) {
+			PlaySound(NULL, NULL, SND_ASYNC);
+			if (isMusicOn)
+				PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_LOOP | SND_ASYNC);
+		}
 		int i, j;
 		for (i = 0; i < HEIGHT_OF_MAP; i++) {
 			for (j = 0; j < WIDTH_OF_MAP; j++) {
@@ -410,7 +420,8 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 		else {
 			gameContinuation = 0;
 		}
-		printInitMap(testMapTemp, pacman);
+		newLevel = 1;
+		printInitMap(testMapTemp, pacman, srbendaMod, newLevel);
 		updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore, &timer_tick_POWER_PELLET, &isPowerPelletEaten, difficulty);
 		updateLivesBox(testMapTemp, numberOfLivesTiles, livesCount);
 		updateLevelBox(level);
@@ -420,8 +431,8 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 			if (isStartOfNewGame) {
 				isStartOfNewGame = 0;
 			}
-			level++;
-			printInitMap(map, pacman);
+			level++; 
+			printInitMap(map, pacman, srbendaMod, newLevel);
 			initTempMap(map, testMapTemp);
 			updateLevelBox(level);
 			updateScoreBox(currentScore);
@@ -467,6 +478,8 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 								if (isMusicOn)
 									PlaySound(TEXT("Music/PacmanFever"), NULL, SND_LOOP | SND_ASYNC);
 							}
+							newLevel = 0;
+							printInitMap(testMapTemp, pacman, srbendaMod, newLevel);
 							break;
 							default:
 								break;
@@ -518,8 +531,8 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 				}
 			}
 		
-			updateGhosts(testMapTemp, ghosts, timer_tick);
-			updatePacman(testMapTemp, pacman, timer_tick);
+			updateGhosts(testMapTemp, ghosts, timer_tick, srbendaMod);
+			updatePacman(testMapTemp, pacman, timer_tick, srbendaMod);
 
 			// NEW GHOSTS DIRECTIONS
 			if (timer_tick % 6 == 0) {
@@ -570,7 +583,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 				break;
 			case mainMenu:
 				// OVO PROMENITI AKO NE ZELIMO DA MOZE IGRAC DA NASTAVI DEMO
-				saveGameForContinue(difficulty, delay, level, livesCount, numberOfLivesTiles, currentScore, isStartOfNewGame, home, pacman, ghosts, testMapTemp, pacDotCount);
+				saveGameForContinue(difficulty, delay, level, livesCount, numberOfLivesTiles, currentScore, isStartOfNewGame, home, pacman, ghosts, testMapTemp, pacDotCount, srbendaMod);
 				break;
 			case finishGame:
 				isGameFinished = 1;
