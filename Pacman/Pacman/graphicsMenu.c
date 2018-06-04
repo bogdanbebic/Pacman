@@ -383,7 +383,7 @@ void activateSettings(enum DifficultySpeed * currentDifficulty, enum YesNo * cur
 	SDL_Event event;
 	extern Game game;
 	int settingsRunning = 1;
-	enum SettingsOptions selectedOption = gameDifficulty;
+	enum SettingsOptions selectedOption = diffOption;
 	enum DifficultySpeed hoveringDiff = EASY;
 	enum YesNo hoveringMusicOption = yes;
 	createSettingsHeading(); 
@@ -401,14 +401,23 @@ void activateSettings(enum DifficultySpeed * currentDifficulty, enum YesNo * cur
 
 				case SDLK_UP:
 					if (settingsRunning) {
-
-						selectedOption = selectedOption ? selectedOption - 1 : numberOfSettingsOptions - 1;
+						if (selectedOption == diffOption) {
+							selectedOption = musicOption;
+						}
+						else {
+							selectedOption = diffOption;
+						}
 					}
 					break;
 
 				case SDLK_DOWN:
 					if (settingsRunning) {
-						selectedOption = (selectedOption + 1) % numberOfSettingsOptions;
+						if (selectedOption == diffOption) {
+							selectedOption = musicOption;
+						}
+						else {
+							selectedOption = diffOption;
+						}
 					}
 					break;
 
