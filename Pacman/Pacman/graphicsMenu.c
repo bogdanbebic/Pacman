@@ -983,19 +983,101 @@ void printCredits() {
 	SDL_Color white = { 255, 255, 255 };
 	int creditsRunning = 1;
 	SDL_Event event;
-	char creditsText[5000] = "";
+	char creditsText[5000] = "B";
 	createCreditsHeading();
 
 	rect.x = game.screen.width / 24;
-	rect.y = game.screen.height / 30;
+	rect.y = game.screen.height / 10;
 	rect.w = game.screen.width / 4;
-	rect.h = 3 * game.screen.height / 5;
+	rect.h = 5 * game.screen.height / 130;
 
-	surface = TTF_RenderText_Solid(font, creditsText, white);
+	surface = TTF_RenderText_Solid(font, "Thank you Toru Iwatani for  ", white);
 	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
 	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
-	SDL_RenderPresent(game.screen.renderer);
+	
+	rect.y = game.screen.height / 10 + 5 * game.screen.height / 130;
+	rect.h = 5 * game.screen.height / 130;
+	surface = TTF_RenderText_Solid(font, "making such an awesome game ", white);
+	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
 
+	rect.y = game.screen.height / 10 + 10 * game.screen.height / 130;
+	rect.h = game.screen.height / 65;
+	surface = TTF_RenderText_Solid(font, " ", white);
+	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
+
+	rect.y = game.screen.height / 10 + 12 * game.screen.height / 130;
+	rect.h = 5 * game.screen.height / 130;
+	surface = TTF_RenderText_Solid(font, "Bogdan Bebic - game engine  ", white);
+	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
+
+	rect.y = game.screen.height / 10 + 17 * game.screen.height / 130;
+	rect.h = 5 * game.screen.height / 130;
+	surface = TTF_RenderText_Solid(font, "and encryption                             ", white);
+	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
+
+	rect.y = game.screen.height / 10 + 22 * game.screen.height / 130;
+	rect.h = game.screen.height / 65;
+	surface = TTF_RenderText_Solid(font, " ", white);
+	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
+
+	rect.y = game.screen.height / 10 + 24 * game.screen.height / 130;
+	rect.h = 5 * game.screen.height / 130;
+	surface = TTF_RenderText_Solid(font, "Mina Sekularac - AI and game", white);
+	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
+
+	rect.y = game.screen.height / 10 + 29 * game.screen.height / 130;
+	rect.h = 5 * game.screen.height / 130;
+	surface = TTF_RenderText_Solid(font, "engine                                                  ", white);
+	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
+
+
+	rect.y = game.screen.height / 10 + 34 * game.screen.height / 130;
+	rect.h = game.screen.height / 65;
+	surface = TTF_RenderText_Solid(font, " ", white);
+	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
+
+	rect.y = game.screen.height / 10 + 36 * game.screen.height / 130;
+	rect.h = 5 * game.screen.height / 130;
+	surface = TTF_RenderText_Solid(font, "Uros Krstic - GUI and game  ", white);
+	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
+
+	rect.y = game.screen.height / 10 + 41 * game.screen.height / 130;
+	rect.h = 5 * game.screen.height / 130;
+	surface = TTF_RenderText_Solid(font, "engine                                                  ", white);
+	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
+
+	rect.y = game.screen.height / 10 + 46 * game.screen.height / 130;
+	rect.h = game.screen.height / 65;
+	surface = TTF_RenderText_Solid(font, " ", white);
+	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
+
+	rect.y = game.screen.height / 10 + 48 * game.screen.height / 130;
+	rect.h = 5 * game.screen.height / 130;
+	surface = TTF_RenderText_Solid(font, "Nikola Lukic - mentor and   ", white);
+	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
+
+	rect.y = game.screen.height / 10 + 53 * game.screen.height / 130;
+	rect.h = 5 * game.screen.height / 130;
+	surface = TTF_RenderText_Solid(font, "Power Pellet                                      ", white);
+	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
+	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
+
+
+
+
+	SDL_RenderPresent(game.screen.renderer);
 	while (game.isRunning && creditsRunning) {
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
