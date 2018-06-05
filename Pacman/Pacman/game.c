@@ -262,10 +262,8 @@ void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *l
 	default:
 		break;
 	}
-	currentScore->ghosts = 0;
-	currentScore->pacDots = 0;
+	
 	currentScore->points = 0;
-	currentScore->powerPellets = 0;
 
 	home->gameMode = Normal;
 	home->direction = DIRECTION_NONE;

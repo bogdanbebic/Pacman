@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="encryption.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="gameGraphics.c" />
     <ClCompile Include="ghosts.c" />
@@ -162,6 +163,7 @@
     <ClCompile Include="pauseMenuGraphics.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="encryption.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameGraphics.h" />
     <ClInclude Include="gameMap.h" />

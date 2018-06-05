@@ -9,12 +9,11 @@
 #define MAX_HIGHSCORES 7
 
 typedef struct HighscoreStruct {
-	int points;	// OVO JE BITNO
-	int pacDots;
-	int powerPellets;
-	int ghosts;
-	char name[MAX_NAME];	// OVO JE BITNO
+	int points;
+	char name[MAX_NAME];
 } Highscore;
+
+void makeDecoyHighscoreFiles();
 
 void makeGenericHighscores();
 

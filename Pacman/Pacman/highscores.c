@@ -1,9 +1,64 @@
 #include "highscores.h"
 #include <stdio.h>
+#include <Windows.h>
+#include "encryption.h"
 
-#define HIGHSCORES_FILE_PATH ("highscores.hsc")
+/*
+*	Ne dirati ove fajlove, ovo su highscore fajlovi
+*/
+#define FILE_1 "SDL2/SDL_Event.dll"
+#define FILE_2 "SDL2/SDL2_init_test.lib"
+#define FILE_3 "SDL2_ttf/zlib2.dll"
+#define FILE_4 "SDL2_ttf/TTF_Texture.lib"
+#define FILE_5 "SDL2_ttf/libfreetype_x.dll"
+
+#define L_FILE_1 L"SDL2/SDL_Event.dll"
+#define L_FILE_2 L"SDL2/SDL2_init_test.lib"
+#define L_FILE_3 L"SDL2_ttf/zlib2.dll"
+#define L_FILE_4 L"SDL2_ttf/TTF_Texture.lib"
+#define L_FILE_5 L"SDL2_ttf/libfreetype_x.dll"
+
+#define DECOY_1 "highscores1.hsc"
+#define DECOY_2 "highscores2.hsc"
+#define DECOY_3 "highscores3.hsc"
+#define DECOY_4 "not_a_highscore_file.hsc"
+#define DECOY_5 "Music/highscores.hsc"
 
 Highscore highscores[MAX_HIGHSCORES];
+
+/*
+*	Makes decoy highscore files
+*	with the purpose of fooling Marko Misic
+*/
+void makeDecoyHighscoreFiles() {
+	FILE *notAhighscoreFile;
+
+	char s[] = "Nije highscore ovde, sacuvan je na boljem mestu";
+	char s0[] = "Pa nije ovde highscore, bukvalno pise u imenu fajla";
+	char s1[] = "Nije ni ovde highscore, ali sigurno ste mislili da ste nasli :P";
+
+	fopen_s(&notAhighscoreFile, DECOY_1, "wb");
+	fwrite(s, sizeof(char), sizeof(s)/sizeof(char) - 1, notAhighscoreFile);
+	fclose(notAhighscoreFile);
+
+	fopen_s(&notAhighscoreFile, DECOY_2, "wb");
+	fwrite(s, sizeof(char), sizeof(s) / sizeof(char) - 1, notAhighscoreFile);
+	fclose(notAhighscoreFile);
+
+	fopen_s(&notAhighscoreFile, DECOY_3, "wb");
+	fwrite(s, sizeof(char), sizeof(s) / sizeof(char) - 1, notAhighscoreFile);
+	fclose(notAhighscoreFile);
+
+	fopen_s(&notAhighscoreFile, DECOY_4, "wb");
+	fwrite(s0, sizeof(char), sizeof(s0) / sizeof(char) - 1, notAhighscoreFile);
+	fclose(notAhighscoreFile);
+
+	fopen_s(&notAhighscoreFile, DECOY_5, "wb");
+	fwrite(s1, sizeof(char), sizeof(s1) / sizeof(char) - 1, notAhighscoreFile);
+	fclose(notAhighscoreFile);
+
+	return;
+}
 
 /*
 *	Initializes highscores array
@@ -57,23 +112,18 @@ void updateHighscores(Highscore newHighscore) {
 */
 void readHighscoresFromFile() {
 	extern Highscore highscores[MAX_HIGHSCORES];
-	int i;
 	FILE *highscoresFile;
-
-	fopen_s(&highscoresFile, HIGHSCORES_FILE_PATH, "rb");
+	SetFileAttributes(L_FILE_1, FILE_ATTRIBUTE_NORMAL);
+	fopen_s(&highscoresFile, FILE_1, "rb");
 
 	if (highscoresFile != NULL) {
-		for (i = 0; i < MAX_HIGHSCORES; i++) {
-			fread(&highscores[i], sizeof(highscores[i]), 1, highscoresFile);
-		}
+		fread(&highscores, sizeof(highscores), 1, highscoresFile);
 		fclose(highscoresFile);
+		encrypt();
 	}
 	else {
 		makeGenericHighscores();
 	}
-
-	// TODO: implement decryption
-
 	return;
 }
 
@@ -82,18 +132,17 @@ void readHighscoresFromFile() {
 */
 void writeHighscoresToFile() {
 	extern Highscore highscores[MAX_HIGHSCORES];
-	int i;
 	FILE *highscoresFile;
 
-	fopen_s(&highscoresFile, HIGHSCORES_FILE_PATH, "wb");
+	fopen_s(&highscoresFile, FILE_1, "wb");
 
-	// TODO: implement encryption
+	encrypt();
 
-	for (i = 0; i < MAX_HIGHSCORES; i++) {
-		fwrite(&highscores[i], sizeof(highscores[i]), 1, highscoresFile);
-	}
-
+	fwrite(&highscores, sizeof(highscores), 1, highscoresFile);
+	
 	fclose(highscoresFile);
+
+	SetFileAttributes(L_FILE_1, FILE_ATTRIBUTE_HIDDEN);
 
 	return;
 }
