@@ -20,6 +20,9 @@ typedef struct SaveGameStruct {
 	PacStruct ghosts[NUMBER_OF_GHOSTS];
 	int pacDotCount;
 	int srbendaMod;
+	int isPowerPelletEaten;
+	int timer_tick;
+	int timer_tick_POWER_PELLET;
 	
 } SaveGame;
 

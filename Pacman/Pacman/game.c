@@ -11,9 +11,11 @@ SaveGame saveGame;
  *	with saved game parameters.
  *	Sets values for all arguments except difficulty
  */
-void initContinueGame(enum DifficultySpeed *difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home, int *pacDotCount) {
+void initContinueGame(enum DifficultySpeed *difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home, int *pacDotCount, int *timer_tick, int *timer_tick_POWER_PELLET, int *isPowerPelletEaten) {
 	extern SaveGame saveGame;
-	
+	*isPowerPelletEaten = saveGame.isPowerPelletEaten;
+	*timer_tick_POWER_PELLET = saveGame.timer_tick_POWER_PELLET;
+	*timer_tick = saveGame.timer_tick;
 	*difficulty = saveGame.difficulty;
 	*delay = saveGame.delay;
 	*level = saveGame.level;
@@ -311,9 +313,12 @@ enum Direction getPacmanDirectionFromUser(SDL_Event event) {
 *	and makes it possible
 *	to continue game
 */
-void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, int numberOfLivesTiles, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount, int srbendaMod) {
+void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, int numberOfLivesTiles, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount, int srbendaMod, int timer_tick, int timer_tick_POWER_PELLET, int isPowerPelletEaten) {
 	extern SaveGame saveGame;
 	int i, j;
+	saveGame.isPowerPelletEaten = isPowerPelletEaten;
+	saveGame.timer_tick_POWER_PELLET = timer_tick_POWER_PELLET;
+	saveGame.timer_tick = timer_tick;
 	saveGame.difficulty = difficulty;
 	saveGame.delay = delay;
 	saveGame.level = level;
@@ -391,7 +396,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 		break;
 	case CONTINUE_GAME:
 		gameContinuation = 1;
-		initContinueGame(&difficulty, &delay, &level, &livesCount, &numberOfLivesTiles, &currentScore, &isStartOfNewGame, &home, &pacDotCount);
+		initContinueGame(&difficulty, &delay, &level, &livesCount, &numberOfLivesTiles, &currentScore, &isStartOfNewGame, &home, &pacDotCount, &timer_tick, &timer_tick_POWER_PELLET, &isPowerPelletEaten);
 		srbendaMod = saveGame.srbendaMod;
 		if (srbendaMod) {
 			PlaySound(NULL, NULL, SND_ASYNC);
@@ -583,7 +588,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 				break;
 			case mainMenu:
 				// OVO PROMENITI AKO NE ZELIMO DA MOZE IGRAC DA NASTAVI DEMO
-				saveGameForContinue(difficulty, delay, level, livesCount, numberOfLivesTiles, currentScore, isStartOfNewGame, home, pacman, ghosts, testMapTemp, pacDotCount, srbendaMod);
+				saveGameForContinue(difficulty, delay, level, livesCount, numberOfLivesTiles, currentScore, isStartOfNewGame, home, pacman, ghosts, testMapTemp, pacDotCount, srbendaMod, timer_tick, timer_tick_POWER_PELLET, isPowerPelletEaten);
 				break;
 			case finishGame:
 				isGameFinished = 1;
@@ -597,7 +602,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 	if ((isGameFinished || !livesCount) && game.isRunning) {
 		SDL_RenderClear(game.screen.renderer);
 		endGameScreen();
-		if (game.isRunning) {
+		if (game.isRunning && gameType != DEMO_GAME) {
 			nameSave = 1;
 			SDL_RenderClear(game.screen.renderer);
 			finalScoreScreen(currentScore.points, currentScore.name, &nameSave);
