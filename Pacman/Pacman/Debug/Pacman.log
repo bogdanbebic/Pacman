@@ -1,6 +1,8 @@
 ﻿  pauseMenuGraphics.c
   main.c
+  highscores.c
   graphicsMenu.c
+  ghosts.c
   gameGraphics.c
   game.c
   Generating Code...

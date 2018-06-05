@@ -600,9 +600,10 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 		isPacmanEaten = 0;
 	}
 	if ((isGameFinished || !livesCount) && game.isRunning) {
+		extern Highscore highscores[MAX_HIGHSCORES];
 		SDL_RenderClear(game.screen.renderer);
 		endGameScreen();
-		if (game.isRunning && gameType != DEMO_GAME) {
+		if (game.isRunning && gameType != DEMO_GAME && currentScore.points > highscores[MAX_HIGHSCORES - 1].points) {
 			nameSave = 1;
 			SDL_RenderClear(game.screen.renderer);
 			finalScoreScreen(currentScore.points, currentScore.name, &nameSave);
