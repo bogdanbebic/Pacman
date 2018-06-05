@@ -10,7 +10,7 @@ typedef struct {
 /*
 *	Finds next position using BFS
 *	Return value:
-*	BFS_solution (direction and number of steps in solution)
+*	BFS_solution (direction and number of steps from ghost to pacman)
 */
 BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghostY, int pacmanX, int pacmanY) {
 	short visited[HEIGHT_OF_MAP][WIDTH_OF_MAP];
@@ -98,6 +98,7 @@ BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghos
 
 /*
 *	Finds next AI move for Blinky
+*	Blinky’s target tile is always Pac-Man’s current tile.
 *	Return value:
 *	PacStruct containing next position of Blinky
 */
@@ -113,6 +114,12 @@ PacStruct BlinkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacSt
 	return sol;
 }
 
+/*
+*	Finds next AI move for Pinky
+*	Pinky’s target tile is always a tile that is next to Pac-Man’s current tile.
+*	Return value:
+*	PacStruct containing next position of Pinky
+*/
 BFS_solution PinkyAI_logic(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghostY, int pacmanX, int pacmanY) {
 	BFS_solution solution;
 
@@ -168,6 +175,7 @@ BFS_solution PinkyAI_logic(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int
 
 /*
 *	Finds next AI move for Pinky
+*	This function uses PinkyAI_logic function.
 *	Return value:
 *	PacStruct containing next position of Pinky
 */
@@ -185,6 +193,7 @@ PacStruct PinkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStr
 
 /*
 *	Finds next AI move for Inky
+*	Inky’s target tile is always a tile that is two tiles from the Pac-Man’s current tile.
 *	Return value:
 *	PacStruct containing next position of Inky
 */
@@ -250,6 +259,8 @@ PacStruct InkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStru
 
 /*
 *	Finds next AI move for Clyde
+*	Clyde’s target tile is Pac-Man’s current tile if Clyde is ten tiles from the Pac-Man.
+*	Otherwise, target tile is bottom left tile on the map.
 *	Return value:
 *	PacStruct containing next position of Clyde
 */
@@ -269,6 +280,11 @@ PacStruct ClydeAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStr
 	return sol;
 }
 
+/*
+*	Function finds the number of PAC_DOT/POWER_PELLET that surround current tile
+*	Return value:
+*	Number of neighbourhood tiles that contain PAC_DOT or POWER_PELLET
+*/
 int isDot(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacmanX, int pacmanY) {
 	int cnt = 0;
 	if (pacmanY < HEIGHT_OF_MAP - 1 && (Map[pacmanY + 1][pacmanX] == PAC_DOT || Map[pacmanY + 1][pacmanX] == POWER_PELLET)) {
@@ -286,6 +302,12 @@ int isDot(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacmanX, int pacmanY) {
 	return cnt;
 }
 
+/*
+*	Finds next AI move for Pac-Man
+*	Pac-Man’s target tile is a tile that contains PAC_DOT or POWER_PELLET and that is opposite of ghosts.
+*	Return value:
+*	PacStruct containing next position of Pac-Man
+*/
 PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int time) {
 	PacStruct sol = pacman;
 	int pacmanY = pacman.iPosition;
@@ -401,59 +423,6 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 	else if (down == 1 )
 		sol.direction = DIRECTION_DOWN;
 	else sol.direction = DIRECTION_RIGHT;
-	/*
-	if (up == 0 && Map[pacmanY - 1][pacmanX] != WALL)
-		sol.direction = DIRECTION_UP;
-	else if(down==0 && Map[pacmanY + 1][pacmanX] != WALL)
-		sol.direction = DIRECTION_DOWN;
-	else if (left == 0 && Map[pacmanY][pacmanX - 1] != WALL)
-		sol.direction = DIRECTION_LEFT;
-	else if (right == 0 && Map[pacmanY][pacmanX + 1] != WALL)
-		sol.direction = DIRECTION_RIGHT;
-	else if (up == 1 && Map[pacmanY - 1][pacmanX] != WALL)
-		sol.direction = DIRECTION_UP;
-	else if (down == 1 && Map[pacmanY + 1][pacmanX] != WALL)
-		sol.direction = DIRECTION_DOWN;
-	else if (left == 1 && Map[pacmanY][pacmanX - 1] != WALL)
-		sol.direction = DIRECTION_LEFT;
-	else if (right == 1 && Map[pacmanY][pacmanX + 1] != WALL)
-		sol.direction = DIRECTION_RIGHT;
-	else sol = pacman;*/
-	/*
-	{
-		if (Map[pacmanY + 1][pacmanX] != WALL)
-			sol.direction = DIRECTION_DOWN;
-		else if (Map[pacmanY][pacmanX - 1] != WALL)
-			sol.direction = DIRECTION_LEFT;
-		else if (Map[pacmanY][pacmanX + 1] != WALL)
-			sol.direction = DIRECTION_RIGHT;
-	}
-	else if (down > 1) {
-		if (Map[pacmanY - 1][pacmanX] != WALL)
-			sol.direction = DIRECTION_UP;
-		else if (Map[pacmanY][pacmanX - 1] != WALL)
-			sol.direction = DIRECTION_LEFT;
-		else if (Map[pacmanY][pacmanX + 1] != WALL)
-			sol.direction = DIRECTION_RIGHT;
-	}
-	else if (left > 1) {
-		if (Map[pacmanY][pacmanX + 1] != WALL)
-			sol.direction = DIRECTION_RIGHT;
-		else if (Map[pacmanY + 1][pacmanX] != WALL)
-			sol.direction = DIRECTION_DOWN;
-		if (Map[pacmanY - 1][pacmanX] != WALL)
-			sol.direction = DIRECTION_UP;
-	}
-	else if (Map[pacmanY][pacmanX - 1] != WALL)
-		sol.direction = DIRECTION_LEFT;
-	else if (Map[pacmanY + 1][pacmanX] != WALL)
-		sol.direction = DIRECTION_DOWN;
-	else if (Map[pacmanY - 1][pacmanX] != WALL)
-		sol.direction = DIRECTION_UP;
-	else if (Map[pacmanY][pacmanX + 1] != WALL)
-		sol.direction = DIRECTION_RIGHT;
-	else sol.direction = DIRECTION_LEFT;
-	*/
-
+	
 	return sol;
 }
