@@ -2,6 +2,7 @@
 #include "gameMap.h"
 #include "pacStruct.h"
 #include "highscores.h"
+#include "cheats.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -323,11 +324,16 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int sr
 			SDL_RenderPresent(game.screen.renderer);
 		}
 	}
-	if (srbendaMod) {
-		SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanSrbendaOpenMouth[DIRECTION_RIGHT], NULL, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
+	if (!invisibilityCheat) {
+		if (srbendaMod) {
+			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanSrbendaOpenMouth[DIRECTION_RIGHT], NULL, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
+		}
+		else {
+			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanOpenMouthTextures[DIRECTION_RIGHT], NULL, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
+		}
 	}
 	else {
-		SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanOpenMouthTextures[DIRECTION_RIGHT], NULL, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
+		SDL_RenderFillRect(game.screen.renderer, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
 	}
 	SDL_RenderPresent(game.screen.renderer);
 	return;
@@ -344,21 +350,26 @@ void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int ti
 	if (timer_tick % 4 == 0 && (oldPosition.iPosition != pacman.iPosition || oldPosition.jPosition != pacman.jPosition))
 		SDL_RenderFillRect(game.screen.renderer, &gameTexturesManager.mapTileRects[oldPosition.iPosition][oldPosition.jPosition]);
 	if (pacman.direction != DIRECTION_NONE) {
-		if (timer_tick % 2) {
-			if (srbendaMod) {
-				SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanSrbendaOpenMouth[pacman.direction], NULL, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
+		if (!invisibilityCheat) {
+			if (timer_tick % 2) {
+				if (srbendaMod) {
+					SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanSrbendaOpenMouth[pacman.direction], NULL, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
+				}
+				else {
+					SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanOpenMouthTextures[pacman.direction], NULL, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
+				}
 			}
 			else {
-				SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanOpenMouthTextures[pacman.direction], NULL, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
+				if (srbendaMod) {
+					SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanSrbendaShutMouth[pacman.direction], NULL, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
+				}
+				else {
+					SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanShutMouthTextures[pacman.direction], NULL, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
+				}
 			}
 		}
 		else {
-			if (srbendaMod) {
-				SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanSrbendaShutMouth[pacman.direction], NULL, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
-			}
-			else {
-				SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanShutMouthTextures[pacman.direction], NULL, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
-			}
+			SDL_RenderFillRect(game.screen.renderer, &gameTexturesManager.mapTileRects[pacman.iPosition][pacman.jPosition]);
 		}
 	}
 	return;

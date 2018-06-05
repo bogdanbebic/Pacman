@@ -1,4 +1,5 @@
 #include "pauseMenuGraphics.h"
+#include "cheats.h"
 
 extern PauseMenuTextures pauseMenuTextureManager;
 
@@ -83,8 +84,14 @@ void printPauseMenu(enum PauseMenuOptions currentOption) {
 	return;
 }
 
+#define MAP_SDL_NUMBERS(x) ((x) - SDLK_0 + '0')
+#define MAP_SDL_LETTERS(x) ((x) - SDLK_a + 'a')
+
+#define MAX_CHEAT 15
+
 enum PauseMenuOptions ActivatePauseMenu(int difficulty) {
-	int activePauseMenu = 1;
+	int activePauseMenu = 1, currPos = 0;
+	char cheat[MAX_CHEAT];
 	SDL_Event event;
 	enum PauseMenuOptions selectedOption = continueWithGame;
 	enum PauseMenuOptions currentOption = selectedOption;
@@ -126,8 +133,26 @@ enum PauseMenuOptions ActivatePauseMenu(int difficulty) {
 						return finishGame;
 					}
 					break;
+
+				case SDLK_BACKSPACE:
+					cheat[currPos = 0] = '\0';
+					break;
+
+				default:
+					if (currPos < MAX_CHEAT - 1) {
+						if (event.key.keysym.sym <= SDLK_9 && event.key.keysym.sym >= SDLK_0) {
+							cheat[currPos++] = MAP_SDL_NUMBERS(event.key.keysym.sym);
+						}
+						else if (event.key.keysym.sym <= SDLK_z && event.key.keysym.sym >= SDLK_a) {
+							cheat[currPos++] = MAP_SDL_LETTERS(event.key.keysym.sym);
+						}
+						cheat[currPos] = '\0';
+					}
+					toggleIfCheat(cheat);
 				}
-				break;
+				
+
+				break;	// break SDL_KEYDOWN
 			case SDL_QUIT:
 				game.isRunning = SDL_FALSE;
 				

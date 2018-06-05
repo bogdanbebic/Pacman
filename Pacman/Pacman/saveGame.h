@@ -11,7 +11,6 @@ typedef struct SaveGameStruct {
 	int delay;
 	int level;
 	int livesCount;
-	int numberOfLivesTiles;
 	Highscore currentScore;
 	int isStartOfNewGame;
 	PacStruct home;

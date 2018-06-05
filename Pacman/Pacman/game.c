@@ -2,6 +2,7 @@
 #include "testMap.h"
 #include "pauseMenuGraphics.h"
 #include "saveGame.h"
+#include "cheats.h"
 #include <Windows.h>
 
 SaveGame saveGame;
@@ -11,7 +12,7 @@ SaveGame saveGame;
  *	with saved game parameters.
  *	Sets values for all arguments except difficulty
  */
-void initContinueGame(enum DifficultySpeed *difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home, int *pacDotCount, int *timer_tick, int *timer_tick_POWER_PELLET, int *isPowerPelletEaten) {
+void initContinueGame(enum DifficultySpeed *difficulty, int *delay, int *level, int *livesCount, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home, int *pacDotCount, int *timer_tick, int *timer_tick_POWER_PELLET, int *isPowerPelletEaten) {
 	extern SaveGame saveGame;
 	*isPowerPelletEaten = saveGame.isPowerPelletEaten;
 	*timer_tick_POWER_PELLET = saveGame.timer_tick_POWER_PELLET;
@@ -20,7 +21,6 @@ void initContinueGame(enum DifficultySpeed *difficulty, int *delay, int *level, 
 	*delay = saveGame.delay;
 	*level = saveGame.level;
 	*livesCount = saveGame.livesCount;
-	*numberOfLivesTiles = saveGame.numberOfLivesTiles;
 	*currentScore = saveGame.currentScore;
 	*isStartOfNewGame = saveGame.isStartOfNewGame;
 	*home = saveGame.home;
@@ -245,19 +245,19 @@ void initLevel(PacStruct *pacman, PacStruct *ghosts) {
 *	with new game parameters.
 *	Sets values for all arguments except difficulty
 */
-void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, int *numberOfLivesTiles, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home) {
+void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home) {
 	*isStartOfNewGame = 1;
 	*level = -1;
 	*delay = (int)difficulty;
 	switch (difficulty) {
 	case EASY:
-		*numberOfLivesTiles = *livesCount = 5;
+		*livesCount = 5;
 		break;
 	case MEDIUM:
-		*numberOfLivesTiles = *livesCount = 3;
+		*livesCount = 3;
 		break;
 	case HARD:
-		*numberOfLivesTiles = *livesCount = 1;
+		*livesCount = 1;
 		break;
 	default:
 		break;
@@ -311,7 +311,7 @@ enum Direction getPacmanDirectionFromUser(SDL_Event event) {
 *	and makes it possible
 *	to continue game
 */
-void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, int numberOfLivesTiles, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount, int srbendaMod, int timer_tick, int timer_tick_POWER_PELLET, int isPowerPelletEaten) {
+void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount, int srbendaMod, int timer_tick, int timer_tick_POWER_PELLET, int isPowerPelletEaten) {
 	extern SaveGame saveGame;
 	int i, j;
 	saveGame.isPowerPelletEaten = isPowerPelletEaten;
@@ -321,7 +321,6 @@ void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, 
 	saveGame.delay = delay;
 	saveGame.level = level;
 	saveGame.livesCount = livesCount;
-	saveGame.numberOfLivesTiles = numberOfLivesTiles;
 	saveGame.currentScore = currentScore;
 	saveGame.isStartOfNewGame = isStartOfNewGame;
 	saveGame.home = home;
@@ -362,7 +361,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 	PacStruct pacman;
 	PacStruct ghosts[4];
 	int livesCount;
-	int numberOfLivesTiles;
+	int numberOfLivesTiles = MAX_LIVES;
 	int level;
 	int delay;
 	int pacDotCount;
@@ -378,6 +377,8 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 
 	int srbendaMod = 0;
 
+	extern int speed;
+
 	int timer_tick = 0;
 	int timer_tick_POWER_PELLET = 0;
 	int isPowerPelletEaten = 0;
@@ -390,11 +391,11 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 	switch (gameType) {
 	case DEMO_GAME:
 	case NEW_GAME:
-		initNewGame(difficulty, &delay, &level, &livesCount, &numberOfLivesTiles, &currentScore, &isStartOfNewGame, &home);
+		initNewGame(difficulty, &delay, &level, &livesCount, &currentScore, &isStartOfNewGame, &home);
 		break;
 	case CONTINUE_GAME:
 		gameContinuation = 1;
-		initContinueGame(&difficulty, &delay, &level, &livesCount, &numberOfLivesTiles, &currentScore, &isStartOfNewGame, &home, &pacDotCount, &timer_tick, &timer_tick_POWER_PELLET, &isPowerPelletEaten);
+		initContinueGame(&difficulty, &delay, &level, &livesCount, &currentScore, &isStartOfNewGame, &home, &pacDotCount, &timer_tick, &timer_tick_POWER_PELLET, &isPowerPelletEaten);
 		srbendaMod = saveGame.srbendaMod;
 		if (srbendaMod) {
 			PlaySound(NULL, NULL, SND_ASYNC);
@@ -493,6 +494,9 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 						enum Direction temp;
 						temp = getPacmanDirectionFromUser(event);
 						if (temp != DIRECTION_NONE)
+							if (drunkCheat) {
+								temp = (temp + (NUMBER_OF_DIRECTIONS / 2)) % NUMBER_OF_DIRECTIONS;
+							}
 							pacman.direction = temp;
 					}
 					
@@ -513,7 +517,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 				}
 			}
 
-			if (timer_tick % 4 == 0) {
+			if (timer_tick % (MAX_SPEED - speed) == 0) {
 				if (gameType == DEMO_GAME) {
 					PacStruct pacTry = pacman;
 					pacTry = PacmanDemo(testMapTemp, pacman, ghosts, timer_tick);
@@ -527,7 +531,9 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 				if (ghosts[i].gameMode == Normal) {
-					isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
+					if (!immortalityCheat) {
+						isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
+					}
 				}
 				else if (pacmanGhostCheck(pacman, ghosts[i]) && (ghosts[i].gameMode == Reverse || ghosts[i].gameMode == EndReverse)) {
 					ghosts[i].gameMode = GhostEaten;
@@ -560,7 +566,9 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 				if (ghosts[i].gameMode == Normal) {
-					isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
+					if (!immortalityCheat) {
+						isPacmanEaten |= pacmanGhostCheck(pacman, ghosts[i]);
+					}
 				}
 				else if (pacmanGhostCheck(pacman, ghosts[i]) && (ghosts[i].gameMode == Reverse || ghosts[i].gameMode == EndReverse) ) {
 					ghosts[i].gameMode = GhostEaten;
@@ -583,10 +591,14 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 			case continueWithGame:
 				isLevelRunning = SDL_TRUE;
 				gameContinuation = 1;
+				if (extraLifeCheat) {
+					livesCount += livesCount < MAX_LIVES ? 1 : 0;
+					extraLifeCheat = 0;
+				}
 				break;
 			case mainMenu:
 				// OVO PROMENITI AKO NE ZELIMO DA MOZE IGRAC DA NASTAVI DEMO
-				saveGameForContinue(difficulty, delay, level, livesCount, numberOfLivesTiles, currentScore, isStartOfNewGame, home, pacman, ghosts, testMapTemp, pacDotCount, srbendaMod, timer_tick, timer_tick_POWER_PELLET, isPowerPelletEaten);
+				saveGameForContinue(difficulty, delay, level, livesCount, currentScore, isStartOfNewGame, home, pacman, ghosts, testMapTemp, pacDotCount, srbendaMod, timer_tick, timer_tick_POWER_PELLET, isPowerPelletEaten);
 				break;
 			case finishGame:
 				isGameFinished = 1;
