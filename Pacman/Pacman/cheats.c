@@ -25,6 +25,14 @@ int increaseSpeedCheat;
 
 char increaseSpeed[] = "acalukas";
 
+int throughTheWallCheat;
+
+char throughTheWall[] = "ekvzid";
+
+int infinityReverseCheat;
+
+char infinityReverse[] = "rasta";
+
 #define TOGGLE_CHEAT(x) ((x) = (x) == 1 ? 0 : 1)
 
 void toggleIfCheat(char cheat[]) {
@@ -39,6 +47,12 @@ void toggleIfCheat(char cheat[]) {
 	}
 	if (strcmp(cheat, invisibility) == 0) {
 		TOGGLE_CHEAT(invisibilityCheat);
+	}
+	if (strcmp(cheat, throughTheWall) == 0) {
+		TOGGLE_CHEAT(throughTheWallCheat);
+	}
+	if (strcmp(cheat, infinityReverse) == 0) {
+		TOGGLE_CHEAT(infinityReverseCheat);
 	}
 	/*if (strcmp(cheat, increaseSpeed) == 0) {
 		if (speed + 2 < MAX_SPEED) {

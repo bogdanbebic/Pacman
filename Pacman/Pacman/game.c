@@ -79,6 +79,36 @@ int wallCheckAndMove(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct)
 }
 
 /*
+*	Moves pacStruct on map,
+*	pacman can go through the wall
+*	Return value:
+*	1 if pacStruct moved
+*	0 otherwise
+*/
+int wallCheckAndMoveNoWall(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct) {
+	switch (pacStruct->direction) {
+	case DIRECTION_UP:
+		pacStruct->iPosition = (pacStruct->iPosition - 1 + HEIGHT_OF_MAP) % HEIGHT_OF_MAP;
+		break;
+	case DIRECTION_RIGHT:
+		pacStruct->jPosition = (pacStruct->jPosition + 1) % WIDTH_OF_MAP;
+		break;
+	case DIRECTION_DOWN:
+		pacStruct->iPosition = (pacStruct->iPosition + 1) % HEIGHT_OF_MAP;
+		break;
+	case DIRECTION_LEFT:
+		pacStruct->jPosition = (pacStruct->jPosition - 1 + WIDTH_OF_MAP) % WIDTH_OF_MAP;
+		break;
+	default:
+		break;
+	}
+	if (pacStruct->direction == DIRECTION_NONE)
+		return 0;
+	else
+		return 1;
+}
+
+/*
 *	Changes direction for ghost
 *	in reverse mode
 */
@@ -448,13 +478,13 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 			timer_tick++;
 			if (isPowerPelletEaten) {
 				timer_tick_POWER_PELLET++;
-				if (timer_tick_POWER_PELLET > 120) {
+				if (timer_tick_POWER_PELLET > 120 && !infinityReverseCheat) {
 					for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 						if (ghosts[i].gameMode == Reverse)
 							ghosts[i].gameMode = EndReverse;
 					}
 				}
-				if (timer_tick_POWER_PELLET == 150) {
+				if (timer_tick_POWER_PELLET == 150 && !infinityReverseCheat) {
 					for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 						if (ghosts[i].gameMode == EndReverse)
 							ghosts[i].gameMode = Normal;
@@ -524,7 +554,10 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 					if (wallCheckAndMove(testMapTemp, &pacTry))
 						pacman = PacmanDemo(testMapTemp, pacman, ghosts, timer_tick);
 				}
-				wallCheckAndMove(testMapTemp, &pacman);
+				if(throughTheWallCheat) 
+					wallCheckAndMoveNoWall(testMapTemp, &pacman);
+				else 
+					wallCheckAndMove(testMapTemp, &pacman);
 			}
 
 			updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore, &timer_tick_POWER_PELLET, &isPowerPelletEaten, difficulty);

@@ -177,6 +177,7 @@ void initGameTextures() {
 	return;
 }
 
+
 /*
 *	Gets old position of pacStruct
 *	Return value:
@@ -193,13 +194,13 @@ static PacStruct getOldPacPosition(PacStruct pacStruct) {
 	case DIRECTION_NONE:
 		break;
 	case DIRECTION_UP:
-		oldPosition.iPosition = pacStruct.iPosition + 1;
+		oldPosition.iPosition = (pacStruct.iPosition + 1) % HEIGHT_OF_MAP;
 		break;
 	case DIRECTION_RIGHT:
 		oldPosition.jPosition = (pacStruct.jPosition - 1 + WIDTH_OF_MAP) % WIDTH_OF_MAP;
 		break;
 	case DIRECTION_DOWN:
-		oldPosition.iPosition = pacStruct.iPosition - 1;
+		oldPosition.iPosition = (pacStruct.iPosition - 1 + HEIGHT_OF_MAP) % HEIGHT_OF_MAP;
 		break;
 	case DIRECTION_LEFT:
 		oldPosition.jPosition = (pacStruct.jPosition + 1) % WIDTH_OF_MAP;
@@ -348,7 +349,17 @@ void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int ti
 	extern Game game;
 	PacStruct oldPosition = getOldPacPosition(pacman);
 	if (timer_tick % 4 == 0 && (oldPosition.iPosition != pacman.iPosition || oldPosition.jPosition != pacman.jPosition))
-		SDL_RenderFillRect(game.screen.renderer, &gameTexturesManager.mapTileRects[oldPosition.iPosition][oldPosition.jPosition]);
+		if (map[oldPosition.iPosition][oldPosition.jPosition] == WALL) {
+			if (srbendaMod) {
+				SDL_RenderCopy(game.screen.renderer, gameTexturesManager.wallSrbendaTexture, NULL, &gameTexturesManager.mapTileRects[oldPosition.iPosition][oldPosition.jPosition]);
+			}
+			else {
+				SDL_RenderCopy(game.screen.renderer, gameTexturesManager.wallTexture, NULL, &gameTexturesManager.mapTileRects[oldPosition.iPosition][oldPosition.jPosition]);
+			}
+		}
+		else {
+			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.backgroundTexture, NULL, &gameTexturesManager.mapTileRects[oldPosition.iPosition][oldPosition.jPosition]);
+		}
 	if (pacman.direction != DIRECTION_NONE) {
 		if (!invisibilityCheat) {
 			if (timer_tick % 2) {

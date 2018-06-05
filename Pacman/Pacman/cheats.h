@@ -20,6 +20,14 @@ extern int invisibilityCheat;
 
 extern char invisibility[];
 
+extern int throughTheWallCheat;
+
+extern char throughTheWall[];
+
+extern int infinityReverseCheat;
+
+extern char infinityReverse[];
+
 void toggleIfCheat(char cheat[]);
 
 #endif // !_cheats_h_
