@@ -1,7 +1,2 @@
-﻿  pauseMenuGraphics.c
-  main.c
-  graphicsMenu.c
-  gameGraphics.c
-  game.c
-  Generating Code...
-  Pacman.vcxproj -> C:\Users\Uros\Documents\GitHub\Pacman\Pacman\Debug\Pacman.exe
+﻿  ghosts.c
+  Pacman.vcxproj -> C:\Users\User\Documents\GitHub\Pacman\Pacman\Debug\Pacman.exe
