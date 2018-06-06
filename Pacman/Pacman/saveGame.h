@@ -6,6 +6,9 @@
 #include "highscores.h"
 #include "gameMap.h"
 
+/*!
+*	\brief struct which contains info about in game data
+*/
 typedef struct SaveGameStruct {
 	enum DifficultySpeed difficulty;
 	int delay;
@@ -22,7 +25,6 @@ typedef struct SaveGameStruct {
 	int isPowerPelletEaten;
 	int timer_tick;
 	int timer_tick_POWER_PELLET;
-	
 } SaveGame;
 
 #endif // !_saveGame_h_

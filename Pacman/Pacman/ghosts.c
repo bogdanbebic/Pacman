@@ -2,10 +2,14 @@
 
 extern int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]);
 
-/*
-*	Finds next position using BFS
-*	Return value:
-*	BFS_solution (direction and number of steps from ghost to pacman)
+/*!
+*	\brief Finds next position using BFS
+*	\param Map map on which the game is played
+*	\param ghostX x coordinate of ghost
+*	\param ghostY y coordinate of ghost
+*	\param pacmanX x coordinate of pacman
+*	\param pacmanY y coordinate of pacman
+*	\return BFS_solution (direction and number of steps from ghost to pacman)
 */
 BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghostY, int pacmanX, int pacmanY) {
 	short visited[HEIGHT_OF_MAP][WIDTH_OF_MAP];
@@ -104,11 +108,13 @@ BFS_solution BFS_next(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghos
 	return solution;
 }
 
-/*
-*	Finds next AI move for Blinky
-*	Blinky’s target tile is always Pac-Man’s current tile.
-*	Return value:
-*	PacStruct containing next position of Blinky
+/*!
+*	\brief Finds next AI move for Blinky, Blinky’s target tile is always Pac-Man’s current tile
+*	\param Map map on which the game is played
+*	\param pacman PacStruct containing info about pacman
+*	\param ghosts PacStruct array containing info about ghosts
+*	\param currentGhostIndex index in ghosts array which defines current ghost
+*	\return PacStruct containing next position of Blinky
 */
 PacStruct BlinkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int currentGhostIndex) {
 	PacStruct sol = ghosts[currentGhostIndex];
@@ -122,11 +128,14 @@ PacStruct BlinkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacSt
 	return sol;
 }
 
-/*
-*	Finds next AI move for Pinky
-*	Pinky’s target tile is always a tile that is next to Pac-Man’s current tile.
-*	Return value:
-*	PacStruct containing next position of Pinky
+/*!
+*	\brief Finds next AI move for Pinky. Pinky’s target tile is always a tile that is next to Pac-Man’s current tile
+*	\param Map map on which the game is played
+*	\param ghostX x coordinate of ghost
+*	\param ghostY y coordinate of ghost
+*	\param pacmanX x coordinate of pacman
+*	\param pacmanY y coordinate of pacma
+*	\return PacStruct containing next position of Pinky
 */
 BFS_solution PinkyAI_logic(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int ghostY, int pacmanX, int pacmanY) {
 	BFS_solution solution;
@@ -181,11 +190,13 @@ BFS_solution PinkyAI_logic(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int ghostX, int
 	return solution;
 }
 
-/*
-*	Finds next AI move for Pinky
-*	This function uses PinkyAI_logic function.
-*	Return value:
-*	PacStruct containing next position of Pinky
+/*!
+*	\brief Finds next AI move for Pinky. This function uses PinkyAI_logic function
+*	\param Map map on which the game is played
+*	\param pacman PacStruct containing info about pacman
+*	\param ghosts PacStruct array containing info about ghosts
+*	\param currentGhostIndex index in ghosts array which defines current ghost
+*	\return PacStruct containing next position of Pinky
 */
 PacStruct PinkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int currentGhostIndex) {
 	PacStruct sol = ghosts[currentGhostIndex];
@@ -199,11 +210,13 @@ PacStruct PinkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStr
 	return sol;
 }
 
-/*
-*	Finds next AI move for Inky
-*	Inky’s target tile is always a tile that is two tiles from the Pac-Man’s current tile.
-*	Return value:
-*	PacStruct containing next position of Inky
+/*!
+*	\brief Finds next AI move for Inky. Inky’s target tile is always a tile that is two tiles from the Pac-Man’s current tile
+*	\param Map map on which the game is played
+*	\param pacman PacStruct containing info about pacman
+*	\param ghosts PacStruct array containing info about ghosts
+*	\param currentGhostIndex index in ghosts array which defines current ghost
+*	\return	PacStruct containing next position of Inky
 */
 PacStruct InkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int currentGhostIndex) {
 	PacStruct sol = ghosts[currentGhostIndex];
@@ -265,12 +278,14 @@ PacStruct InkyAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStru
 	return sol;
 }
 
-/*
-*	Finds next AI move for Clyde
-*	Clyde’s target tile is Pac-Man’s current tile if Clyde is ten tiles from the Pac-Man.
+/*!
+*	\brief Finds next AI move for Clyde. Clyde’s target tile is Pac-Man’s current tile if Clyde is ten tiles from the Pac-Man
 *	Otherwise, target tile is bottom left tile on the map.
-*	Return value:
-*	PacStruct containing next position of Clyde
+*	\param Map map on which the game is played
+*	\param pacman PacStruct containing info about pacman
+*	\param ghosts PacStruct array containing info about ghosts
+*	\param currentGhostIndex index in ghosts array which defines current ghost
+*	\return	PacStruct containing next position of Clyde
 */
 PacStruct ClydeAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int currentGhostIndex) {
 	PacStruct sol = ghosts[currentGhostIndex];
@@ -288,10 +303,12 @@ PacStruct ClydeAI(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStr
 	return sol;
 }
 
-/*
-*	Function finds the number of PAC_DOT/POWER_PELLET that surround current tile
-*	Return value:
-*	Number of neighbourhood tiles that contain PAC_DOT or POWER_PELLET
+/*!
+*	\brief Function finds the number of PAC_DOT/POWER_PELLET that surround current tile
+*	\param Map map on which the game is played
+*	\param pacmanX x coordinate of pacman
+*	\param pacmanY y coordinate of pacma
+*	\return	Number of neighbourhood tiles that contain PAC_DOT or POWER_PELLET
 */
 int isDot(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacmanX, int pacmanY) {
 	int cnt = 0;
@@ -310,10 +327,9 @@ int isDot(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacmanX, int pacmanY) {
 	return cnt;
 }
 
-/*
-*	Function finds the maximum of four numbers
-*	Return value:
-*	Maximum of numbers
+/*!
+*	\brief Function finds the maximum of four numbers
+*	\return	Maximum of numbers
 */
 int maximum(int a, int b, int c, int d) {
 	int sol = a;
@@ -326,10 +342,9 @@ int maximum(int a, int b, int c, int d) {
 	return sol;
 }
 
-/*
-*	Function finds the minimum of four numbers
-*	Return value:
-*	Minimum of numbers
+/*!
+*	\brief Function finds the minimum of four numbers
+*	\return	Minimum of numbers
 */
 int minimum(int a, int b, int c, int d) {
 	int sol = a;
@@ -342,10 +357,12 @@ int minimum(int a, int b, int c, int d) {
 	return sol;
 }
 
-/*
-*	Finds the nearest PAC_DOT/POWER_PELLET using BFS
-*	Return value:
-*	Number of tiles between Pac-Man and the nearest PAC_DOT/POWER_PELLET
+/*!
+*	\brief Finds the nearest PAC_DOT/POWER_PELLET using BFS
+*	\param Map map on which the game is played
+*	\param pacmanX x coordinate of pacman
+*	\param pacmanY y coordinate of pacma
+*	\return	Number of tiles between Pac-Man and the nearest PAC_DOT/POWER_PELLET
 */
 int BFS_nextDot(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacmanX, int pacmanY) {
 	short visited[HEIGHT_OF_MAP][WIDTH_OF_MAP];
@@ -411,13 +428,15 @@ int BFS_nextDot(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacmanX, int pacmanY) 
 	return 0;
 }
 
-/*
-*	Finds next AI move for Pac-Man
-*	Pac-Man’s target tile is a tile that contains PAC_DOT or POWER_PELLET and that is opposite of ghosts.
-*	Return value:
-*	PacStruct containing next position of Pac-Man
+/*!
+*	\brief Finds next AI move for Pac-Man. Pac-Man’s target tile is a tile that contains PAC_DOT or POWER_PELLET and that is opposite of ghosts.
+*	\param Map map on which the game is played
+*	\param pacman PacStruct containing info about pacman
+*	\param ghosts PacStruct array containing info about ghosts
+*	\param time does nothing
+*	\return	PacStruct containing next position of Pac-Man
 */
-PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int time) {
+PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int time) {// STA CE NAM TIME KAO ARGUMENT
 	//Map[HEIGHT_OF_MAP / 2 - 3][WIDTH_OF_MAP / 2 - 1] = WALL;
 	//Map[HEIGHT_OF_MAP / 2 - 3][WIDTH_OF_MAP / 2] = WALL;
 	PacStruct sol[4];

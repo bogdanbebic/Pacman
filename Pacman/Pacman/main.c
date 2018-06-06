@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 	newHighscore.name[0] = '\0';
 	
 	// TODO: READ HIGHSCORES FROM FILE, NOT ALWAYS LIKE THIS
-	readHighscoresFromFile();
+	readHighscoresFromFiles();
 
 	PlaySound(TEXT("Music/PacmanFever"), NULL, SND_LOOP | SND_ASYNC);
 

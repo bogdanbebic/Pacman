@@ -8,7 +8,14 @@
 #include "game.h"
 #include "gameMap.h"
 
+/*!
+*	\brief Maps SDLK number constants to ASCII number constants
+*/
 #define MAP_SDL_NUMBERS(x) ((x) - SDLK_0 + '0')
+
+/*!
+*	\brief Maps SDLK letter constants to ASCII letter constants
+*/
 #define MAP_SDL_LETTERS(x) ((x) - SDLK_a + 'a')
 
 enum PauseMenuOptions { continueWithGame, mainMenu, finishGame, numberOfPauseMenuOptions, quitInGame };

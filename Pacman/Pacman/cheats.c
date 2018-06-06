@@ -33,8 +33,15 @@ int infinityReverseCheat;
 
 char infinityReverse[] = "rasta";
 
+/*!
+*	\brief Toggles argument
+*/
 #define TOGGLE_CHEAT(x) ((x) = (x) == 1 ? 0 : 1)
 
+/*!
+*	\brief Toggles cheat if argument is a cheat
+*	\param cheat string which was typed in
+*/
 void toggleIfCheat(char cheat[]) {
 	if (strcmp(cheat, immortality) == 0) {
 		TOGGLE_CHEAT(immortalityCheat);

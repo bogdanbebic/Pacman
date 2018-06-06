@@ -9,6 +9,4 @@
 #define PAC_DOT 1
 #define POWER_PELLET 2
 
-
-
 #endif

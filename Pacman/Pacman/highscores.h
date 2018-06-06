@@ -2,12 +2,13 @@
 #ifndef _highscores_h_
 #define _highscores_h_
 
-// TODO: ovo treba da bude nesto smisleno
 #define MAX_NAME 12
 
-// TODO: ovo treba da bude nesto smisleno
 #define MAX_HIGHSCORES 7
 
+/*!
+*	\brief struct which contains info needed for highscore (name and points)
+*/
 typedef struct HighscoreStruct {
 	int points;
 	char name[MAX_NAME];
@@ -19,7 +20,7 @@ void makeGenericHighscores();
 
 void updateHighscores(Highscore newHighscore);
 
-void readHighscoresFromFile();
+void readHighscoresFromFiles();
 
 void writeHighscoresToFiles();
 

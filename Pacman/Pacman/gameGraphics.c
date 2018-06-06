@@ -12,8 +12,8 @@ static SDL_Rect tile_rect[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 SDL_Texture* ScoreBoxTexture, *LivesBoxTexture;
 extern GameTextures gameTexturesManager;
 
-/*
-*	Initializes all game textures
+/*!
+*	\brief Initializes all game textures
 */
 void initGameTextures() {
 	int i, j;
@@ -177,8 +177,8 @@ void initGameTextures() {
 	return;
 }
 
-/*
-*	Destroys all game textures
+/*!
+*	\brief Destroys all game textures
 */
 void destroyGameTextures() {
 	int i;
@@ -201,10 +201,10 @@ void destroyGameTextures() {
 	SDL_DestroyTexture(gameTexturesManager.wallTexture);
 }
 
-/*
-*	Gets old position of pacStruct
-*	Return value:
-*	PacStruct with old postition
+/*!
+*	\brief Gets old position of pacStruct
+*	\param pacStruct PacStruct containing current position
+*	\return PacStruct with old postition
 */
 static PacStruct getOldPacPosition(PacStruct pacStruct) {
 	PacStruct oldPosition;
@@ -235,9 +235,9 @@ static PacStruct getOldPacPosition(PacStruct pacStruct) {
 	return oldPosition;
 }
 
-/*
-*	Updates GUI level box
-*	according to the argument level
+/*!
+*	\brief Updates GUI level box in the game screen
+*	\param level number which will be printed on screen as level
 */
 void updateLevelBox(int level) {
 	extern Game game;
@@ -260,9 +260,9 @@ void updateLevelBox(int level) {
 	
 }
 
-/*
-*	Updates the score box in the game screen
-*	according to the argument currentScore
+/*!
+*	\brief Updates the score box in the game screen
+*	\param currentScore number which will be printed on screen as current score
 */
 void updateScoreBox(Highscore currentScore) {
 	extern Game game;
@@ -282,9 +282,8 @@ void updateScoreBox(Highscore currentScore) {
 	return;
 }
 
-/*
-*	Updates the Pacman lives box in the game screen
-*	according to the argument livesCount
+/*!
+*	\brief Updates the Pacman lives box in the game screen according to the argument livesCount
 */
 void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles, int livesCount) {
 	SDL_Rect LivesBoxRect;
@@ -304,9 +303,8 @@ void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles
 	return;
 }
 
-/*
-*	Prints argument map and pacman
-*	on the game screen
+/*!
+*	\brief Prints argument map and pacman on the game screen
 */
 void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int srbendaMod, int newLevel) {
 	int i, j;
@@ -363,10 +361,8 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int sr
 	return;
 }
 
-/*
-*	Updates arguments map and pacman
-*	according to its values and values of
-*	arguments delay and timer_tick
+/*!
+*	\brief Updates arguments map and pacman according to its values and values of arguments delay and timer_tick
 */
 void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int timer_tick, int srbendaMod) {
 	extern Game game;
@@ -409,10 +405,8 @@ void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int ti
 	return;
 }
 
-/*
-*	Updates arguments map and ghosts
-*	according to their values and values of
-*	arguments delay and timer_tick
+/*!
+*	\brief Updates arguments map and ghosts according to their values and values of arguments delay and timer_tick
 */
 void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_OF_GHOSTS], int timer_tick, int srbendaMod) {
 	int i;

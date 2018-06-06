@@ -1,8 +1,7 @@
 #include "graphicsMenu.h"
 
-/*
-*	Gets the current hardware screen resolution
-*	using arguments width and height
+/*!
+*	\brief Gets the current hardware screen resolution using arguments width and height
 */
 void getScreenResolution(int *width, int *height) {
 	*width = GetSystemMetrics(SM_CXSCREEN);
@@ -10,8 +9,8 @@ void getScreenResolution(int *width, int *height) {
 	return;
 }
 
-/*
-*	Initializes the game and everything needed for it
+/*!
+*	\brief Initializes the game and everything needed for it
 */
 void gameInit() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -44,9 +43,8 @@ void gameInit() {
 	return;
 }
 
-/*
-*	Quits the game and destroys the
-*	renderers and windows
+/*!
+*	\brief Quits the game and destroys the renderers and windows
 */
 void gameQuit() {
 	extern Game game;
@@ -69,8 +67,8 @@ void gameQuit() {
 	return;
 }
 
-/*
-*	Initializes the textures for menu
+/*!
+*	\brief Initializes the textures for menu
 */
 void initTexturesForMenu(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture ** PacmanTexture) {
 	SDL_Surface * PacmanSurface, *menuSurfaceYellow, *menuSurfaceWhite;
@@ -123,8 +121,9 @@ void initTexturesForMenu(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTex
 	SDL_FreeSurface(PacmanSurface);
 	return;
 }
-/*
-*	Destroys all menu textures
+
+/*!
+*	\brief Destroys all menu textures
 */
 void destroyMenuTextures(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture ** PacmanTexture) {
 	enum MenuOptions menuOption;
@@ -136,8 +135,8 @@ void destroyMenuTextures(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTex
 	SDL_DestroyTexture(*PacmanTexture);
 }
 
-/*
-*	Creates a heading for menu
+/*!
+*	\brief Creates a heading for menu
 */
 void createHeading() {
 	extern Game game;
@@ -156,7 +155,7 @@ void createHeading() {
 	SDL_DestroyTexture(HeadingTexture);
 }
 
-/*
+/*!
 *	Prints the menu on the game screen
 *	using the argument enum menuOptions currentMenuOption
 *	for printing all of the menu options
@@ -187,8 +186,8 @@ void printMenu(enum menuOptions currentMenuOption, SDL_Texture * menuTextureWhit
 	return;
 }
 
-/*
-*	Creates a heading for settings
+/*!
+*	\brief Creates a heading for settings
 */
 void createSettingsHeading() {
 	SDL_Surface *HeadingSurface;
@@ -210,8 +209,8 @@ void createSettingsHeading() {
 	SDL_DestroyTexture(HeadingTexture);
 }
 
-/*
-*	Initializes the textures for settings
+/*!
+*	\brief Initializes the textures for settings
 */
 void initSettingsTextures() {
 	SDL_Surface * PacmanSurface, *menuSurfaceYellow, *menuSurfaceWhite, *tempSurface;
@@ -316,8 +315,8 @@ void initSettingsTextures() {
 	return;
 }
 
-/*
-*	Destroys all the textures used in settings
+/*!
+*	\brief Destroys all the textures used in settings
 */
 void destroySettingsTextures() {
 	enum SettingsOptions menuOption;
@@ -351,7 +350,7 @@ void destroySettingsTextures() {
 
 }
 
-/*
+/*!
 *	Prints the settings on the game screen
 *	using the arguments enum settingsOptions currentMenuOption,
 *	enum DifficultySpeed currentDifficulty and hoveringDiff,
@@ -449,7 +448,7 @@ void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed 
 	return;
 }
 
-/*
+/*!
 *	Activates the settings on the game screen by
 *	handling all the user related input in the
 *	settings and prints the newly activated menu
@@ -588,8 +587,8 @@ void activateSettings(enum DifficultySpeed * currentDifficulty, enum YesNo * cur
 	return;
 }
 
-/*
-*	Initializes the textures for end game screen
+/*!
+*	\brief Initializes the textures for end game screen
 */
 void initEndGameTextures() {
 	extern EndGameTextures endGameTextureManager;
@@ -609,16 +608,16 @@ void initEndGameTextures() {
 }
 
 
-/*
-*	Destroys all end game textures
+/*!
+*	\brief Destroys all end game textures
 */
 void destroyEndGameTextures() {
 	SDL_DestroyTexture(endGameTextureManager.gameOverTexture);
 	SDL_DestroyTexture(endGameTextureManager.pressAnyButtonTexture);
 }
 
-/*
-*	Prints the end game screen
+/*!
+*	\brief Prints the end game screen
 */
 void endGameScreen() {
 	SDL_Rect rect;
@@ -656,8 +655,8 @@ void endGameScreen() {
 	return;
 }
 
-/*
-*	Initializes the textures for the final score screen
+/*!
+*	\brief Initializes the textures for the final score screen
 */
 void initFinalScoreTextures() {
 	char temp[2], c;
@@ -689,8 +688,8 @@ void initFinalScoreTextures() {
 	return;
 }
 
-/*
-*	Destroys all end game textures
+/*!
+*	\brief Destroys all end game textures
 */
 void destroyFinalScoreTextures() {
 	char c;
@@ -704,10 +703,8 @@ void destroyFinalScoreTextures() {
 	SDL_DestroyTexture(finalScoreTextureManager.typeInYourNameTexture);
 }
 
-/*
-*	Prints the final score screen and allows
-*   the user to input his/her name for the
-*	highscore
+/*!
+*	\brief Prints the final score screen and input of name for the highscore
 */
 void finalScoreScreen(int currScore, char * name, int * nameSave) {
 	int currPos = 0, finalScoreActive = 1, i;
@@ -1015,8 +1012,8 @@ void finalScoreScreen(int currScore, char * name, int * nameSave) {
 	return;
 }
 
-/*
-*	Creates a heading for highscore
+/*!
+*	\brief Creates a heading for highscore
 */
 void createHighScoreHeading() {
 	SDL_Surface *HeadingSurface;
@@ -1038,8 +1035,8 @@ void createHighScoreHeading() {
 	SDL_DestroyTexture(HeadingTexture);
 }
 
-/*
-*	Prints the highscore
+/*!
+*	\brief Prints the highscore
 */
 void printHighScore() {
 	extern Highscore highscores[MAX_HIGHSCORES];
@@ -1100,8 +1097,8 @@ void printHighScore() {
 
 }
 
-/*
-*	Creates a heading for credits
+/*!
+*	\brief Creates a heading for credits
 */
 void createCreditsHeading() {
 	extern Game game;
@@ -1122,8 +1119,8 @@ void createCreditsHeading() {
 	SDL_DestroyTexture(HeadingTexture);
 }
 
-/*
-*	Prints credits
+/*!
+*	\brief Prints credits
 */
 void printCredits() {
 	extern Game game;
@@ -1246,5 +1243,3 @@ void printCredits() {
 		}
 	}
 }
-
-

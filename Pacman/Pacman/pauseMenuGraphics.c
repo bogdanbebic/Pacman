@@ -3,8 +3,8 @@
 
 extern PauseMenuTextures pauseMenuTextureManager;
 
-/*
-*	Initializes the textures for pause menu
+/*!
+*	\brief Initializes the textures for pause menu
 */
 void initPauseMenuTextures() {
 	SDL_Surface * tempSurfaceWhite, *tempSurfaceYellow;
@@ -42,8 +42,8 @@ void initPauseMenuTextures() {
 	return;
 }
 
-/*
-*	Creates a heading for pause menu
+/*!
+*	\brief Creates a heading for pause menu
 */
 void createPauseHeading() {
 	SDL_Surface *HeadingSurface;
@@ -64,8 +64,9 @@ void createPauseHeading() {
 	SDL_DestroyTexture(HeadingTexture);
 }
 
-/*
-*	Prints the highscore
+/*!
+*	\brief Prints the pause menu
+*	\param currentOption option which is currently highlighted
 */
 void printPauseMenu(enum PauseMenuOptions currentOption) {
 	SDL_Rect menuRect, pacmanRect;
@@ -93,13 +94,13 @@ void printPauseMenu(enum PauseMenuOptions currentOption) {
 	return;
 }
 
-/*
+/*!
 *	Activates pause menu on the game screen by
 *	handling all the user related input in the
 *	menu itself and prints the newly activated menu
 *   on the game screen
 */
-enum PauseMenuOptions ActivatePauseMenu(int difficulty) {
+enum PauseMenuOptions ActivatePauseMenu(int difficulty) { // STA CE NAM DIFFICULTY ZA PARAMETAR OVDE
 	int activePauseMenu = 1, currPos = 0;
 	char cheat[MAX_CHEAT];
 	SDL_Event event;
@@ -173,11 +174,10 @@ enum PauseMenuOptions ActivatePauseMenu(int difficulty) {
 	}
 	return quitInGame;
 	activePauseMenu = 0;
-
 }
 
 /*
-*	Destroys all the textures used in the pause menu
+*	\brief Destroys all the textures used in the pause menu
 */
 void destroyPauseMenuTextures() {
 	enum PauseMenuOptions pauseMenuOption;

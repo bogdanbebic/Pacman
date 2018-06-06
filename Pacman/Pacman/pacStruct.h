@@ -11,7 +11,6 @@ enum GameMode { Normal, Reverse, EndReverse, GhostEaten };
 
 #define NUMBER_OF_GHOSTS 4
 
-
 /*
 *	Direction:
 *	UP -> 0
@@ -21,6 +20,9 @@ enum GameMode { Normal, Reverse, EndReverse, GhostEaten };
 *	NONE -> -1
 */
 
+/*!
+*	\brief struct which contains everything needed for pacman and ghosts (coordinates, direction and game mode)
+*/
 typedef struct PacStructStruct {
 	int iPosition;
 	int jPosition;

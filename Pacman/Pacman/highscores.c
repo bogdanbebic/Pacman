@@ -6,6 +6,7 @@
 /*
 *	Ne dirati ove fajlove, ovo su highscore fajlovi
 */
+
 #define FILE_1 "SDL2/SDL_Event.dll"
 #define FILE_2 "SDL2/SDL2_init_test.lib"
 #define FILE_3 "SDL2_ttf/zlib2.dll"
@@ -24,11 +25,13 @@
 #define DECOY_4 "not_a_highscore_file.hsc"
 #define DECOY_5 "Music/highscores.hsc"
 
+/*!
+*	\brief global variable in which highscores are kept
+*/
 Highscore highscores[MAX_HIGHSCORES];
 
-/*
-*	Makes decoy highscore files
-*	with the purpose of fooling Marko Misic
+/*!
+*	\brief Makes decoy highscore files with the purpose of fooling Marko Misic
 */
 void makeDecoyHighscoreFiles() {
 	FILE *notAhighscoreFile;
@@ -69,9 +72,8 @@ void makeDecoyHighscoreFiles() {
 	return;
 }
 
-/*
-*	Initializes highscores array
-*	with generic highscores
+/*!
+*	\brief Initializes highscores array with generic highscores
 */
 void makeGenericHighscores() {
 	extern Highscore highscores[MAX_HIGHSCORES];
@@ -87,9 +89,9 @@ void makeGenericHighscores() {
 	return;
 }
 
-/*
-*	Updates highscores array
-*	with newHighscore if neccesary
+/*!
+*	\brief Updates highscores array if neccesary
+*	\param newHighscore highscore which is added to highscores if points are greater
 */
 void updateHighscores(Highscore newHighscore) {
 	extern Highscore highscores[MAX_HIGHSCORES];
@@ -116,10 +118,10 @@ void updateHighscores(Highscore newHighscore) {
 	return;
 }
 
-/*
-*	Reads highscores array from file
+/*!
+*	\brief Reads highscores array from files
 */
-void readHighscoresFromFile() {	// OVO POPRAVITI DA RADI SA 5 FAJLOVA
+void readHighscoresFromFiles() {	// OVO POPRAVITI DA RADI SA 5 FAJLOVA
 	extern Highscore highscores[MAX_HIGHSCORES];
 	FILE *highscoresFile;
 	SetFileAttributes(L_FILE_1, FILE_ATTRIBUTE_NORMAL);
@@ -136,10 +138,11 @@ void readHighscoresFromFile() {	// OVO POPRAVITI DA RADI SA 5 FAJLOVA
 	return;
 }
 
-/*
-*	Encrypts highscores array using argument encryptionSeed
-*	and writes it to file defined by argument filePath
-*	and hides file using argument L_filePath
+/*!
+*	\brief Encrypts highscores array and writes it to file
+*	\param filePath defines name of file
+*	\param L_filePath defines name of file for hiding
+*	\param encryptionSeed seed used for random generator used in encryption
 */
 static void writeHighscoresToFile(char *filePath, LPCWSTR L_filePath, unsigned int encryptionSeed) {
 	extern Highscore highscores[MAX_HIGHSCORES];
@@ -159,9 +162,8 @@ static void writeHighscoresToFile(char *filePath, LPCWSTR L_filePath, unsigned i
 	return;
 }
 
-/*
-*	Writes highscores to 5 files using
-*	the function writeHighscoresToFile
+/*!
+*	\brief Writes highscores to 5 files using the function writeHighscoresToFile
 */
 void writeHighscoresToFiles() {
 	writeHighscoresToFile(FILE_1, L_FILE_1, 1000U);

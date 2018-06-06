@@ -5,12 +5,13 @@
 #include "cheats.h"
 #include <Windows.h>
 
+/*!
+*	\brief Variable containing everything necessary for continuation of game
+*/
 SaveGame saveGame;
 
-/*
- *	Initializes continue game
- *	with saved game parameters.
- *	Sets values for all arguments except difficulty
+/*!
+ *	\brief Initializes continue game with saved game parameters and sets values for all arguments except difficulty
  */
 void initContinueGame(enum DifficultySpeed *difficulty, int *delay, int *level, int *livesCount, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home, int *pacDotCount, int *timer_tick, int *timer_tick_POWER_PELLET, int *isPowerPelletEaten) {
 	extern SaveGame saveGame;
@@ -28,12 +29,9 @@ void initContinueGame(enum DifficultySpeed *difficulty, int *delay, int *level, 
 	return;
 }
 
-/*
-*	Moves pacStruct on map,
-*	prevents pacStruct to be in wall
-*	Return value:
-*	1 if pacStruct moved
-*	0 otherwise
+/*!
+*	\brief Moves pacStruct on map, prevents pacStruct to be in wall
+*	\return returns 1 if pacStruct moved, 0 otherwise
 */
 int wallCheckAndMove(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct) {
 	switch (pacStruct->direction) {
@@ -78,12 +76,9 @@ int wallCheckAndMove(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct)
 		return 1;
 }
 
-/*
-*	Moves pacStruct on map,
-*	pacman can go through the wall
-*	Return value:
-*	1 if pacStruct moved
-*	0 otherwise
+/*!
+*	\brief Moves pacStruct on map, pacman can go through the wall
+*	\return returns 1 if pacStruct moved, 0 otherwise
 */
 int wallCheckAndMoveNoWall(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct) {
 	switch (pacStruct->direction) {
@@ -108,9 +103,8 @@ int wallCheckAndMoveNoWall(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacS
 		return 1;
 }
 
-/*
-*	Changes direction for ghost
-*	in reverse mode
+/*!
+*	\brief Changes direction for ghost in reverse mode
 */
 void changeDirectionForReverseGhost(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct *pacStruct) {
 	pacStruct->direction = (pacStruct->direction + (NUMBER_OF_DIRECTIONS / 2)) % NUMBER_OF_DIRECTIONS;
@@ -127,9 +121,10 @@ void changeDirectionForReverseGhost(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStr
 	return;
 }
 
-/*
-*	Initializes temporary map
-*	which is used in a single level
+/*!
+*	\brief Initializes temporary map which is used in a single level
+*	\param map map which contains everything needed for start of level
+*	\param tempMap map which will be used in gamepla
 */
 void initTempMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int tempMap[HEIGHT_OF_MAP][WIDTH_OF_MAP]) {
 	for (int i = 0; i < HEIGHT_OF_MAP; i++) {
@@ -139,9 +134,9 @@ void initTempMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int tempMap[HEIGHT_OF_MAP
 	}
 }
 
-/*
-*	Initializes starting ghosts
-*	positions on map
+/*!
+*	\brief Initializes starting ghosts positions on map
+*	\param ghosts array of PacStructs which will be initialized
 */
 void initGhosts(PacStruct ghosts[NUMBER_OF_GHOSTS]) {
 	
@@ -168,9 +163,9 @@ void initGhosts(PacStruct ghosts[NUMBER_OF_GHOSTS]) {
 	return;
 }
 
-/*
-*	Initializes starting pacman
-*	position on map
+/*!
+*	\brief Initializes starting pacman position on map
+*	\param pacman PacStruct which will be initialized
 */
 void initPacmanPosition(PacStruct *pacman) {
 	pacman->direction = DIRECTION_NONE;
@@ -179,12 +174,11 @@ void initPacmanPosition(PacStruct *pacman) {
 	return;
 }
 
-/*
-*	Checks if pacman and and ghost
-*	have the same coordinates
-*	Return value:
-*	1 for same coordinates
-*	0 for different coordinates
+/*!
+*	\brief Checks if pacman and and ghost have the same coordinates
+*	\param pacman PacStruct containing pacmans coordinates
+*	\param ghost PacStruct containing ghosts coordinates
+*	\return	1 for same coordinates 0 for different coordinates
 */
 int pacmanGhostCheck(PacStruct pacman, PacStruct ghost) {
 	if (pacman.iPosition == ghost.iPosition && pacman.jPosition == ghost.jPosition)
@@ -193,13 +187,8 @@ int pacmanGhostCheck(PacStruct pacman, PacStruct ghost) {
 		return 0;
 }
 
-/*
-*	Updates the currentScore and
-*	gameMode if pacman has eaten
-*	a power pellet
-*	Returnn value:
-*	Reverse if pacman has eaten a power pellet
-*	gameMode (unchanged) otherwise
+/*!
+*	\brief Updates the currentScore and gameMode if pacman has eaten a power pellet
 */
 void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[], int * pacDotCount, Highscore * currentScore, int *timer_tick, int *isPowerPelletEaten, enum DifficultySpeed difficulty) {
 	int i;
@@ -241,10 +230,10 @@ void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacm
 	return;
 }
 
-/*
-*	Counts pacDot-s on given map
-*	Return value:
-*	count of pacDot-s
+/*!
+*	\brief Counts pacDot-s on given map
+*	\param map map on which the function counts pacDot-s
+*	\return count of pacDot-s
 */
 int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]) {
 	int i, j;
@@ -259,10 +248,10 @@ int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]) {
 	return pacDotCount;
 }
 
-/*
-*	Initializes a new level
-*	with new level pacman and ghost 
-*	parameters
+/*!
+*	\brief Initializes a new level
+*	\param pacman PacStruct which will be initialized
+*	\param ghosts PacStruct array which will be initialized
 */
 void initLevel(PacStruct *pacman, PacStruct *ghosts) {
 	initPacmanPosition(pacman);
@@ -270,10 +259,8 @@ void initLevel(PacStruct *pacman, PacStruct *ghosts) {
 	return;
 }
 
-/*
-*	Initializes a new game
-*	with new game parameters.
-*	Sets values for all arguments except difficulty
+/*!
+*	\brief Initializes a new game with new game parameters and sets values for all arguments except difficulty
 */
 void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *livesCount, Highscore *currentScore, int *isStartOfNewGame, PacStruct *home) {
 	*isStartOfNewGame = 1;
@@ -306,12 +293,9 @@ void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *l
 extern SDL_Event event;
 extern SDL_Texture* ScoreBoxTexture, *LivesBoxTexture;
 
-/*
-*	Gets pacman direction from user
-*	Return value:
-*	enum Direction which marks direction that
-*	the user has given as input or DIRECTION_NONE
-*	if user has given input whhich is not correct
+/*!
+*	\brief Gets pacman direction from user
+*	\return enum Direction which marks direction that the user has given as input or DIRECTION_NONE if user has given input whhich is not correct
 */
 enum Direction getPacmanDirectionFromUser(SDL_Event event) {
 	switch (event.key.keysym.sym) {
@@ -336,10 +320,8 @@ enum Direction getPacmanDirectionFromUser(SDL_Event event) {
 	}
 }
 
-/*
-*	Saves current game
-*	and makes it possible
-*	to continue game
+/*!
+*	\brief Saves current game and makes it possible to continue game
 */
 void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount, int srbendaMod, int timer_tick, int timer_tick_POWER_PELLET, int isPowerPelletEaten) {
 	extern SaveGame saveGame;
@@ -368,12 +350,12 @@ void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, 
 	return;
 }
 
-/*
-*	Sets up and plays new Pacman game
-*	according to the argument difficulty
-*	Return value:
-*	currentScore is the score that 
-*	the player has accumulated in the game
+/*!
+*	\brief Sets up and plays new Pacman game according to the argument difficulty
+*	\param gameType type of game which is played
+*	\param difficulty difficulty at which the game is played
+*	\param isMusicOn 1 if true, otherwise 0
+*	\return currentScore is the score that the player has accumulated in the game
 */
 Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum YesNo isMusicOn) {
 	extern int map[HEIGHT_OF_MAP][WIDTH_OF_MAP];
