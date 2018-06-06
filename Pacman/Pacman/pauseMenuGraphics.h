@@ -8,11 +8,16 @@
 #include "game.h"
 #include "gameMap.h"
 
-enum PauseMenuOptions { continueWithGame, mainMenu, finishGame, numberOfPauseMenuOptions, quitInGame};
+#define MAP_SDL_NUMBERS(x) ((x) - SDLK_0 + '0')
+#define MAP_SDL_LETTERS(x) ((x) - SDLK_a + 'a')
+
+enum PauseMenuOptions { continueWithGame, mainMenu, finishGame, numberOfPauseMenuOptions, quitInGame };
 
 enum PauseMenuOptions ActivatePauseMenu(int difficulty);
 
 void initPauseMenuTextures();
+
+void destroyPauseMenuTextures();
 
 typedef struct PauseMenuTexturesStruct {
 	SDL_Texture * whiteTextures[numberOfPauseMenuOptions];

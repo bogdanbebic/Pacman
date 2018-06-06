@@ -30,14 +30,13 @@ void gameInit() {
 	unsigned int height = game.screen.height / 2 + 2 * game.screen.height / HEIGHT_OF_MAP;
 	const char* name = SCREEN_NAME;
 
-	game.screen.window = SDL_CreateWindow(name,	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
+	game.screen.window = SDL_CreateWindow(name, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
 	game.screen.renderer = SDL_CreateRenderer(game.screen.window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	game.isRunning = SDL_TRUE;
 
-	//texture initialization and heading creation
+	//texture initialization
 	initGameTextures();
-	createHeading();
 	initPauseMenuTextures();
 	initSettingsTextures();
 	initEndGameTextures();
@@ -49,8 +48,16 @@ void gameInit() {
 *	Quits the game and destroys the
 *	renderers and windows
 */
-void gameQuit() { // TODO: Delete all textures at the end
+void gameQuit() {
 	extern Game game;
+
+	//texture destruction 
+	destroyGameTextures();
+	destroyPauseMenuTextures();
+	destroySettingsTextures();
+	destroyEndGameTextures();
+	destroyFinalScoreTextures();
+
 	SDL_DestroyRenderer(game.screen.renderer);
 	SDL_DestroyWindow(game.screen.window);
 
@@ -60,7 +67,7 @@ void gameQuit() { // TODO: Delete all textures at the end
 
 	SDL_Quit();
 	return;
-} 
+}
 
 /*
 *	Initializes the textures for menu
@@ -116,7 +123,22 @@ void initTexturesForMenu(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTex
 	SDL_FreeSurface(PacmanSurface);
 	return;
 }
+/*
+*	Destroys all menu textures
+*/
+void destroyMenuTextures(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture ** PacmanTexture) {
+	enum MenuOptions menuOption;
 
+	for (menuOption = 0; menuOption < numberOfMenuOptions; menuOption++) {
+		SDL_DestroyTexture(menuTextureWhite[menuOption]);
+		SDL_DestroyTexture(menuTextureYellow[menuOption]);
+	}
+	SDL_DestroyTexture(*PacmanTexture);
+}
+
+/*
+*	Creates a heading for menu
+*/
 void createHeading() {
 	extern Game game;
 	SDL_Surface *HeadingSurface;
@@ -165,6 +187,9 @@ void printMenu(enum menuOptions currentMenuOption, SDL_Texture * menuTextureWhit
 	return;
 }
 
+/*
+*	Creates a heading for settings
+*/
 void createSettingsHeading() {
 	SDL_Surface *HeadingSurface;
 	extern Game game;
@@ -185,6 +210,9 @@ void createSettingsHeading() {
 	SDL_DestroyTexture(HeadingTexture);
 }
 
+/*
+*	Initializes the textures for settings
+*/
 void initSettingsTextures() {
 	SDL_Surface * PacmanSurface, *menuSurfaceYellow, *menuSurfaceWhite, *tempSurface;
 	extern SettingsMenuTextures settingsTextureManager;
@@ -284,16 +312,58 @@ void initSettingsTextures() {
 	settingsTextureManager.pacmanTexture = SDL_CreateTextureFromSurface(game.screen.renderer, PacmanSurface);
 	SDL_FreeSurface(PacmanSurface);
 
-	
+
 	return;
 }
 
+/*
+*	Destroys all the textures used in settings
+*/
+void destroySettingsTextures() {
+	enum SettingsOptions menuOption;
+	int i;
+	for (menuOption = 0; menuOption < numberOfSettingsOptions; menuOption++) {
+		switch (menuOption) {
+		case gameDifficulty: case music:
+			SDL_DestroyTexture(settingsTextureManager.whiteTextures[menuOption]);
+			SDL_DestroyTexture(settingsTextureManager.yellowTextures[menuOption]);
+			break;
+		case diffOption:
+			for (i = 0; i < 3; i++) {
+				SDL_DestroyTexture(settingsTextureManager.whiteDifficulty[i]);
+				SDL_DestroyTexture(settingsTextureManager.yellowDifficulty[i]);
+				SDL_DestroyTexture(settingsTextureManager.whiteFilledDiff[i]);
+				SDL_DestroyTexture(settingsTextureManager.yellowFilledDiff[i]);
+			}
+			break;
+		case musicOption:
+			for (i = 0; i < numberOfMusicOptions; i++) {
+				SDL_DestroyTexture(settingsTextureManager.yesNoWhite[i]);
+				SDL_DestroyTexture(settingsTextureManager.yesNoYellow[i]);
+				SDL_DestroyTexture(settingsTextureManager.yesNoWhiteFilled[i]);
+				SDL_DestroyTexture(settingsTextureManager.yesNoYellowFilled[i]);
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
+}
+
+/*
+*	Prints the settings on the game screen
+*	using the arguments enum settingsOptions currentMenuOption,
+*	enum DifficultySpeed currentDifficulty and hoveringDiff,
+*   and enum YesNo currentMusicOption and hoveringMusicOption
+*	for printing all of the settings menu options
+*/
 void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed currentDifficulty, enum DifficultySpeed hoveringDiff, enum YesNo currentMusicOption, enum YesNo hoveringMusicOption) {
 	extern Game game;
 	extern SettingsMenuTextures settingsTextureManager;
 	SDL_Rect menuRect, pacmanRect, diffRect;
 	enum SettingsOptions menuOption;
-	enum DifficultySpeed tempDiffArray[NUMBER_OF_DIFFICULTIES] = {EASY, MEDIUM, HARD};
+	enum DifficultySpeed tempDiffArray[NUMBER_OF_DIFFICULTIES] = { EASY, MEDIUM, HARD };
 	enum YesNo tempMusicArray[numberOfMusicOptions] = { no, yes };
 	int i;
 
@@ -325,7 +395,7 @@ void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed 
 				if (tempDiffArray[i] == currentDifficulty && tempDiffArray[i] == hoveringDiff && currentMenuOption == menuOption) {
 					SDL_RenderCopy(game.screen.renderer, settingsTextureManager.yellowFilledDiff[i], NULL, &diffRect);
 				}
-				else if ((tempDiffArray[i] == currentDifficulty && tempDiffArray[i] != hoveringDiff) ||(tempDiffArray[i] == currentDifficulty && currentMenuOption != menuOption)) {
+				else if ((tempDiffArray[i] == currentDifficulty && tempDiffArray[i] != hoveringDiff) || (tempDiffArray[i] == currentDifficulty && currentMenuOption != menuOption)) {
 					SDL_RenderCopy(game.screen.renderer, settingsTextureManager.whiteFilledDiff[i], NULL, &diffRect);
 				}
 				else if (tempDiffArray[i] == hoveringDiff && tempDiffArray[i] != currentDifficulty && currentMenuOption == menuOption) {
@@ -379,6 +449,12 @@ void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed 
 	return;
 }
 
+/*
+*	Activates the settings on the game screen by
+*	handling all the user related input in the
+*	settings and prints the newly activated menu
+*   on the game screen
+*/
 void activateSettings(enum DifficultySpeed * currentDifficulty, enum YesNo * currentMusicOption) {
 	SDL_Event event;
 	extern Game game;
@@ -386,7 +462,7 @@ void activateSettings(enum DifficultySpeed * currentDifficulty, enum YesNo * cur
 	enum SettingsOptions selectedOption = diffOption;
 	enum DifficultySpeed hoveringDiff = EASY;
 	enum YesNo hoveringMusicOption = yes;
-	createSettingsHeading(); 
+	createSettingsHeading();
 	while (game.isRunning) {
 		while (SDL_PollEvent(&event)) {
 			printSettings(selectedOption, *currentDifficulty, hoveringDiff, *currentMusicOption, hoveringMusicOption);
@@ -441,7 +517,7 @@ void activateSettings(enum DifficultySpeed * currentDifficulty, enum YesNo * cur
 						if (selectedOption == music) {
 							selectedOption = musicOption;
 						}
-						
+
 					}
 					break;
 				case SDLK_RIGHT:
@@ -499,12 +575,12 @@ void activateSettings(enum DifficultySpeed * currentDifficulty, enum YesNo * cur
 					}
 					break;
 				}
-			break;
-			case SDL_QUIT: 
-					game.isRunning = SDL_FALSE;
-					settingsRunning = 0;
-					return;
-					break;
+				break;
+			case SDL_QUIT:
+				game.isRunning = SDL_FALSE;
+				settingsRunning = 0;
+				return;
+				break;
 			}
 		}
 	}
@@ -512,6 +588,9 @@ void activateSettings(enum DifficultySpeed * currentDifficulty, enum YesNo * cur
 	return;
 }
 
+/*
+*	Initializes the textures for end game screen
+*/
 void initEndGameTextures() {
 	extern EndGameTextures endGameTextureManager;
 	extern Game game;
@@ -529,6 +608,18 @@ void initEndGameTextures() {
 	return;
 }
 
+
+/*
+*	Destroys all end game textures
+*/
+void destroyEndGameTextures() {
+	SDL_DestroyTexture(endGameTextureManager.gameOverTexture);
+	SDL_DestroyTexture(endGameTextureManager.pressAnyButtonTexture);
+}
+
+/*
+*	Prints the end game screen
+*/
 void endGameScreen() {
 	SDL_Rect rect;
 	SDL_Event event;
@@ -565,6 +656,9 @@ void endGameScreen() {
 	return;
 }
 
+/*
+*	Initializes the textures for the final score screen
+*/
 void initFinalScoreTextures() {
 	char temp[2], c;
 	extern FinalScoreTextures finalScoreTextureManager;
@@ -591,10 +685,30 @@ void initFinalScoreTextures() {
 	SDL_FreeSurface(tempSurface);
 	tempSurface = TTF_RenderText_Solid(font, "TYPE IN YOUR NAME:", white);
 	finalScoreTextureManager.typeInYourNameTexture = SDL_CreateTextureFromSurface(game.screen.renderer, tempSurface);
-	SDL_FreeSurface(tempSurface); 
+	SDL_FreeSurface(tempSurface);
 	return;
 }
 
+/*
+*	Destroys all end game textures
+*/
+void destroyFinalScoreTextures() {
+	char c;
+	for (c = '0'; c <= '9'; c++) {
+		SDL_DestroyTexture(finalScoreTextureManager.characterTextures[c]);
+	}
+	for (c = 'A'; c <= 'Z'; c++) {
+		SDL_DestroyTexture(finalScoreTextureManager.characterTextures[c]);
+	}
+	SDL_DestroyTexture(finalScoreTextureManager.blankTexture);
+	SDL_DestroyTexture(finalScoreTextureManager.typeInYourNameTexture);
+}
+
+/*
+*	Prints the final score screen and allows
+*   the user to input his/her name for the
+*	highscore
+*/
 void finalScoreScreen(int currScore, char * name, int * nameSave) {
 	int currPos = 0, finalScoreActive = 1, i;
 	SDL_Event event;
@@ -643,7 +757,7 @@ void finalScoreScreen(int currScore, char * name, int * nameSave) {
 					name[currPos] = '0';
 					SDL_RenderFillRect(game.screen.renderer, &rect);
 					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['0'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = '0'; currPos++; } 
+					if (currPos < MAX_NAME - 1) { name[currPos] = '0'; currPos++; }
 					break;
 				case SDLK_1:
 					name[currPos] = '1';
@@ -866,8 +980,22 @@ void finalScoreScreen(int currScore, char * name, int * nameSave) {
 					finalScoreActive = 0;
 					*nameSave = 0;
 					break;
+					/*default:
+					if (currPos < MAX_NAME - 1) {
+					if (event.key.keysym.sym <= SDLK_9 && event.key.keysym.sym >= SDLK_0) {
+					name[currPos++] = MAP_SDL_NUMBERS(event.key.keysym.sym);
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures[name[currPos - 1]], NULL, &rect);
+					}
+					else if (event.key.keysym.sym <= SDLK_z && event.key.keysym.sym >= SDLK_a) {
+					name[currPos++] = MAP_SDL_LETTERS(event.key.keysym.sym);
+					SDL_RenderFillRect(game.screen.renderer, &rect);
+					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures[name[currPos - 1]], NULL, &rect);
+					}
+					}
+					break;*/
 				}
-				
+
 				for (i = currPos; i <= MAX_NAME - 1; i++) {
 					rect.x = game.screen.width / 18 + i * game.screen.width / 50;
 					SDL_RenderFillRect(game.screen.renderer, &rect);
@@ -875,6 +1003,7 @@ void finalScoreScreen(int currScore, char * name, int * nameSave) {
 						SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.blankTexture, NULL, &rect);
 				}
 				break;
+
 			case SDL_QUIT:
 				game.isRunning = 0;
 				return;
@@ -886,6 +1015,9 @@ void finalScoreScreen(int currScore, char * name, int * nameSave) {
 	return;
 }
 
+/*
+*	Creates a heading for highscore
+*/
 void createHighScoreHeading() {
 	SDL_Surface *HeadingSurface;
 	extern Game game;
@@ -906,6 +1038,9 @@ void createHighScoreHeading() {
 	SDL_DestroyTexture(HeadingTexture);
 }
 
+/*
+*	Prints the highscore
+*/
 void printHighScore() {
 	extern Highscore highscores[MAX_HIGHSCORES];
 	SDL_Event event;
@@ -915,7 +1050,7 @@ void printHighScore() {
 	TTF_Font* font = TTF_OpenFont("impact.ttf", 80);
 	SDL_Color white = { 255, 255, 255 };
 	int i, highScoreRunning = 1, j;
-	char buffer[40] = {0}, temp[40], temp2[40], buffer1[40] = { 0 };
+	char buffer[40] = { 0 }, temp[40], temp2[40], buffer1[40] = { 0 };
 	char string[3] = ". \0", whiteSpace[2] = " ";
 
 	createHighScoreHeading();
@@ -965,6 +1100,9 @@ void printHighScore() {
 
 }
 
+/*
+*	Creates a heading for credits
+*/
 void createCreditsHeading() {
 	extern Game game;
 	SDL_Surface *HeadingSurface;
@@ -984,6 +1122,9 @@ void createCreditsHeading() {
 	SDL_DestroyTexture(HeadingTexture);
 }
 
+/*
+*	Prints credits
+*/
 void printCredits() {
 	extern Game game;
 	SDL_Surface *surface;
@@ -1004,7 +1145,7 @@ void printCredits() {
 	surface = TTF_RenderText_Solid(font, "Thank you Toru Iwatani for  ", white);
 	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
 	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
-	
+
 	rect.y = game.screen.height / 10 + 5 * game.screen.height / 130;
 	rect.h = 5 * game.screen.height / 130;
 	surface = TTF_RenderText_Solid(font, "making such an awesome game ", white);
@@ -1083,9 +1224,6 @@ void printCredits() {
 	surface = TTF_RenderText_Solid(font, "Power Pellet                                      ", white);
 	texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
 	SDL_RenderCopy(game.screen.renderer, texture, NULL, &rect);
-
-
-
 
 	SDL_RenderPresent(game.screen.renderer);
 	while (game.isRunning && creditsRunning) {

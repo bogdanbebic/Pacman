@@ -3,6 +3,9 @@
 
 extern PauseMenuTextures pauseMenuTextureManager;
 
+/*
+*	Initializes the textures for pause menu
+*/
 void initPauseMenuTextures() {
 	SDL_Surface * tempSurfaceWhite, *tempSurfaceYellow;
 	enum PauseMenuOptions pauseMenuOption;
@@ -39,6 +42,9 @@ void initPauseMenuTextures() {
 	return;
 }
 
+/*
+*	Creates a heading for pause menu
+*/
 void createPauseHeading() {
 	SDL_Surface *HeadingSurface;
 	SDL_Texture *HeadingTexture;
@@ -58,6 +64,9 @@ void createPauseHeading() {
 	SDL_DestroyTexture(HeadingTexture);
 }
 
+/*
+*	Prints the highscore
+*/
 void printPauseMenu(enum PauseMenuOptions currentOption) {
 	SDL_Rect menuRect, pacmanRect;
 	enum PauseMenuOptions menuOption;
@@ -69,7 +78,7 @@ void printPauseMenu(enum PauseMenuOptions currentOption) {
 		menuRect.h = game.screen.height / 22;
 		pacmanRect.x = game.screen.width / 24;
 		pacmanRect.y = (8 + 3 * menuOption) * (game.screen.height / 44);
-		pacmanRect.w = game.screen.width / 30; 
+		pacmanRect.w = game.screen.width / 30;
 		pacmanRect.h = game.screen.height / 22;
 		if (currentOption == menuOption) {
 			SDL_RenderCopy(game.screen.renderer, pauseMenuTextureManager.yellowTextures[menuOption], NULL, &menuRect);
@@ -84,18 +93,19 @@ void printPauseMenu(enum PauseMenuOptions currentOption) {
 	return;
 }
 
-#define MAP_SDL_NUMBERS(x) ((x) - SDLK_0 + '0')
-#define MAP_SDL_LETTERS(x) ((x) - SDLK_a + 'a')
-
-#define MAX_CHEAT 15
-
+/*
+*	Activates pause menu on the game screen by
+*	handling all the user related input in the
+*	menu itself and prints the newly activated menu
+*   on the game screen
+*/
 enum PauseMenuOptions ActivatePauseMenu(int difficulty) {
 	int activePauseMenu = 1, currPos = 0;
 	char cheat[MAX_CHEAT];
 	SDL_Event event;
 	enum PauseMenuOptions selectedOption = continueWithGame;
 	enum PauseMenuOptions currentOption = selectedOption;
-	
+
 	createPauseHeading();
 
 	while (game.isRunning) {
@@ -150,12 +160,12 @@ enum PauseMenuOptions ActivatePauseMenu(int difficulty) {
 					}
 					toggleIfCheat(cheat);
 				}
-				
+
 
 				break;	// break SDL_KEYDOWN
 			case SDL_QUIT:
 				game.isRunning = SDL_FALSE;
-				
+
 				break;
 			}
 			currentOption = selectedOption;
@@ -164,4 +174,17 @@ enum PauseMenuOptions ActivatePauseMenu(int difficulty) {
 	return quitInGame;
 	activePauseMenu = 0;
 
+}
+
+/*
+*	Destroys all the textures used in the pause menu
+*/
+void destroyPauseMenuTextures() {
+	enum PauseMenuOptions pauseMenuOption;
+
+	for (pauseMenuOption = 0; pauseMenuOption < numberOfPauseMenuOptions; pauseMenuOption++) {
+		SDL_DestroyTexture(pauseMenuTextureManager.whiteTextures[pauseMenuOption]);
+		SDL_DestroyTexture(pauseMenuTextureManager.yellowTextures[pauseMenuOption]);
+	}
+	SDL_DestroyTexture(pauseMenuTextureManager.pacmanTexture);
 }

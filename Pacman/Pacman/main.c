@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
 	enum ActiveScreen activeScreen = isMenu;
 	game.init();
 	SDL_Texture * menuTextureWhite[numberOfMenuOptions], *menuTextureYellow[numberOfMenuOptions], *pacmanTexture;
+	createHeading();
 	initTexturesForMenu(menuTextureWhite, menuTextureYellow, &pacmanTexture);
 
 	int isGameCreated = 0;
@@ -177,6 +178,7 @@ int main(int argc, char *argv[]) {
 	}
 	makeDecoyHighscoreFiles();
 	writeHighscoresToFile();
+	destroyMenuTextures(menuTextureWhite, menuTextureYellow, &pacmanTexture);
 	game.quit();
 
 	return 0;

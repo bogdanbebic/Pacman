@@ -4,6 +4,8 @@
 
 #define MAX_SPEED 4
 
+#define MAX_CHEAT 15
+
 extern int immortalityCheat;
 
 extern char immortality[];

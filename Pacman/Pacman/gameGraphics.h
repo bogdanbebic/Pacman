@@ -14,6 +14,8 @@
 
 void initGameTextures();
 
+void destroyGameTextures();
+
 void updateScoreBox(Highscore currentScore);
 
 void updateLevelBox(int level);

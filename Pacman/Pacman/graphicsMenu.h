@@ -22,9 +22,9 @@
 
 enum MenuOptions { demoGame, newGame, continueGame, highscore, settings, credits, quitGame, numberOfMenuOptions };
 
-enum SettingsOptions {gameDifficulty, diffOption, music, musicOption, numberOfSettingsOptions};
+enum SettingsOptions { gameDifficulty, diffOption, music, musicOption, numberOfSettingsOptions };
 
-enum YesOrNo {no, yes, numberOfMusicOptions};
+enum YesOrNo { no, yes, numberOfMusicOptions };
 
 void gameInit();
 
@@ -34,11 +34,15 @@ void getScreenResolution(int *width, int *height);
 
 void initTexturesForMenu(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture ** PacmanTexture);
 
+void destroyMenuTextures(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture ** PacmanTexture);
+
 void createHeading();
 
 void printMenu(enum menuOptions currentMenuOption, SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture * PacmanTexture);
 
 void initSettingsTextures();
+
+void destroySettingsTextures();
 
 void createSettingsHeading();
 
@@ -48,9 +52,13 @@ void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed 
 
 void initEndGameTextures();
 
+void destroyEndGameTextures();
+
 void endGameScreen();
 
 void initFinalScoreTextures();
+
+void destroyFinalScoreTextures();
 
 void finalScoreScreen(int currScore, char * name, int *nameSave);
 

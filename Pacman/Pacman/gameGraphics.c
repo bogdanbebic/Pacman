@@ -177,6 +177,29 @@ void initGameTextures() {
 	return;
 }
 
+/*
+*	Destroys all game textures
+*/
+void destroyGameTextures() {
+	int i;
+	for (i = 0; i < NUMBER_OF_DIRECTIONS; i++) {	
+		SDL_DestroyTexture(gameTexturesManager.pacmanOpenMouthTextures[i]);
+		SDL_DestroyTexture(gameTexturesManager.pacmanShutMouthTextures[i]);
+		SDL_DestroyTexture(gameTexturesManager.pacmanSrbendaOpenMouth[i]);
+		SDL_DestroyTexture(gameTexturesManager.pacmanSrbendaShutMouth[i]);
+		SDL_DestroyTexture(gameTexturesManager.ghostTextures[i]);
+	}
+	SDL_DestroyTexture(gameTexturesManager.backgroundTexture);
+	SDL_DestroyTexture(gameTexturesManager.levelBoxTexture);
+	SDL_DestroyTexture(gameTexturesManager.pacDotTexture);
+	SDL_DestroyTexture(gameTexturesManager.livesBoxTexture);
+	SDL_DestroyTexture(gameTexturesManager.powerPelletSrbendaTexture);
+	SDL_DestroyTexture(gameTexturesManager.powerPelletTexture);
+	SDL_DestroyTexture(gameTexturesManager.reverseGhostTexture);
+	SDL_DestroyTexture(gameTexturesManager.scoreBoxTexture);
+	SDL_DestroyTexture(gameTexturesManager.wallSrbendaTexture);
+	SDL_DestroyTexture(gameTexturesManager.wallTexture);
+}
 
 /*
 *	Gets old position of pacStruct
