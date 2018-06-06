@@ -322,9 +322,9 @@ int maximum(int a, int b, int c, int d) {
 }
 
 /*
-*	Function finds the maximum of four numbers
+*	Function finds the minimum of four numbers
 *	Return value:
-*	Maximum of numbers
+*	Minimum of numbers
 */
 int minimum(int a, int b, int c, int d) {
 	int sol = a;
@@ -337,6 +337,11 @@ int minimum(int a, int b, int c, int d) {
 	return sol;
 }
 
+/*
+*	Finds the nearest PAC_DOT/POWER_PELLET using BFS
+*	Return value:
+*	Number of tiles between Pac-Man and the nearest PAC_DOT/POWER_PELLET
+*/
 int BFS_nextDot(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacmanX, int pacmanY) {
 	short visited[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 	for (int x = 0; x < HEIGHT_OF_MAP; x++)
@@ -431,7 +436,7 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 		if (count < min)
 			min = count;
 	}
-	left = min;
+	left = min + 1;
 	min = 1000;
 	count = 0;
 	for (int i = 0; i < NUMBER_OF_GHOSTS; i++) {
@@ -445,7 +450,7 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 		if (count < min)
 			min = count;
 	}
-	right = min;
+	right = min + 1;
 	min = 1000;
 	count = 0;
 	for (int i = 0; i < NUMBER_OF_GHOSTS; i++) {
@@ -459,7 +464,7 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 		if (count < min)
 			min = count;
 	}
-	up = min;
+	up = min + 1;
 	min = 1000;
 	count = 0;
 	for (int i = 0; i < NUMBER_OF_GHOSTS; i++) {
@@ -473,7 +478,7 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 		if (count < min)
 			min = count;
 	}
-	down = min;
+	down = min + 1;
 
 	int dotUp = BFS_nextDot(Map, pacmanX, pacmanY - 1);
 	int dotLeft = BFS_nextDot(Map, (pacmanX - 1 + WIDTH_OF_MAP) % WIDTH_OF_MAP, pacmanY);
