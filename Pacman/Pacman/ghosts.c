@@ -2,11 +2,6 @@
 
 extern int countPacDots(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP]);
 
-typedef struct {
-	int direction;
-	int count;
-} BFS_solution;
-
 /*
 *	Finds next position using BFS
 *	Return value:
@@ -311,17 +306,345 @@ int isDot(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacmanX, int pacmanY) {
 }
 
 /*
+*	Function finds the maximum of four numbers
+*	Return value:
+*	Maximum of numbers
+*/
+int maximum(int a, int b, int c, int d) {
+	int sol = a;
+	if (b > sol)
+		sol = b;
+	if (c > sol)
+		sol = c;
+	if (d > sol)
+		sol = d;
+	return sol;
+}
+
+/*
+*	Function finds the maximum of four numbers
+*	Return value:
+*	Maximum of numbers
+*/
+int minimum(int a, int b, int c, int d) {
+	int sol = a;
+	if (b < sol)
+		sol = b;
+	if (c < sol)
+		sol = c;
+	if (d < sol)
+		sol = d;
+	return sol;
+}
+
+int BFS_nextDot(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacmanX, int pacmanY) {
+	short visited[HEIGHT_OF_MAP][WIDTH_OF_MAP];
+	for (int x = 0; x < HEIGHT_OF_MAP; x++)
+		for (int y = 0; y < WIDTH_OF_MAP; y++)
+			visited[x][y] = 0;
+	int i = 0;
+	int queueX[HEIGHT_OF_MAP * WIDTH_OF_MAP];
+	int queueY[HEIGHT_OF_MAP * WIDTH_OF_MAP];
+	int queueCount = 1;
+	queueX[0] = pacmanX;
+	queueY[0] = pacmanY;
+	visited[queueY[i]][queueX[i]] = 1;
+	if (Map[pacmanY][pacmanX] == WALL)
+		return 1200;
+	while (i < queueCount) {
+		if (Map[queueY[i]][queueX[i]]==PAC_DOT || Map[queueY[i]][queueX[i]] == POWER_PELLET ) {
+			return visited[queueY[i]][queueX[i]];
+		}
+		if (queueY[i] < HEIGHT_OF_MAP - 1 && Map[queueY[i] + 1][queueX[i]] != WALL && visited[queueY[i] + 1][queueX[i]] <= 0) {
+			queueY[queueCount] = queueY[i] + 1;
+			queueX[queueCount++] = queueX[i];
+			visited[queueY[i] + 1][queueX[i]] = visited[queueY[i]][queueX[i]] + 1;
+		}
+		if (queueY[i] > 0 && Map[queueY[i] - 1][queueX[i]] != WALL && visited[queueY[i] - 1][queueX[i]] <= 0) {
+
+			queueY[queueCount] = queueY[i] - 1;
+			queueX[queueCount++] = queueX[i];
+
+			visited[queueY[i] - 1][queueX[i]] = visited[queueY[i]][queueX[i]] + 1;
+		}
+		if (queueX[i] < WIDTH_OF_MAP - 1 && Map[queueY[i]][queueX[i] + 1] != WALL && visited[queueY[i]][queueX[i] + 1] <= 0) {
+
+			queueY[queueCount] = queueY[i];
+			queueX[queueCount++] = queueX[i] + 1;
+
+			visited[queueY[i]][queueX[i] + 1] = visited[queueY[i]][queueX[i]] + 1;
+		}
+		if (queueX[i] == WIDTH_OF_MAP - 1 && Map[queueY[i]][0] != WALL && visited[queueY[i]][0] <= 0) {
+
+			queueY[queueCount] = queueY[i];
+			queueX[queueCount++] = 0;
+
+			visited[queueY[i]][0] = visited[queueY[i]][queueX[i]] + 1;
+		}
+		if (queueX[i] > 0 && Map[queueY[i]][queueX[i] - 1] != WALL && visited[queueY[i]][queueX[i] - 1] <= 0) {
+
+			queueY[queueCount] = queueY[i];
+			queueX[queueCount++] = queueX[i] - 1;
+
+			visited[queueY[i]][queueX[i] - 1] = visited[queueY[i]][queueX[i]] + 1;
+		}
+		if (queueX[i] == 0 && Map[queueY[i]][WIDTH_OF_MAP - 1] != WALL && visited[queueY[i]][WIDTH_OF_MAP - 1] <= 0) {
+
+			queueY[queueCount] = queueY[i];
+			queueX[queueCount++] = WIDTH_OF_MAP - 1;
+
+			visited[queueY[i]][WIDTH_OF_MAP - 1] = visited[queueY[i]][queueX[i]] + 1;
+		}
+		i++;
+	}
+	
+	return 0;
+}
+
+/*
 *	Finds next AI move for Pac-Man
 *	Pac-Man’s target tile is a tile that contains PAC_DOT or POWER_PELLET and that is opposite of ghosts.
 *	Return value:
 *	PacStruct containing next position of Pac-Man
 */
 PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int time) {
-	PacStruct sol = pacman;
+	Map[HEIGHT_OF_MAP / 2 - 3][WIDTH_OF_MAP / 2 - 1] = WALL;
+	Map[HEIGHT_OF_MAP / 2 - 3][WIDTH_OF_MAP / 2] = WALL;
+	PacStruct sol[4];
+	for (int i = 0; i < 4; i++)
+		sol[i] = pacman;
 	int pacmanY = pacman.iPosition;
 	int pacmanX = pacman.jPosition;
 	int ghostY;
 	int ghostX;
+	int left = 0, right = 0, up = 0, down = 0;
+	int min = 1000;
+	int count = 0;
+	for (int i = 0; i < NUMBER_OF_GHOSTS; i++) {
+		ghostY = ghosts[i].iPosition;
+		ghostX = ghosts[i].jPosition;
+		count = BFS_next(Map, ghostX, ghostY,(pacmanX - 1 + WIDTH_OF_MAP) % WIDTH_OF_MAP, pacmanY).count;
+		if (count == 0)
+			count = 1000;
+		if (ghosts[i].gameMode == Reverse)
+			count += 1200;
+		if (count < min)
+			min = count;
+	}
+	left = min;
+	min = 1000;
+	count = 0;
+	for (int i = 0; i < NUMBER_OF_GHOSTS; i++) {
+		ghostY = ghosts[i].iPosition;
+		ghostX = ghosts[i].jPosition;
+		count = BFS_next(Map, ghostX, ghostY, (pacmanX + 1) % WIDTH_OF_MAP, pacmanY).count;
+		if (count == 0)
+			count = 1000;
+		if (ghosts[i].gameMode == Reverse)
+			count += 1200;
+		if (count < min)
+			min = count;
+	}
+	right = min;
+	min = 1000;
+	count = 0;
+	for (int i = 0; i < NUMBER_OF_GHOSTS; i++) {
+		ghostY = ghosts[i].iPosition;
+		ghostX = ghosts[i].jPosition;
+		count = BFS_next(Map, ghostX, ghostY, pacmanX, (pacmanY - 1 + HEIGHT_OF_MAP) % HEIGHT_OF_MAP).count;
+		if (count == 0)
+			count = 1000;
+		if (ghosts[i].gameMode == Reverse)
+			count += 1200;
+		if (count < min)
+			min = count;
+	}
+	up = min;
+	min = 1000;
+	count = 0;
+	for (int i = 0; i < NUMBER_OF_GHOSTS; i++) {
+		ghostY = ghosts[i].iPosition;
+		ghostX = ghosts[i].jPosition;
+		count = BFS_next(Map, ghostX, ghostY, pacmanX, (pacmanY + 1) % HEIGHT_OF_MAP).count;
+		if (count == 0)
+			count = 1000;
+		if (ghosts[i].gameMode == Reverse)
+			count += 1200;
+		if (count < min)
+			min = count;
+	}
+	down = min;
+
+	int dotUp = BFS_nextDot(Map, pacmanX, pacmanY - 1);
+	int dotLeft = BFS_nextDot(Map, (pacmanX - 1 + WIDTH_OF_MAP) % WIDTH_OF_MAP, pacmanY);
+	int dotRight = BFS_nextDot(Map, (pacmanX + 1) % WIDTH_OF_MAP, pacmanY);
+	int dotDown = BFS_nextDot(Map, pacmanX, pacmanY + 1);
+	int minDot = minimum(dotDown, dotLeft, dotRight, dotUp);
+	int max = maximum(up, down, left, right);
+	min = minimum(up, down, left, right);
+	count = 0;
+
+	if (minDot == dotUp && dotUp < up && sol[count].direction != DIRECTION_DOWN) {
+		sol[count].direction = DIRECTION_UP;
+		count++;
+	}
+	else if (minDot == dotLeft && dotLeft < left && sol[count].direction != DIRECTION_RIGHT) {
+		sol[count].direction = DIRECTION_LEFT;
+		count++;
+	}
+	else if (minDot == dotDown && dotDown < down && sol[count].direction != DIRECTION_UP) {
+		sol[count].direction = DIRECTION_DOWN;
+		count++;
+	}
+	else if (minDot == dotRight && dotRight < right && sol[count].direction != DIRECTION_LEFT) {
+		sol[count].direction = DIRECTION_RIGHT;
+		count++;
+	}
+	if (count > 0)
+	{
+		count = rand() % count;
+		return sol[count];
+	}
+
+	if (minDot == dotUp && dotUp < up) {
+		sol[count].direction = DIRECTION_UP;
+		count++;
+	}
+	else if (minDot == dotLeft && dotLeft < left) {
+		sol[count].direction = DIRECTION_LEFT;
+		count++;
+	}
+	else if (minDot == dotDown && dotDown < down) {
+		sol[count].direction = DIRECTION_DOWN;
+		count++;
+	}
+	else if (minDot == dotRight && dotRight < right) {
+		sol[count].direction = DIRECTION_RIGHT;
+		count++;
+	}
+	if (count > 0)
+	{
+		count = rand() % count;
+		return sol[count];
+	}
+
+	count = 0;
+	if (dotUp < up && sol[count].direction != DIRECTION_DOWN) {
+		sol[count].direction = DIRECTION_UP;
+		count++;
+	}
+	else if (dotLeft < left && sol[count].direction != DIRECTION_RIGHT) {
+		sol[count].direction = DIRECTION_LEFT;
+		count++;
+	}
+	else if (dotDown < down && sol[count].direction != DIRECTION_UP) {
+		sol[count].direction = DIRECTION_DOWN;
+		count++;
+	}
+	else if (dotRight < right && sol[count].direction != DIRECTION_LEFT) {
+		sol[count].direction = DIRECTION_RIGHT;
+		count++;
+	}
+	if (count > 0)
+	{
+		count = rand() % count;
+		return sol[count];
+	}
+	count = 0;
+
+	if (dotUp < up) {
+		sol[count].direction = DIRECTION_UP;
+		count++;
+	}
+	else if (dotLeft < left) {
+		sol[count].direction = DIRECTION_LEFT;
+		count++;
+	}
+	else if (dotDown < down) {
+		sol[count].direction = DIRECTION_DOWN;
+		count++;
+	}
+	else if (dotRight < right) {
+		sol[count].direction = DIRECTION_RIGHT;
+		count++;
+	}
+	if (count > 0)
+	{
+		count = rand() % count;
+		return sol[count];
+	}
+	count = 0;
+
+	if (dotUp > 10) {
+		sol[count].direction = DIRECTION_UP;
+		count++;
+	}
+	else if (dotLeft > 10) {
+		sol[count].direction = DIRECTION_LEFT;
+		count++;
+	}
+	else if (dotDown > 10) {
+		sol[count].direction = DIRECTION_DOWN;
+		count++;
+	}
+	else if (dotRight > 10) {
+		sol[count].direction = DIRECTION_RIGHT;
+		count++;
+	}
+	if (count > 0)
+	{
+		count = rand() % count;
+		return sol[count];
+	}
+	count = 0;
+
+	if (Map[pacmanY - 1][pacmanX] != WALL && sol[count].direction != DIRECTION_DOWN) {
+		sol[count].direction = DIRECTION_UP;
+		count++;
+	}
+	else if (Map[pacmanY][pacmanX - 1] != WALL && sol[count].direction != DIRECTION_RIGHT) {
+		sol[count].direction = DIRECTION_LEFT;
+		count++;
+	}
+	else if (Map[pacmanY + 1][pacmanX] != WALL && sol[count].direction != DIRECTION_UP) {
+		sol[count].direction = DIRECTION_DOWN;
+		count++;
+	}
+	else if (Map[pacmanY][pacmanX + 1] != WALL && sol[count].direction != DIRECTION_LEFT) {
+		sol[count].direction = DIRECTION_RIGHT;
+		count++;
+	}
+	if (count > 0)
+	{
+		count = rand() % count;
+		return sol[count];
+	}
+	count = 0;
+
+	if (Map[pacmanY - 1][pacmanX] != WALL) {
+		sol[count].direction = DIRECTION_UP;
+		count++;
+	}
+	else if (Map[pacmanY][pacmanX - 1] != WALL) {
+		sol[count].direction = DIRECTION_LEFT;
+		count++;
+	}
+	else if (Map[pacmanY + 1][pacmanX] != WALL) {
+		sol[count].direction = DIRECTION_DOWN;
+		count++;
+	}
+	else if (Map[pacmanY][pacmanX + 1] != WALL) {
+		sol[count].direction = DIRECTION_RIGHT;
+		count++;
+	}
+
+	if (count > 0)
+	{
+		count = rand() % count;
+		return sol[count];
+	}
+	count = 0;
+	/*
 	int left = 0, right = 0, up = 0, down = 0;
 	for (int i = 0; i < NUMBER_OF_GHOSTS; i++) {
 		ghostY = ghosts[i].iPosition;
@@ -391,7 +714,7 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 	else if (down == 0 && Map[pacmanY + 1][pacmanX] != WALL && pacman.direction != DIRECTION_UP)
 		sol.direction = DIRECTION_DOWN;
 	else if (right == 0 && Map[pacmanY][pacmanX + 1] != WALL && pacman.direction != DIRECTION_LEFT)
-		sol.direction = DIRECTION_RIGHT; 
+		sol.direction = DIRECTION_RIGHT;
 	else if (up == 1 && Map[pacmanY - 1][pacmanX] != WALL && pacman.direction != DIRECTION_DOWN)
 		sol.direction = DIRECTION_UP;
 	else if (left == 1 && Map[pacmanY][pacmanX - 1] != WALL && pacman.direction != DIRECTION_RIGHT)
@@ -431,6 +754,5 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 	else if (down == 1 )
 		sol.direction = DIRECTION_DOWN;
 	else sol.direction = DIRECTION_RIGHT;
-	
-	return sol;
+	*/
 }
