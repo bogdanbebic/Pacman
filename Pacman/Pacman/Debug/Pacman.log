@@ -1,4 +1,2 @@
 ﻿  ghosts.c
-c:\users\user\documents\github\pacman\pacman\pacman\ghosts.c(91): warning C4013: 'rand' undefined; assuming extern returning int
-c:\users\user\documents\github\pacman\pacman\pacman\ghosts.c(763): warning C4715: 'PacmanDemo': not all control paths return a value
   Pacman.vcxproj -> C:\Users\User\Documents\GitHub\Pacman\Pacman\Debug\Pacman.exe

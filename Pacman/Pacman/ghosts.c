@@ -436,7 +436,7 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 		if (count < min)
 			min = count;
 	}
-	left = min + 1;
+	left = min - 1;
 	min = 1000;
 	count = 0;
 	for (int i = 0; i < NUMBER_OF_GHOSTS; i++) {
@@ -450,7 +450,7 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 		if (count < min)
 			min = count;
 	}
-	right = min + 1;
+	right = min - 1;
 	min = 1000;
 	count = 0;
 	for (int i = 0; i < NUMBER_OF_GHOSTS; i++) {
@@ -464,7 +464,7 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 		if (count < min)
 			min = count;
 	}
-	up = min + 1;
+	up = min - 1;
 	min = 1000;
 	count = 0;
 	for (int i = 0; i < NUMBER_OF_GHOSTS; i++) {
@@ -478,7 +478,7 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 		if (count < min)
 			min = count;
 	}
-	down = min + 1;
+	down = min - 1;
 
 	int dotUp = BFS_nextDot(Map, pacmanX, pacmanY - 1);
 	int dotLeft = BFS_nextDot(Map, (pacmanX - 1 + WIDTH_OF_MAP) % WIDTH_OF_MAP, pacmanY);
@@ -493,15 +493,15 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 		sol[count].direction = DIRECTION_UP;
 		count++;
 	}
-	else if (minDot == dotLeft && dotLeft < left && sol[count].direction != DIRECTION_RIGHT) {
+	if (minDot == dotLeft && dotLeft < left && sol[count].direction != DIRECTION_RIGHT) {
 		sol[count].direction = DIRECTION_LEFT;
 		count++;
 	}
-	else if (minDot == dotDown && dotDown < down && sol[count].direction != DIRECTION_UP) {
+	if (minDot == dotDown && dotDown < down && sol[count].direction != DIRECTION_UP) {
 		sol[count].direction = DIRECTION_DOWN;
 		count++;
 	}
-	else if (minDot == dotRight && dotRight < right && sol[count].direction != DIRECTION_LEFT) {
+	if (minDot == dotRight && dotRight < right && sol[count].direction != DIRECTION_LEFT) {
 		sol[count].direction = DIRECTION_RIGHT;
 		count++;
 	}
@@ -515,15 +515,15 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 		sol[count].direction = DIRECTION_UP;
 		count++;
 	}
-	else if (minDot == dotLeft && dotLeft < left) {
+	if (minDot == dotLeft && dotLeft < left) {
 		sol[count].direction = DIRECTION_LEFT;
 		count++;
 	}
-	else if (minDot == dotDown && dotDown < down) {
+	if (minDot == dotDown && dotDown < down) {
 		sol[count].direction = DIRECTION_DOWN;
 		count++;
 	}
-	else if (minDot == dotRight && dotRight < right) {
+	if (minDot == dotRight && dotRight < right) {
 		sol[count].direction = DIRECTION_RIGHT;
 		count++;
 	}
@@ -538,15 +538,15 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 		sol[count].direction = DIRECTION_UP;
 		count++;
 	}
-	else if (dotLeft < left && sol[count].direction != DIRECTION_RIGHT) {
+	if (dotLeft < left && sol[count].direction != DIRECTION_RIGHT) {
 		sol[count].direction = DIRECTION_LEFT;
 		count++;
 	}
-	else if (dotDown < down && sol[count].direction != DIRECTION_UP) {
+	if (dotDown < down && sol[count].direction != DIRECTION_UP) {
 		sol[count].direction = DIRECTION_DOWN;
 		count++;
 	}
-	else if (dotRight < right && sol[count].direction != DIRECTION_LEFT) {
+	if (dotRight < right && sol[count].direction != DIRECTION_LEFT) {
 		sol[count].direction = DIRECTION_RIGHT;
 		count++;
 	}
@@ -561,15 +561,15 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 		sol[count].direction = DIRECTION_UP;
 		count++;
 	}
-	else if (dotLeft < left) {
+	if (dotLeft < left) {
 		sol[count].direction = DIRECTION_LEFT;
 		count++;
 	}
-	else if (dotDown < down) {
+	if (dotDown < down) {
 		sol[count].direction = DIRECTION_DOWN;
 		count++;
 	}
-	else if (dotRight < right) {
+	if (dotRight < right) {
 		sol[count].direction = DIRECTION_RIGHT;
 		count++;
 	}
@@ -580,19 +580,19 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 	}
 	count = 0;
 
-	if (dotUp > 10) {
+	if (dotUp > 10 && Map[pacmanY - 1][pacmanX] != WALL) {
 		sol[count].direction = DIRECTION_UP;
 		count++;
 	}
-	else if (dotLeft > 10) {
+	if (dotLeft > 10 && Map[pacmanY][pacmanX - 1] != WALL) {
 		sol[count].direction = DIRECTION_LEFT;
 		count++;
 	}
-	else if (dotDown > 10) {
+	if (dotDown > 10 && Map[pacmanY+1][pacmanX] != WALL) {
 		sol[count].direction = DIRECTION_DOWN;
 		count++;
 	}
-	else if (dotRight > 10) {
+	if (dotRight > 10 && Map[pacmanY][pacmanX + 1] != WALL) {
 		sol[count].direction = DIRECTION_RIGHT;
 		count++;
 	}
@@ -607,15 +607,15 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 		sol[count].direction = DIRECTION_UP;
 		count++;
 	}
-	else if (Map[pacmanY][pacmanX - 1] != WALL && sol[count].direction != DIRECTION_RIGHT) {
+	if (Map[pacmanY][pacmanX - 1] != WALL && sol[count].direction != DIRECTION_RIGHT) {
 		sol[count].direction = DIRECTION_LEFT;
 		count++;
 	}
-	else if (Map[pacmanY + 1][pacmanX] != WALL && sol[count].direction != DIRECTION_UP) {
+	if (Map[pacmanY + 1][pacmanX] != WALL && sol[count].direction != DIRECTION_UP) {
 		sol[count].direction = DIRECTION_DOWN;
 		count++;
 	}
-	else if (Map[pacmanY][pacmanX + 1] != WALL && sol[count].direction != DIRECTION_LEFT) {
+	if (Map[pacmanY][pacmanX + 1] != WALL && sol[count].direction != DIRECTION_LEFT) {
 		sol[count].direction = DIRECTION_RIGHT;
 		count++;
 	}
@@ -630,134 +630,20 @@ PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, Pac
 		sol[count].direction = DIRECTION_UP;
 		count++;
 	}
-	else if (Map[pacmanY][pacmanX - 1] != WALL) {
+	if (Map[pacmanY][pacmanX - 1] != WALL) {
 		sol[count].direction = DIRECTION_LEFT;
 		count++;
 	}
-	else if (Map[pacmanY + 1][pacmanX] != WALL) {
+	if (Map[pacmanY + 1][pacmanX] != WALL) {
 		sol[count].direction = DIRECTION_DOWN;
 		count++;
 	}
-	else if (Map[pacmanY][pacmanX + 1] != WALL) {
+	if (Map[pacmanY][pacmanX + 1] != WALL) {
 		sol[count].direction = DIRECTION_RIGHT;
 		count++;
 	}
 
-	if (count > 0)
-	{
-		count = rand() % count;
-		return sol[count];
-	}
-	count = 0;
-	/*
-	int left = 0, right = 0, up = 0, down = 0;
-	for (int i = 0; i < NUMBER_OF_GHOSTS; i++) {
-		ghostY = ghosts[i].iPosition;
-		ghostX = ghosts[i].jPosition;
-		sol.direction = BFS_next(Map, pacmanX, pacmanY, ghostX, ghostY).direction;
-		if(ghosts[i].gameMode== Normal)
-			switch (sol.direction)
-			{
-			case DIRECTION_UP:
-				up++;
-				break;
-			case DIRECTION_LEFT:
-				left++;
-				break;
-			case DIRECTION_DOWN:
-				down++;
-				break;
-			default:
-				right++;
-				break;
-			}
-		else
-			switch (sol.direction)
-			{
-			case DIRECTION_UP:
-				down++;
-				break;
-			case DIRECTION_LEFT:
-				right++;
-				break;
-			case DIRECTION_DOWN:
-				up++;
-				break;
-			default:
-				left++;
-				break;
-			}
-	}
-	if (Map[pacmanY - 1][pacmanX] == PAC_DOT || Map[pacmanY - 1][pacmanX] == POWER_PELLET)
-		sol.direction = DIRECTION_UP;
-	else if (Map[pacmanY][pacmanX - 1] == PAC_DOT || Map[pacmanY][pacmanX - 1] == POWER_PELLET)
-		sol.direction = DIRECTION_LEFT;
-	else if (Map[pacmanY + 1][pacmanX] == PAC_DOT || Map[pacmanY + 1][pacmanX] == POWER_PELLET)
-		sol.direction = DIRECTION_DOWN;
-	else if (Map[pacmanY][pacmanX + 1] == PAC_DOT || Map[pacmanY][pacmanX + 1] == POWER_PELLET)
-		sol.direction = DIRECTION_RIGHT;
-	else if (isDot(Map, pacmanX, pacmanY - 1))
-		sol.direction = DIRECTION_UP;
-	else if (isDot(Map, pacmanX - 1, pacmanY))
-		sol.direction = DIRECTION_LEFT;
-	else if (isDot(Map, pacmanX, pacmanY + 1))
-		sol.direction = DIRECTION_DOWN;
-	else if (isDot(Map, pacmanX + 1, pacmanY))
-		sol.direction = DIRECTION_RIGHT;
-	else if (time > 850 || countPacDots(Map)<30) {
-		for (int i = 0; i < HEIGHT_OF_MAP; i++)
-			for (int j = 0; j < WIDTH_OF_MAP; j++)
-				if (Map[i][j] == PAC_DOT || Map[i][j] == POWER_PELLET) {
-					sol.direction = BFS_next(Map, pacmanX, pacmanY, j, i).direction;
-					return sol;
-				}
-	}
-	else if (up == 0 && Map[pacmanY - 1][pacmanX] != WALL && pacman.direction!=DIRECTION_DOWN)
-		sol.direction = DIRECTION_UP;
-	else if (left == 0 && Map[pacmanY][pacmanX - 1] != WALL && pacman.direction != DIRECTION_RIGHT)
-		sol.direction = DIRECTION_LEFT;
-	else if (down == 0 && Map[pacmanY + 1][pacmanX] != WALL && pacman.direction != DIRECTION_UP)
-		sol.direction = DIRECTION_DOWN;
-	else if (right == 0 && Map[pacmanY][pacmanX + 1] != WALL && pacman.direction != DIRECTION_LEFT)
-		sol.direction = DIRECTION_RIGHT;
-	else if (up == 1 && Map[pacmanY - 1][pacmanX] != WALL && pacman.direction != DIRECTION_DOWN)
-		sol.direction = DIRECTION_UP;
-	else if (left == 1 && Map[pacmanY][pacmanX - 1] != WALL && pacman.direction != DIRECTION_RIGHT)
-		sol.direction = DIRECTION_LEFT;
-	else if (down == 1 && Map[pacmanY + 1][pacmanX] != WALL && pacman.direction != DIRECTION_UP)
-		sol.direction = DIRECTION_DOWN;
-	else if (right == 1 && Map[pacmanY][pacmanX + 1] != WALL && pacman.direction != DIRECTION_LEFT)
-		sol.direction = DIRECTION_RIGHT;
-	else if (up == 2 && Map[pacmanY - 1][pacmanX] != WALL && pacman.direction != DIRECTION_DOWN)
-		sol.direction = DIRECTION_UP;
-	else if (left == 2 && Map[pacmanY][pacmanX - 1] != WALL && pacman.direction != DIRECTION_RIGHT)
-		sol.direction = DIRECTION_LEFT;
-	else if (down == 2 && Map[pacmanY + 1][pacmanX] != WALL && pacman.direction != DIRECTION_UP)
-		sol.direction = DIRECTION_DOWN;
-	else if (right == 2 && Map[pacmanY][pacmanX + 1] != WALL && pacman.direction != DIRECTION_LEFT)
-		sol.direction = DIRECTION_RIGHT;
-	else if (up == 4 && Map[pacmanY - 1][pacmanX] != WALL && pacman.direction != DIRECTION_DOWN)
-		sol.direction = DIRECTION_UP;
-	else if (left == 4 && Map[pacmanY][pacmanX - 1] != WALL && pacman.direction != DIRECTION_RIGHT)
-		sol.direction = DIRECTION_LEFT;
-	else if (down == 4 && Map[pacmanY + 1][pacmanX] != WALL && pacman.direction != DIRECTION_UP)
-		sol.direction = DIRECTION_DOWN;
-	else if (right == 4 && Map[pacmanY][pacmanX + 1] != WALL && pacman.direction != DIRECTION_LEFT)
-		sol.direction = DIRECTION_RIGHT;
-	else if (up == 0)
-		sol.direction = DIRECTION_UP;
-	else if (left == 0)
-		sol.direction = DIRECTION_LEFT;
-	else if (down == 0)
-		sol.direction = DIRECTION_DOWN;
-	else if (right == 0)
-		sol.direction = DIRECTION_RIGHT;
-	else if (up == 1)
-		sol.direction = DIRECTION_UP;
-	else if (left == 1)
-		sol.direction = DIRECTION_LEFT;
-	else if (down == 1 )
-		sol.direction = DIRECTION_DOWN;
-	else sol.direction = DIRECTION_RIGHT;
-	*/
+	count = rand() % count;
+	return sol[count];
+
 }

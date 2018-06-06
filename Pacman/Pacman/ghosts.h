@@ -5,7 +5,7 @@
 
 #include "pacStruct.h"
 #include "gameMap.h"
-
+#include <stdlib.h>
 /*
 *	OVAKO  TREBA DA IZGLEDA
 *	DEKLARACIJA ZA FUNKCIJE DUHOVA
