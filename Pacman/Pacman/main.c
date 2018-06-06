@@ -177,7 +177,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	makeDecoyHighscoreFiles();
-	writeHighscoresToFile();
+	writeHighscoresToFiles();
 	destroyMenuTextures(menuTextureWhite, menuTextureYellow, &pacmanTexture);
 	game.quit();
 

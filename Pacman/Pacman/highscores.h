@@ -21,6 +21,6 @@ void updateHighscores(Highscore newHighscore);
 
 void readHighscoresFromFile();
 
-void writeHighscoresToFile();
+void writeHighscoresToFiles();
 
 #endif // !_highscores_h_

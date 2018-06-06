@@ -1,2 +1,12 @@
-﻿  ghosts.c
-  Pacman.vcxproj -> C:\Users\User\Documents\GitHub\Pacman\Pacman\Debug\Pacman.exe
+﻿  pauseMenuGraphics.c
+  main.c
+  highscores.c
+  graphicsMenu.c
+  ghosts.c
+  gameGraphics.c
+  game.c
+  encryption.c
+  cheats.c
+  Generating Code...
+  Pacman.vcxproj -> C:\Users\Bogdan\Documents\GitHub\Pacman\Pacman\Debug\Pacman.exe
+  Pacman.vcxproj -> C:\Users\Bogdan\Documents\GitHub\Pacman\Pacman\Debug\Pacman.pdb (Partial PDB)

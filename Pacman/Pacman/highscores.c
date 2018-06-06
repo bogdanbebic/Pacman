@@ -110,7 +110,7 @@ void updateHighscores(Highscore newHighscore) {
 /*
 *	Reads highscores array from file
 */
-void readHighscoresFromFile() {
+void readHighscoresFromFile() {	// OVO POPRAVITI DA RADI SA 5 FAJLOVA
 	extern Highscore highscores[MAX_HIGHSCORES];
 	FILE *highscoresFile;
 	SetFileAttributes(L_FILE_1, FILE_ATTRIBUTE_NORMAL);
@@ -119,7 +119,7 @@ void readHighscoresFromFile() {
 	if (highscoresFile != NULL) {
 		fread(&highscores, sizeof(highscores), 1, highscoresFile);
 		fclose(highscoresFile);
-		encrypt();
+		encrypt(highscores, 1000U);
 	}
 	else {
 		makeGenericHighscores();
@@ -128,21 +128,36 @@ void readHighscoresFromFile() {
 }
 
 /*
-*	Writes highscores array to file
+*	Encrypts highscores array using argument encryptionSeed
+*	and writes it to file defined by argument filePath
+*	and hides file using argument L_filePath
 */
-void writeHighscoresToFile() {
+static void writeHighscoresToFile(char *filePath, LPCWSTR L_filePath, unsigned int encryptionSeed) {
 	extern Highscore highscores[MAX_HIGHSCORES];
 	FILE *highscoresFile;
+	Highscore temp[MAX_HIGHSCORES];
 
-	fopen_s(&highscoresFile, FILE_1, "wb");
+	memcpy(temp, highscores, sizeof(highscores));
 
-	encrypt();
-
-	fwrite(&highscores, sizeof(highscores), 1, highscoresFile);
-	
+	fopen_s(&highscoresFile, filePath, "wb");
+	encrypt(temp, encryptionSeed);
+	fwrite(&temp, sizeof(temp), 1, highscoresFile);
 	fclose(highscoresFile);
 
-	SetFileAttributes(L_FILE_1, FILE_ATTRIBUTE_HIDDEN);
+	SetFileAttributes(L_filePath, FILE_ATTRIBUTE_HIDDEN);
 
+	return;
+}
+
+/*
+*	Writes highscores to 5 files using
+*	the function writeHighscoresToFile
+*/
+void writeHighscoresToFiles() {
+	writeHighscoresToFile(FILE_1, L_FILE_1, 1000U);
+	writeHighscoresToFile(FILE_2, L_FILE_2, 1500U);
+	writeHighscoresToFile(FILE_3, L_FILE_3, 2000U);
+	writeHighscoresToFile(FILE_4, L_FILE_4, 2500U);
+	writeHighscoresToFile(FILE_5, L_FILE_5, 3000U);
 	return;
 }

@@ -523,11 +523,12 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 					if (gameType != DEMO_GAME) {
 						enum Direction temp;
 						temp = getPacmanDirectionFromUser(event);
-						if (temp != DIRECTION_NONE)
+						if (temp != DIRECTION_NONE) {
 							if (drunkCheat) {
 								temp = (temp + (NUMBER_OF_DIRECTIONS / 2)) % NUMBER_OF_DIRECTIONS;
 							}
 							pacman.direction = temp;
+						}
 					}
 					
 
