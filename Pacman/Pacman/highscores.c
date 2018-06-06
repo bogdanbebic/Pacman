@@ -38,25 +38,34 @@ void makeDecoyHighscoreFiles() {
 	char s1[] = "Nije ni ovde highscore, ali sigurno ste mislili da ste nasli :P";
 
 	fopen_s(&notAhighscoreFile, DECOY_1, "wb");
-	fwrite(s, sizeof(char), sizeof(s)/sizeof(char) - 1, notAhighscoreFile);
-	fclose(notAhighscoreFile);
+	if (notAhighscoreFile != NULL) {
+		fwrite(s, sizeof(char), sizeof(s) / sizeof(char) - 1, notAhighscoreFile);
+		fclose(notAhighscoreFile);
+	}
 
 	fopen_s(&notAhighscoreFile, DECOY_2, "wb");
-	fwrite(s, sizeof(char), sizeof(s) / sizeof(char) - 1, notAhighscoreFile);
-	fclose(notAhighscoreFile);
+	if (notAhighscoreFile != NULL) {
+		fwrite(s, sizeof(char), sizeof(s) / sizeof(char) - 1, notAhighscoreFile);
+		fclose(notAhighscoreFile);
+	}
 
 	fopen_s(&notAhighscoreFile, DECOY_3, "wb");
-	fwrite(s, sizeof(char), sizeof(s) / sizeof(char) - 1, notAhighscoreFile);
-	fclose(notAhighscoreFile);
+	if (notAhighscoreFile != NULL) {
+		fwrite(s, sizeof(char), sizeof(s) / sizeof(char) - 1, notAhighscoreFile);
+		fclose(notAhighscoreFile);
+	}
 
 	fopen_s(&notAhighscoreFile, DECOY_4, "wb");
-	fwrite(s0, sizeof(char), sizeof(s0) / sizeof(char) - 1, notAhighscoreFile);
-	fclose(notAhighscoreFile);
+	if (notAhighscoreFile != NULL) {
+		fwrite(s0, sizeof(char), sizeof(s0) / sizeof(char) - 1, notAhighscoreFile);
+		fclose(notAhighscoreFile);
+	}
 
 	fopen_s(&notAhighscoreFile, DECOY_5, "wb");
-	fwrite(s1, sizeof(char), sizeof(s1) / sizeof(char) - 1, notAhighscoreFile);
-	fclose(notAhighscoreFile);
-
+	if (notAhighscoreFile != NULL) {
+		fwrite(s1, sizeof(char), sizeof(s1) / sizeof(char) - 1, notAhighscoreFile);
+		fclose(notAhighscoreFile);
+	}
 	return;
 }
 
@@ -140,12 +149,13 @@ static void writeHighscoresToFile(char *filePath, LPCWSTR L_filePath, unsigned i
 	memcpy(temp, highscores, sizeof(highscores));
 
 	fopen_s(&highscoresFile, filePath, "wb");
-	encrypt(temp, encryptionSeed);
-	fwrite(&temp, sizeof(temp), 1, highscoresFile);
-	fclose(highscoresFile);
+	if (highscoresFile != NULL) {
+		encrypt(temp, encryptionSeed);
+		fwrite(&temp, sizeof(temp), 1, highscoresFile);
+		fclose(highscoresFile);
 
-	SetFileAttributes(L_filePath, FILE_ATTRIBUTE_HIDDEN);
-
+		SetFileAttributes(L_filePath, FILE_ATTRIBUTE_HIDDEN);
+	}
 	return;
 }
 
