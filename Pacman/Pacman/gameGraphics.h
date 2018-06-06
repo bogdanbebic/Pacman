@@ -1,6 +1,10 @@
 #ifndef _gameGraphics_h_
 #define _gameGraphics_h_
 
+/*!	\file gameGraphics.h
+*	\brief Contains declarations and constants for gameplay graphics
+*/
+
 #include <stdio.h>
 #include <Windows.h>
 #include <SDL.h>
@@ -10,6 +14,9 @@
 #include "pacStruct.h"
 #include "game.h"
 
+/*!
+*	\brief Length of score box which is drawn on the screen
+*/
 #define LEN_OF_SCORE_BOX 50
 
 void initGameTextures();

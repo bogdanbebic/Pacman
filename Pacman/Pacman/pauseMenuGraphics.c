@@ -1,6 +1,10 @@
 #include "pauseMenuGraphics.h"
 #include "cheats.h"
 
+/*! \file pauseMenuGraphics.c
+*	\brief Contains function definitions needed for graphics of in game pause menu
+*/
+
 extern PauseMenuTextures pauseMenuTextureManager;
 
 /*!
@@ -94,11 +98,13 @@ void printPauseMenu(enum PauseMenuOptions currentOption) {
 	return;
 }
 
-/*!
+/*!	\brief Activates pause menu
+*
 *	Activates pause menu on the game screen by
 *	handling all the user related input in the
 *	menu itself and prints the newly activated menu
 *   on the game screen
+*	\param difficulty difficulty of the game
 */
 enum PauseMenuOptions ActivatePauseMenu(int difficulty) { // STA CE NAM DIFFICULTY ZA PARAMETAR OVDE
 	int activePauseMenu = 1, currPos = 0;

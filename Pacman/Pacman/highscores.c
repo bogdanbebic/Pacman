@@ -3,6 +3,10 @@
 #include <Windows.h>
 #include "encryption.h"
 
+/*!	\file highscores.c
+*	\brief Contains variable and function definitions for keeping highscores
+*/
+
 /*
 *	Ne dirati ove fajlove, ovo su highscore fajlovi
 */

@@ -1,19 +1,18 @@
 #pragma once
-
 #ifndef _ghosts_h_
 #define _ghosts_h_
+
+/*!	\file ghosts.h
+*	\brief Contains declarations for ghosts logics and AI
+*/
 
 #include "pacStruct.h"
 #include "gameMap.h"
 #include <stdlib.h>
-/*
-*	OVAKO  TREBA DA IZGLEDA
-*	DEKLARACIJA ZA FUNKCIJE DUHOVA
+
+/*!
+*	\brief Struct containing count of steps and direction of BFS solution
 */
-// PacStruct ghostDirectionFunction(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int currentGhostIndex);
-
-/* OVDE NAPISATI MININE DUHOVE, SAMO SA OVOM DEKLARACIJOM */
-
 typedef struct {
 	int direction;
 	int count;

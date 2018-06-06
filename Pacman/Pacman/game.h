@@ -1,6 +1,10 @@
 #ifndef _game_h_
 #define _game_h_
 
+/*!	\file game.h
+*	\brief Contains declarations and constants for gameplay
+*/
+
 #include "ghosts.h"
 
 #include "highscores.h"
@@ -13,8 +17,14 @@
 #define NUMBER_OF_DIGITS 10
 #define NUMBER_OF_LVL_DIGITS 3
 
+/*!
+*	\brief Max number of lives which pacman can have
+*/
 #define MAX_LIVES 10
 
+/*!
+*	\brief Enum containing all types of possible game modes
+*/
 enum GameType { NEW_GAME, CONTINUE_GAME, DEMO_GAME };
 
 void updateScoreAndGameMode(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[], int * pacDotCount, Highscore * currentScore, int *timer_tick, int *isPowerPelletEaten, enum DifficultySpeed difficulty);
@@ -43,6 +53,9 @@ void initContinueGame(enum DifficultySpeed *difficulty, int *delay, int *level, 
 
 void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount, int srbendaMod, int timer_tick, int timer_tick_POWER_PELLET, int isPowerPelletEaten);
 
+/*!
+*	\brief Struct which contains needed variables for SDL screen
+*/
 typedef struct ScreenStruct {
 	unsigned int width;
 	unsigned int height;
@@ -51,6 +64,9 @@ typedef struct ScreenStruct {
 	SDL_Renderer* renderer;
 } Screen;
 
+/*!
+*	\brief Struct containing needed variables for game textures
+*/
 typedef struct GameTextureStruct {
 	SDL_Texture * pacmanOpenMouthTextures[NUMBER_OF_DIRECTIONS];
 	SDL_Texture * pacmanShutMouthTextures[NUMBER_OF_DIRECTIONS];
@@ -68,6 +84,9 @@ typedef struct GameTextureStruct {
 	SDL_Rect levelDigitRect[NUMBER_OF_LVL_DIGITS];
 } GameTextures;
 
+/*!
+*	\brief Struct containing needed variables for game start and end
+*/
 typedef struct GameStruct {
 	SDL_bool isRunning;
 	Screen screen;
@@ -75,8 +94,14 @@ typedef struct GameStruct {
 	void(*quit)();
 } Game;
 
+/*!
+*	\brief Global variable which contains game information
+*/
 Game game;
 
+/*!
+*	\brief Global variable which contains game textures information
+*/
 GameTextures gameTexturesManager;
 
 #endif

@@ -1,6 +1,10 @@
 #ifndef _graphicsMenu_h_
 #define _graphicsMenu_h_
 
+/*!	\file graphicsMenu.h
+*	\brief Contains declarations and constants for menu and screen graphics
+*/
+
 #include <stdio.h>
 #include <Windows.h>
 #include <SDL.h>
@@ -20,10 +24,19 @@
 #define MAX_STRING_LINE 20
 #define NUMBER_OF_CHARACTERS ('Z')
 
+/*!
+*	\brief Enum containing all possible menu options
+*/
 enum MenuOptions { demoGame, newGame, continueGame, highscore, settings, credits, quitGame, numberOfMenuOptions };
 
+/*!
+*	\brief Enum containing all possible settings options
+*/
 enum SettingsOptions { gameDifficulty, diffOption, music, musicOption, numberOfSettingsOptions };
 
+/*!
+*	\brief Enum containing all possible music options
+*/
 enum YesOrNo { no, yes, numberOfMusicOptions };
 
 void gameInit();
@@ -70,6 +83,9 @@ void createCreditsHeading();
 
 void printCredits();
 
+/*!
+*	\brief Struct containing needed variables for settings textures
+*/
 typedef struct SettingsTexturesStruct {
 	SDL_Texture * whiteTextures[numberOfSettingsOptions];
 	SDL_Texture * yellowTextures[numberOfSettingsOptions];
@@ -84,21 +100,36 @@ typedef struct SettingsTexturesStruct {
 	SDL_Texture * pacmanTexture;
 }SettingsMenuTextures;
 
+/*!
+*	\brief Struct containing needed variables for end game textures
+*/
 typedef struct EndGameTextureStruct {
 	SDL_Texture * gameOverTexture;
 	SDL_Texture * pressAnyButtonTexture;
 }EndGameTextures;
 
+/*!
+*	\brief Struct containing needed variables for final score textures
+*/
 typedef struct finalScoreTexturesStruct {
 	SDL_Texture * typeInYourNameTexture;
 	SDL_Texture * characterTextures[NUMBER_OF_CHARACTERS];
 	SDL_Texture * blankTexture;
 }FinalScoreTextures;
 
+/*!
+*	\brief Global variable which contains settings menu textures information
+*/
 SettingsMenuTextures settingsTextureManager;
 
+/*!
+*	\brief Global variable which contains end game textures information
+*/
 EndGameTextures endGameTextureManager;
 
+/*!
+*	\brief Global variable which contains final score textures information
+*/
 FinalScoreTextures finalScoreTextureManager;
 
 #endif

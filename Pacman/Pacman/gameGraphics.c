@@ -6,6 +6,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*!	\file gameGraphics.c
+*	\brief Contains graphics functions definitions needed for gameplay
+*/
+
 static SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 static SDL_Texture *tile[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 static SDL_Rect tile_rect[HEIGHT_OF_MAP][WIDTH_OF_MAP];
@@ -284,6 +288,9 @@ void updateScoreBox(Highscore currentScore) {
 
 /*!
 *	\brief Updates the Pacman lives box in the game screen according to the argument livesCount
+*	\param map map on which the game s played
+*	\param numberOfLivesTiles number of tiles which are on the game screen for lives
+*	\param livesCount number of lives pacman has left
 */
 void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles, int livesCount) {
 	SDL_Rect LivesBoxRect;
@@ -305,6 +312,10 @@ void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles
 
 /*!
 *	\brief Prints argument map and pacman on the game screen
+*	\param map map on which the game s played
+*	\param pacman PacStruct containing info about pacman
+*	\param srbendaMod contains info about whether srbendaMod is active ( != 0 )
+*	\param newLevel contains info about wheter now a new level should be printed
 */
 void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int srbendaMod, int newLevel) {
 	int i, j;
@@ -363,6 +374,10 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int sr
 
 /*!
 *	\brief Updates arguments map and pacman according to its values and values of arguments delay and timer_tick
+*	\param map map on which the game s played
+*	\param pacman PacStruct containing info about pacman
+*	\param timer_tick clock timer for game loop
+*	\param srbendaMod contains info about whether srbendaMod is active ( != 0 )
 */
 void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int timer_tick, int srbendaMod) {
 	extern Game game;
@@ -407,6 +422,10 @@ void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int ti
 
 /*!
 *	\brief Updates arguments map and ghosts according to their values and values of arguments delay and timer_tick
+*	\param map map on which the game s played
+*	\param ghosts PacStruct array containing info about ghosts
+*	\param timer_tick clock timer for game loop
+*	\param srbendaMod contains info about whether srbendaMod is active ( != 0 )
 */
 void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_OF_GHOSTS], int timer_tick, int srbendaMod) {
 	int i;

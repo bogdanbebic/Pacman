@@ -2,6 +2,10 @@
 #ifndef _saveGame_h_
 #define _saveGame_h_
 
+/*!	\file saveGame.h
+*	\brief Contains save game struct
+*/
+
 #include "pacStruct.h"
 #include "highscores.h"
 #include "gameMap.h"

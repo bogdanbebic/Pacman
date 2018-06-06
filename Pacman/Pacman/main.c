@@ -9,10 +9,21 @@
 #include "saveGame.h"
 #include "highscores.h"
 
+/*! \file main.c
+*	\brief Contains the main program from which the whole game runs
+*/
+
+
+/*!
+*	\brief Global variable used for getting user keyboard input
+*/
 SDL_Event event;
 
 extern SaveGame saveGame;
 
+/*!
+*	\brief main
+*/
 int main(int argc, char *argv[]) {
 	extern SaveGame saveGame;
 	extern Game game;

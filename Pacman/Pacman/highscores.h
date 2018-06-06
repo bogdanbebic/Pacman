@@ -2,8 +2,18 @@
 #ifndef _highscores_h_
 #define _highscores_h_
 
+/*!	\file highscores.h
+*	\brief Contains declarations and constants for highscore keeping
+*/
+
+/*!
+*	\brief Maximum name for player
+*/
 #define MAX_NAME 12
 
+/*!
+*	\brief Number of highscores saved
+*/
 #define MAX_HIGHSCORES 7
 
 /*!

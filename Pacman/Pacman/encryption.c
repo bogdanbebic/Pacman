@@ -2,7 +2,9 @@
 #include "encryption.h"
 #include "highscores.h"
 
-
+/*!	\file encryption.c
+*	\brief Contains random, encryption and recovery function definitions
+*/
 
 /*!
 *   \brief Global variable used as seed for the randomLCG pseudo random number generator
