@@ -197,7 +197,6 @@ static int readHighscoresFromFile(char *filePath, LPCWSTR L_filePath, unsigned i
 	}
 }
 
-// OVO POPRAVITI DA RADI SA 5 FAJLOVA I DA RADI RECOVERY
 /*!
 *	\brief Reads highscores array from files
 */
@@ -208,6 +207,7 @@ void readHighscoresFromFiles() {
 	int flag[NUMBER_OF_FILES], i;
 	int numberOfOpenedFiles = 0;
 	int isHighscoresUnrecoverable = 0;
+	int currentElem, numberOfSameElems;
 	
 	flag[0] = readHighscoresFromFile(FILE_1, L_FILE_1, seed_for_random[0], 0);
 	flag[1] = readHighscoresFromFile(FILE_2, L_FILE_2, seed_for_random[1], 1);
@@ -217,13 +217,31 @@ void readHighscoresFromFiles() {
 
 	for (i = 0; i < NUMBER_OF_FILES; numberOfOpenedFiles += flag[i++]);
 
-	if (numberOfOpenedFiles >= 1) {	// TODO: >= 3 !!!!!
+	if (numberOfOpenedFiles >= 3) {
+		int j;
+		for (j = 0; j < SIZE_OF_BUFFER; j++) {
+			int start;
+			for (start = 0; start < 1 + NUMBER_OF_FILES / 2; start++) {
+				numberOfSameElems = 1;
+				currentElem = bufferInt[start][j];
+				for (i = start + 1; i < NUMBER_OF_FILES; i++) {
+					if (bufferInt[i][j] == currentElem) {
+						numberOfSameElems++;
+					}
+				}
+				if (numberOfSameElems >= 3) {
+					memcpy((int*)highscores + j, &currentElem, sizeof(currentElem));
+					break;
+				}
+			}
+			if (numberOfSameElems >= 3) {
+				continue;
+			}
+			
+			isHighscoresUnrecoverable = 1;
+			break;
+		}
 
-		// TODO: U HIGHSCORES UPISI ONAJ KOJI IMA MAKAR 3 POJAVLJIVANJA
-		// TODO: U SUPROTNOM NAPRAVI GENERIC HIGHSCORE
-
-		memcpy(highscores, bufferInt[0], sizeof(highscores));
-		
 		for (i = 0; i < MAX_HIGHSCORES; i++) {
 			highscores[i].name[MAX_NAME - 1] = '\0';
 		}
@@ -252,11 +270,15 @@ static void writeHighscoresToFile(char *filePath, LPCWSTR L_filePath, unsigned i
 	extern unsigned int prefixSumsBuffer[SIZE_OF_BUFFER];
 	extern unsigned int bufferInt[NUMBER_OF_FILES][SIZE_OF_BUFFER];
 	unsigned int prefixSumsShuffled[SIZE_OF_BUFFER];
+	static int wasThisFunctionCalledBefore = 0;
 	for (i = 0; i < SIZE_OF_BUFFER; i++) {
 		prefixSumsBuffer[i] = i;
 	}
 
-	seedRandomLCG((unsigned int)time(NULL));
+	if (!wasThisFunctionCalledBefore) {
+		seedRandomLCG((unsigned int)time(NULL));
+		wasThisFunctionCalledBefore = 1;
+	}
 	shuffleArray(prefixSumsBuffer, SIZE_OF_BUFFER);
 
 	memcpy(prefixSumsShuffled, prefixSumsBuffer, sizeof(prefixSumsShuffled));
@@ -285,15 +307,14 @@ static void writeHighscoresToFile(char *filePath, LPCWSTR L_filePath, unsigned i
 	return;
 }
 
-// TODO: ISPIS U SVIH 5 FAJLOVA
 /*!
 *	\brief Writes highscores to 5 files using the function writeHighscoresToFile
 */
 void writeHighscoresToFiles() {
 	writeHighscoresToFile(FILE_1, L_FILE_1, seed_for_random[0]);
-	//writeHighscoresToFile(FILE_2, L_FILE_2, seed_for_random[1]);
-	//writeHighscoresToFile(FILE_3, L_FILE_3, seed_for_random[2]);
-	//writeHighscoresToFile(FILE_4, L_FILE_4, seed_for_random[3]);
-	//writeHighscoresToFile(FILE_5, L_FILE_5, seed_for_random[4]);
+	writeHighscoresToFile(FILE_2, L_FILE_2, seed_for_random[1]);
+	writeHighscoresToFile(FILE_3, L_FILE_3, seed_for_random[2]);
+	writeHighscoresToFile(FILE_4, L_FILE_4, seed_for_random[3]);
+	writeHighscoresToFile(FILE_5, L_FILE_5, seed_for_random[4]);
 	return;
 }
