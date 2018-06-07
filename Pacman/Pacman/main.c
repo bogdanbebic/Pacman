@@ -166,6 +166,8 @@ int main(int argc, char *argv[]) {
 				break;
 			case isCredits:
 				SDL_RenderClear(game.screen.renderer);
+				if (isMusicOn)
+					PlaySound(TEXT("Music/BombeDevedesetih"), NULL, SND_LOOP | SND_ASYNC);
 				printCredits();
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
@@ -173,6 +175,8 @@ int main(int argc, char *argv[]) {
 					createHeading();
 					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 				}
+				if (isMusicOn)
+					PlaySound(TEXT("Music/PacmanFever"), NULL, SND_LOOP | SND_ASYNC);
 				break;
 			case isQuit:
 				game.isRunning = SDL_FALSE;
