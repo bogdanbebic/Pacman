@@ -8,6 +8,10 @@
 
 #include "highscores.h"
 
-void encrypt(int *bufferInt, int sizeof_bufferInt, unsigned int seed_random_LCG);
+void seedRandomLCG(unsigned int seed);
+
+unsigned int randomLCG();
+
+void encrypt(int *bufferInt, int sizeof_bufferInt);
 
 #endif // !_encryption_h_

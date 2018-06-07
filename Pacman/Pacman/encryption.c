@@ -23,12 +23,12 @@ void seedRandomLCG(unsigned int seed) {
 
 /*!
 *   \brief Finds a pseudo random number using a LCG algorithm
-*   \return pseudo random unsigned int in range [0, UINT_MAX)
+*   \return pseudo random unsigned int in range [0, UINT_MAX >> 1)
 */
 unsigned int randomLCG() {
 	extern unsigned int seed_LCG;
 	unsigned int mul = 1664525U, inc = 1013904223U;
-	seed_LCG = (mul * seed_LCG + inc);
+	seed_LCG = (int)(((unsigned long long)mul * (unsigned long long)seed_LCG + inc)) >> 1;
 	return seed_LCG;
 }
 
@@ -38,9 +38,8 @@ unsigned int randomLCG() {
 *	\param highscores encryption is on this argument
 *	\param seed_random_LCG seed for LCG random generators
 */
-void encrypt(int *bufferInt, int sizeof_bufferInt, unsigned int seed_random_LCG) {
+void encrypt(int *bufferInt, int sizeof_bufferInt) {
 	int *ptr = bufferInt, *start = bufferInt;
-	seedRandomLCG(seed_random_LCG);
 	while (ptr < start + sizeof_bufferInt) {	// Constant depends on sizeof(highscores) -> not std defined
 		*ptr ^= randomLCG();
 		ptr++;
