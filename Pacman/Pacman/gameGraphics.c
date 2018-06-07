@@ -436,7 +436,7 @@ void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_
 	PacStruct oldPositionGhost;
 	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 		oldPositionGhost = getOldPacPosition(ghosts[i]);
-		if (ghosts[i].gameMode != Normal && oldPositionGhost.iPosition == pacman.iPosition && oldPositionGhost.jPosition == pacman.jPosition && pacman.direction == DIRECTION_NONE) {
+		if ((ghosts[i].gameMode != Normal || immortalityCheat) && oldPositionGhost.iPosition == pacman.iPosition && oldPositionGhost.jPosition == pacman.jPosition && pacman.direction == DIRECTION_NONE) {
 			if (!invisibilityCheat) {
 				if (lastMovingTimerTick % 2) {
 					if (srbendaMod) {
