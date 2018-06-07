@@ -18,7 +18,6 @@
 *	\brief Global variable used for getting user keyboard input
 */
 SDL_Event event;
-
 extern SaveGame saveGame;
 
 /*!

@@ -36,6 +36,6 @@ int maximum(int a, int b, int c, int d);
 
 int minimum(int a, int b, int c, int d);
 
-PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int time);
+PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS]);
 
 #endif // !_ghosts_h_

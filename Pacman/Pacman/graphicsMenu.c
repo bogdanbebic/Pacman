@@ -34,10 +34,12 @@ void gameInit() {
 	unsigned int width = game.screen.width / 3;
 	unsigned int height = game.screen.height / 2 + 2 * game.screen.height / HEIGHT_OF_MAP;
 	const char* name = SCREEN_NAME;
-
+	
 	game.screen.window = SDL_CreateWindow(name, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
+	SDL_Surface* icon = SDL_LoadBMP("Pictures/pacmanIcon1.bmp");
+	SDL_SetWindowIcon(game.screen.window, icon);
 	game.screen.renderer = SDL_CreateRenderer(game.screen.window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
+	SDL_FreeSurface(icon);
 	game.isRunning = SDL_TRUE;
 
 	//texture initialization

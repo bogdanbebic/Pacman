@@ -445,10 +445,9 @@ int BFS_nextDot(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacmanX, int pacmanY) 
 *	\param Map map on which the game is played
 *	\param pacman PacStruct containing info about pacman
 *	\param ghosts PacStruct array containing info about ghosts
-*	\param time does nothing
 *	\return	PacStruct containing next position of Pac-Man
 */
-PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS], int time) {// STA CE NAM TIME KAO ARGUMENT
+PacStruct PacmanDemo(int Map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, PacStruct ghosts[NUMBER_OF_GHOSTS]) {
 	//Map[HEIGHT_OF_MAP / 2 - 3][WIDTH_OF_MAP / 2 - 1] = WALL;
 	//Map[HEIGHT_OF_MAP / 2 - 3][WIDTH_OF_MAP / 2] = WALL;
 	PacStruct sol[4];
