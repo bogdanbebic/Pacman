@@ -780,222 +780,6 @@ void finalScoreScreen(int currScore, char * name, int * nameSave) {
 			case SDL_KEYDOWN:
 				rect.x = game.screen.width / 18 + currPos * game.screen.width / 50;
 				switch (event.key.keysym.sym) {
-				case SDLK_0:
-					name[currPos] = '0';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['0'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = '0'; currPos++; }
-					break;
-				case SDLK_1:
-					name[currPos] = '1';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['1'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = '1'; currPos++; }
-					break;
-				case SDLK_2:
-					name[currPos] = '2';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['2'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = '2'; currPos++; }
-					break;
-				case SDLK_3:
-					name[currPos] = '3';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['3'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = '3'; currPos++; }
-					break;
-				case SDLK_4:
-					name[currPos] = '4';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['4'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = '4'; currPos++; }
-					break;
-				case SDLK_5:
-					name[currPos] = '5';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['5'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = '5'; currPos++; }
-					break;
-				case SDLK_6:
-					name[currPos] = '6';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['6'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = '6'; currPos++; }
-					break;
-				case SDLK_7:
-					name[currPos] = '7';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['7'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = '7'; currPos++; }
-					break;
-				case SDLK_8:
-					name[currPos] = '8';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['8'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = '8'; currPos++; }
-					break;
-				case SDLK_9:
-					name[currPos] = '9';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['9'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = '9'; currPos++; }
-					break;
-				case SDLK_a:
-					name[currPos] = 'A';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['A'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'A'; currPos++; }
-					break;
-				case SDLK_b:
-					name[currPos] = 'B';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['B'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'B'; currPos++; }
-					break;
-				case SDLK_c:
-					name[currPos] = 'C';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['C'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'C'; currPos++; }
-					break;
-				case SDLK_d:
-					name[currPos] = 'D';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['D'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'D'; currPos++; }
-					break;
-				case SDLK_e:
-					name[currPos] = 'E';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['E'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'E'; currPos++; }
-					break;
-				case SDLK_f:
-					name[currPos] = 'F';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['F'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'F'; currPos++; }
-					break;
-				case SDLK_g:
-					name[currPos] = 'G';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['G'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'G'; currPos++; }
-					break;
-				case SDLK_h:
-					name[currPos] = 'H';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['H'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'H'; currPos++; }
-					break;
-				case SDLK_i:
-					name[currPos] = 'I';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['I'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'I'; currPos++; }
-					break;
-				case SDLK_j:
-					name[currPos] = 'J';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['J'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'J'; currPos++; }
-					break;
-				case SDLK_k:
-					name[currPos] = 'K';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['K'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'K'; currPos++; }
-					break;
-				case SDLK_l:
-					name[currPos] = 'L';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['L'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'L'; currPos++; }
-					break;
-				case SDLK_m:
-					name[currPos] = 'M';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['M'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'M'; currPos++; }
-					break;
-				case SDLK_n:
-					name[currPos] = 'N';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['N'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'N'; currPos++; }
-					break;
-				case SDLK_o:
-					name[currPos] = 'O';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['O'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'O'; currPos++; }
-					break;
-				case SDLK_p:
-					name[currPos] = 'P';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['P'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'P'; currPos++; }
-					break;
-				case SDLK_q:
-					name[currPos] = 'Q';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['Q'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'Q'; currPos++; }
-					break;
-				case SDLK_r:
-					name[currPos] = 'R';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['R'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'R'; currPos++; }
-					break;
-				case SDLK_s:
-					name[currPos] = 'S';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['S'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'S'; currPos++; }
-					break;
-				case SDLK_t:
-					name[currPos] = 'T';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['T'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'T'; currPos++; }
-					break;
-				case SDLK_u:
-					name[currPos] = 'U';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['U'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'U'; currPos++; }
-					break;
-				case SDLK_v:
-					name[currPos] = 'V';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['V'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'V'; currPos++; }
-					break;
-				case SDLK_w:
-					name[currPos] = 'W';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['W'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'W'; currPos++; }
-					break;
-				case SDLK_x:
-					name[currPos] = 'X';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['X'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'X'; currPos++; }
-					break;
-				case SDLK_y:
-					name[currPos] = 'Y';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['Y'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'Y'; currPos++; }
-					break;
-				case SDLK_z:
-					name[currPos] = 'Z';
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures['Z'], NULL, &rect);
-					if (currPos < MAX_NAME - 1) { name[currPos] = 'Z'; currPos++; }
-					break;
 				case SDLK_BACKSPACE:
 					name[currPos] = '\0';
 					currPos = currPos ? currPos - 1 : currPos;
@@ -1007,20 +791,20 @@ void finalScoreScreen(int currScore, char * name, int * nameSave) {
 					finalScoreActive = 0;
 					*nameSave = 0;
 					break;
-					/*default:
+				default:
 					if (currPos < MAX_NAME - 1) {
-					if (event.key.keysym.sym <= SDLK_9 && event.key.keysym.sym >= SDLK_0) {
-					name[currPos++] = MAP_SDL_NUMBERS(event.key.keysym.sym);
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures[name[currPos - 1]], NULL, &rect);
+						if (event.key.keysym.sym <= SDLK_9 && event.key.keysym.sym >= SDLK_0) {
+							name[currPos++] = MAP_SDL_NUMBERS(event.key.keysym.sym);
+							SDL_RenderFillRect(game.screen.renderer, &rect);
+							SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures[name[currPos - 1]], NULL, &rect);
+						}
+						else if (event.key.keysym.sym <= SDLK_z && event.key.keysym.sym >= SDLK_a) {
+							name[currPos++] = MAP_SDL_LETTERS(event.key.keysym.sym) + 'A' - 'a';
+							SDL_RenderFillRect(game.screen.renderer, &rect);
+							SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures[name[currPos - 1]], NULL, &rect);
+						}
 					}
-					else if (event.key.keysym.sym <= SDLK_z && event.key.keysym.sym >= SDLK_a) {
-					name[currPos++] = MAP_SDL_LETTERS(event.key.keysym.sym);
-					SDL_RenderFillRect(game.screen.renderer, &rect);
-					SDL_RenderCopy(game.screen.renderer, finalScoreTextureManager.characterTextures[name[currPos - 1]], NULL, &rect);
-					}
-					}
-					break;*/
+					break;
 				}
 
 				for (i = currPos; i <= MAX_NAME - 1; i++) {
