@@ -38,10 +38,10 @@ unsigned int randomLCG() {
 *	\param highscores encryption is on this argument
 *	\param seed_random_LCG seed for LCG random generators
 */
-void encrypt(Highscore highscores[MAX_HIGHSCORES], unsigned int seed_random_LCG) {
-	int *ptr = (int*)highscores, *start = (int*)highscores;
+void encrypt(int *bufferInt, int sizeof_bufferInt, unsigned int seed_random_LCG) {
+	int *ptr = bufferInt, *start = bufferInt;
 	seedRandomLCG(seed_random_LCG);
-	while (ptr < start + MAX_HIGHSCORES * 4) {	// Constant depends on sizeof(highscores) -> not std defined
+	while (ptr < start + sizeof_bufferInt) {	// Constant depends on sizeof(highscores) -> not std defined
 		*ptr ^= randomLCG();
 		ptr++;
 	}

@@ -587,9 +587,9 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 			if (timer_tick % (MAX_SPEED - speed) == 0) {
 				if (gameType == DEMO_GAME) {
 					PacStruct pacTry = pacman;
-					pacTry = PacmanDemo(testMapTemp, pacman, ghosts, timer_tick);
+					pacTry = PacmanDemo(testMapTemp, pacman, ghosts);
 					if (wallCheckAndMove(testMapTemp, &pacTry))
-						pacman = PacmanDemo(testMapTemp, pacman, ghosts, timer_tick);
+						pacman = PacmanDemo(testMapTemp, pacman, ghosts);
 				}
 				if(throughTheWallCheat) 
 					wallCheckAndMoveNoWall(testMapTemp, &pacman);
