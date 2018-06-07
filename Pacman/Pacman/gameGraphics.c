@@ -426,14 +426,40 @@ void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int ti
 *	\param ghosts PacStruct array containing info about ghosts
 *	\param timer_tick clock timer for game loop
 *	\param srbendaMod contains info about whether srbendaMod is active ( != 0 )
+*	\param pacman PacStruct which contains info about pacman
+*	\param lastPacmanDirection contains the last direction of Pacman, that wasn't none
+*	\param lastMovingTimerTick contains the last tick in which Pacman was moving
 */
-void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_OF_GHOSTS], int timer_tick, int srbendaMod) {
+void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_OF_GHOSTS], int timer_tick, int srbendaMod, PacStruct pacman, enum direction lastPacmanDirection, int lastMovingTimerTick) {
 	int i;
 	extern Game game;
 	PacStruct oldPositionGhost;
 	for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
 		oldPositionGhost = getOldPacPosition(ghosts[i]);
-		if (map[oldPositionGhost.iPosition][oldPositionGhost.jPosition] == PAC_DOT) {
+		if (ghosts[i].gameMode != Normal && oldPositionGhost.iPosition == pacman.iPosition && oldPositionGhost.jPosition == pacman.jPosition && pacman.direction == DIRECTION_NONE) {
+			if (!invisibilityCheat) {
+				if (lastMovingTimerTick % 2) {
+					if (srbendaMod) {
+						SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanSrbendaOpenMouth[lastPacmanDirection], NULL, &gameTexturesManager.mapTileRects[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
+					}
+					else {
+						SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanOpenMouthTextures[lastPacmanDirection], NULL, &gameTexturesManager.mapTileRects[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
+					}
+				}
+				else {
+					if (srbendaMod) {
+						SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanSrbendaShutMouth[lastPacmanDirection], NULL, &gameTexturesManager.mapTileRects[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
+					}
+					else {
+						SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacmanShutMouthTextures[lastPacmanDirection], NULL, &gameTexturesManager.mapTileRects[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
+					}
+				}
+			}
+			else {
+				SDL_RenderFillRect(game.screen.renderer, &gameTexturesManager.mapTileRects[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
+			}
+		}
+		else if (map[oldPositionGhost.iPosition][oldPositionGhost.jPosition] == PAC_DOT) {
 			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.pacDotTexture, NULL, &gameTexturesManager.mapTileRects[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
 		}
 		else if (map[oldPositionGhost.iPosition][oldPositionGhost.jPosition] == POWER_PELLET) {
@@ -452,7 +478,7 @@ void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_
 				SDL_RenderCopy(game.screen.renderer, gameTexturesManager.wallTexture, NULL, &gameTexturesManager.mapTileRects[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
 			}
 		}
-		else if (map[oldPositionGhost.iPosition][oldPositionGhost.jPosition] == NO_WALL){
+		else if (map[oldPositionGhost.iPosition][oldPositionGhost.jPosition] == NO_WALL) {
 			SDL_RenderCopy(game.screen.renderer, gameTexturesManager.backgroundTexture, NULL, &gameTexturesManager.mapTileRects[oldPositionGhost.iPosition][oldPositionGhost.jPosition]);
 		}
 

@@ -1077,7 +1077,7 @@ void printHighScore() {
 	TTF_Font* font = TTF_OpenFont("impact.ttf", 80);
 	SDL_Color white = { 255, 255, 255 };
 	int i, highScoreRunning = 1, j;
-	char buffer[40] = { 0 }, temp[40], temp2[40], buffer1[40] = { 0 };
+	char buffer[40] = { 0 }, temp[60], temp2[40], buffer1[40] = { 0 };
 	char string[3] = ". \0", whiteSpace[2] = " ";
 
 	createHighScoreHeading();
@@ -1087,10 +1087,13 @@ void printHighScore() {
 		_itoa_s(j, buffer, 40, 10);
 		strcat_s(buffer, 40, string);
 		_itoa_s(highscores[i].points, buffer1, 40, 10);
-		strcpy_s(temp, 40, highscores[i].name);
-		strcat_s(temp, 40, whiteSpace);
+
+		//highscores[i].name[12] = '\0';
+
+		strcpy_s(temp, 60, highscores[i].name);
+		strcat_s(temp, 60, whiteSpace);
 		strcpy_s(temp2, 40, buffer);
-		strcat_s(temp, 40, buffer1);
+		strcat_s(temp, 60, buffer1);
 		strcat_s(temp2, 40, temp);
 
 		surface = TTF_RenderText_Solid(font, temp2, white);

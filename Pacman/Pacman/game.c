@@ -451,6 +451,8 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 	int isPacmanEaten = 0;
 	int nameSave;
 	pacDotCount = countPacDots(map); // Power Pellets are not counted as pacDots!!!
+	int lastMovingTimerTick;
+	enum direction lastPacmanDirection = DIRECTION_RIGHT;
 
 	switch (gameType) {
 	case DEMO_GAME:
@@ -595,6 +597,11 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 					wallCheckAndMove(testMapTemp, &pacman);
 			}
 
+			if (pacman.direction != DIRECTION_NONE) {
+				lastPacmanDirection = pacman.direction;
+				lastMovingTimerTick = timer_tick;
+			}
+
 			updateScoreAndGameMode(testMapTemp, pacman, ghosts, &pacDotCount, &currentScore, &timer_tick_POWER_PELLET, &isPowerPelletEaten, difficulty);
 
 			for (i = 0; i < NUMBER_OF_GHOSTS; i++) {
@@ -608,7 +615,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 				}
 			}
 		
-			updateGhosts(testMapTemp, ghosts, timer_tick, srbendaMod);
+			updateGhosts(testMapTemp, ghosts, timer_tick, srbendaMod, pacman, lastPacmanDirection, lastMovingTimerTick);
 			updatePacman(testMapTemp, pacman, timer_tick, srbendaMod);
 
 			// NEW GHOSTS DIRECTIONS
