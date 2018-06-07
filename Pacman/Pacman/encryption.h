@@ -12,6 +12,8 @@ void seedRandomLCG(unsigned int seed);
 
 unsigned int randomLCG();
 
+void shuffleArray(int *a, int size_of_a);
+
 void encrypt(int *bufferInt, int sizeof_bufferInt);
 
 #endif // !_encryption_h_

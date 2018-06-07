@@ -1,6 +1,7 @@
 #include "highscores.h"
 #include <stdio.h>
 #include <Windows.h>
+#include <time.h>
 #include "encryption.h"
 
 /*!	\file highscores.c
@@ -29,15 +30,11 @@
 #define DECOY_4 "not_a_highscore_file.hsc"
 #define DECOY_5 "Music/highscores.hsc"
 
-/*!
-*	\brief Global variable containing seeds for encryption for data for each file
-*/
-unsigned int seed_for_LCG_random[] = { 1000U, 1500U, 2000U, 2500U, 3000U };
 
 /*!
-*	\brief Global variable containing seeds for encryption for prefix sums for each file
+*	\brief Global variable containing seeds for encryption for each file
 */
-unsigned int seed_for_random_prefix_sums[] = { 123555U, 212345U, 654321U, 987456U, 154826U };
+unsigned int seed_for_random[] = { 123555U, 212345U, 654321U, 987456U, 154826U };
 
 /*!
 *	\brief global variable in which highscores are kept
@@ -160,20 +157,20 @@ unsigned int prefixSumsBuffer[SIZE_OF_BUFFER];
 *	\param L_filePath defines name of file for hiding
 *	\param encryptionSeed seed used for random generator used in encryption
 *	\param indexOfFile Represents index of file to be read
-*	\param seedForPrefixSums seed used for random generator used in encryption of prefix sums
 *	\return Returns 1 if opened file != NULL, 0 if file was not opened
 */
-int readHighscoresFromFile(char *filePath, LPCWSTR L_filePath, unsigned int encryptionSeed, int indexOfFile, int seedForPrefixSums) {
+static int readHighscoresFromFile(char *filePath, LPCWSTR L_filePath, unsigned int encryptionSeed, int indexOfFile) {
 	extern unsigned int bufferInt[NUMBER_OF_FILES][SIZE_OF_BUFFER];
 	extern unsigned int prefixSumsBuffer[SIZE_OF_BUFFER];
 	FILE *highscoresFile;
-	int i;
+	unsigned int i;
+	unsigned int deletions = 0;
 
 	SetFileAttributes(L_filePath, FILE_ATTRIBUTE_NORMAL);
 	fopen_s(&highscoresFile, filePath, "rb");
 	if (highscoresFile != NULL) {
-		seedRandomLCG(seedForPrefixSums);
-		for (i = 0; i < 2 * SIZE_OF_BUFFER; ) {
+		seedRandomLCG(encryptionSeed);
+		for (i = 0; i < 2 * SIZE_OF_BUFFER - deletions; ) {
 			fread(&prefixSumsBuffer[i / 2], sizeof(prefixSumsBuffer[i / 2]), 1, highscoresFile);
 			i++;
 
@@ -184,11 +181,13 @@ int readHighscoresFromFile(char *filePath, LPCWSTR L_filePath, unsigned int encr
 				fread(&bufferInt[indexOfFile][prefixSumsBuffer[i / 2]], sizeof(bufferInt[indexOfFile][prefixSumsBuffer[i / 2]]), 1, highscoresFile);
 				i++;
 			}
+			else {
+				i--;
+				deletions += 2;
+			}
 		}
 		fclose(highscoresFile);
 
-
-		seedRandomLCG(encryptionSeed);
 		encrypt(bufferInt[indexOfFile], sizeof(bufferInt[indexOfFile]) / sizeof(int));
 		
 		return 1;
@@ -198,21 +197,45 @@ int readHighscoresFromFile(char *filePath, LPCWSTR L_filePath, unsigned int encr
 	}
 }
 
+// OVO POPRAVITI DA RADI SA 5 FAJLOVA I DA RADI RECOVERY
 /*!
 *	\brief Reads highscores array from files
 */
-void readHighscoresFromFiles() {	// OVO POPRAVITI DA RADI SA 5 FAJLOVA
+void readHighscoresFromFiles() {
 	extern Highscore highscores[MAX_HIGHSCORES];
 	extern unsigned int bufferInt[NUMBER_OF_FILES][SIZE_OF_BUFFER];
-	int flag;
+	extern unsigned int seed_for_random[NUMBER_OF_FILES];
+	int flag[NUMBER_OF_FILES], i;
+	int numberOfOpenedFiles = 0;
+	int isHighscoresUnrecoverable = 0;
 	
-	flag = readHighscoresFromFile(FILE_1, L_FILE_1, seed_for_LCG_random[0], 0, seed_for_random_prefix_sums[0]);
-	if (flag) {
+	flag[0] = readHighscoresFromFile(FILE_1, L_FILE_1, seed_for_random[0], 0);
+	flag[1] = readHighscoresFromFile(FILE_2, L_FILE_2, seed_for_random[1], 1);
+	flag[2] = readHighscoresFromFile(FILE_3, L_FILE_3, seed_for_random[2], 2);
+	flag[3] = readHighscoresFromFile(FILE_4, L_FILE_4, seed_for_random[3], 3);
+	flag[4] = readHighscoresFromFile(FILE_5, L_FILE_5, seed_for_random[4], 4);
+
+	for (i = 0; i < NUMBER_OF_FILES; numberOfOpenedFiles += flag[i++]);
+
+	if (numberOfOpenedFiles >= 1) {	// TODO: >= 3 !!!!!
+
+		// TODO: U HIGHSCORES UPISI ONAJ KOJI IMA MAKAR 3 POJAVLJIVANJA
+		// TODO: U SUPROTNOM NAPRAVI GENERIC HIGHSCORE
+
 		memcpy(highscores, bufferInt[0], sizeof(highscores));
+		
+		for (i = 0; i < MAX_HIGHSCORES; i++) {
+			highscores[i].name[MAX_NAME - 1] = '\0';
+		}
 	}
 	else {
+		isHighscoresUnrecoverable = 1;
+	}
+
+	if (isHighscoresUnrecoverable) {
 		makeGenericHighscores();
 	}
+
 	return;
 }
 
@@ -221,33 +244,38 @@ void readHighscoresFromFiles() {	// OVO POPRAVITI DA RADI SA 5 FAJLOVA
 *	\param filePath defines name of file
 *	\param L_filePath defines name of file for hiding
 *	\param encryptionSeed seed used for random generator used in encryption of data
-*	\param seedForPrefixSums seed used for random generator used in encryption of prefix sums
 */
-static void writeHighscoresToFile(char *filePath, LPCWSTR L_filePath, unsigned int encryptionSeed, int seedForPrefixSums) {
+static void writeHighscoresToFile(char *filePath, LPCWSTR L_filePath, unsigned int encryptionSeed) {
 	extern Highscore highscores[MAX_HIGHSCORES];
 	FILE *highscoresFile;
 	int i;
 	extern unsigned int prefixSumsBuffer[SIZE_OF_BUFFER];
 	extern unsigned int bufferInt[NUMBER_OF_FILES][SIZE_OF_BUFFER];
-
+	unsigned int prefixSumsShuffled[SIZE_OF_BUFFER];
 	for (i = 0; i < SIZE_OF_BUFFER; i++) {
 		prefixSumsBuffer[i] = i;
 	}
-	seedRandomLCG(seedForPrefixSums);
+
+	seedRandomLCG((unsigned int)time(NULL));
+	shuffleArray(prefixSumsBuffer, SIZE_OF_BUFFER);
+
+	memcpy(prefixSumsShuffled, prefixSumsBuffer, sizeof(prefixSumsShuffled));
+
+	seedRandomLCG(encryptionSeed);
 	encrypt(prefixSumsBuffer, sizeof(prefixSumsBuffer) / sizeof(int));
 	for (i = 0; i < SIZE_OF_BUFFER; i++) {
 		prefixSumsBuffer[i] |= 1U << (sizeof(int) * BITS_IN_BYTE - 1);
 	}
 	
 	memcpy(bufferInt[0], highscores, sizeof(highscores));
-	seedRandomLCG(encryptionSeed);
+	
 	encrypt(bufferInt[0], sizeof(bufferInt[0]) / sizeof(int));
 
 	fopen_s(&highscoresFile, filePath, "wb");
 	if (highscoresFile != NULL) {
 		for (i = 0; i < SIZE_OF_BUFFER; i++) {
 			fwrite(&prefixSumsBuffer[i], sizeof(prefixSumsBuffer[i]), 1, highscoresFile);
-			fwrite(&bufferInt[0][i], sizeof(bufferInt[0][i]), 1, highscoresFile);
+			fwrite(&bufferInt[0][prefixSumsShuffled[i]], sizeof(bufferInt[0][i]), 1, highscoresFile);
 		}
 		
 		fclose(highscoresFile);
@@ -257,14 +285,15 @@ static void writeHighscoresToFile(char *filePath, LPCWSTR L_filePath, unsigned i
 	return;
 }
 
+// TODO: ISPIS U SVIH 5 FAJLOVA
 /*!
 *	\brief Writes highscores to 5 files using the function writeHighscoresToFile
 */
 void writeHighscoresToFiles() {
-	writeHighscoresToFile(FILE_1, L_FILE_1, seed_for_LCG_random[0], seed_for_random_prefix_sums[0]);
-	//writeHighscoresToFile(FILE_2, L_FILE_2, seed_for_LCG_random[1], seed_for_random_prefix_sums[1]);
-	//writeHighscoresToFile(FILE_3, L_FILE_3, seed_for_LCG_random[2], seed_for_random_prefix_sums[2]);
-	//writeHighscoresToFile(FILE_4, L_FILE_4, seed_for_LCG_random[3], seed_for_random_prefix_sums[3]);
-	//writeHighscoresToFile(FILE_5, L_FILE_5, seed_for_LCG_random[4], seed_for_random_prefix_sums[4]);
+	writeHighscoresToFile(FILE_1, L_FILE_1, seed_for_random[0]);
+	//writeHighscoresToFile(FILE_2, L_FILE_2, seed_for_random[1]);
+	//writeHighscoresToFile(FILE_3, L_FILE_3, seed_for_random[2]);
+	//writeHighscoresToFile(FILE_4, L_FILE_4, seed_for_random[3]);
+	//writeHighscoresToFile(FILE_5, L_FILE_5, seed_for_random[4]);
 	return;
 }
