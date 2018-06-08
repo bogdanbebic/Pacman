@@ -88,7 +88,7 @@ void makeDecoyHighscoreFiles() {
 */
 void makeGenericHighscores() {
 	extern Highscore highscores[MAX_HIGHSCORES];
-	const char genericName[] = "Anonymus";
+	const char genericName[] = "Anonymous";
 	const int genericScore = 500;
 	int i, j;
 	for (i = MAX_HIGHSCORES - 1; i >= 0; i--) {
