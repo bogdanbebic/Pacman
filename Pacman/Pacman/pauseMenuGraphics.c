@@ -1,7 +1,15 @@
 #include "pauseMenuGraphics.h"
+#include "cheats.h"
+
+/*! \file pauseMenuGraphics.c
+*	\brief Contains function definitions needed for graphics of in game pause menu
+*/
 
 extern PauseMenuTextures pauseMenuTextureManager;
 
+/*!
+*	\brief Initializes the textures for pause menu
+*/
 void initPauseMenuTextures() {
 	SDL_Surface * tempSurfaceWhite, *tempSurfaceYellow;
 	enum PauseMenuOptions pauseMenuOption;
@@ -15,10 +23,6 @@ void initPauseMenuTextures() {
 		case continueWithGame:
 			tempSurfaceYellow = TTF_RenderText_Solid(font, "CONTINUE", yellow);
 			tempSurfaceWhite = TTF_RenderText_Solid(font, "CONTINUE", white);
-			break;
-		case settingsInGame:
-			tempSurfaceYellow = TTF_RenderText_Solid(font, "SETTINGS", yellow);
-			tempSurfaceWhite = TTF_RenderText_Solid(font, "SETTINGS", white);
 			break;
 		case mainMenu:
 			tempSurfaceYellow = TTF_RenderText_Solid(font, "MAIN MENU", yellow);
@@ -42,6 +46,9 @@ void initPauseMenuTextures() {
 	return;
 }
 
+/*!
+*	\brief Creates a heading for pause menu
+*/
 void createPauseHeading() {
 	SDL_Surface *HeadingSurface;
 	SDL_Texture *HeadingTexture;
@@ -61,6 +68,10 @@ void createPauseHeading() {
 	SDL_DestroyTexture(HeadingTexture);
 }
 
+/*!
+*	\brief Prints the pause menu
+*	\param currentOption option which is currently highlighted
+*/
 void printPauseMenu(enum PauseMenuOptions currentOption) {
 	SDL_Rect menuRect, pacmanRect;
 	enum PauseMenuOptions menuOption;
@@ -72,7 +83,7 @@ void printPauseMenu(enum PauseMenuOptions currentOption) {
 		menuRect.h = game.screen.height / 22;
 		pacmanRect.x = game.screen.width / 24;
 		pacmanRect.y = (8 + 3 * menuOption) * (game.screen.height / 44);
-		pacmanRect.w = game.screen.width / 30; 
+		pacmanRect.w = game.screen.width / 30;
 		pacmanRect.h = game.screen.height / 22;
 		if (currentOption == menuOption) {
 			SDL_RenderCopy(game.screen.renderer, pauseMenuTextureManager.yellowTextures[menuOption], NULL, &menuRect);
@@ -87,12 +98,21 @@ void printPauseMenu(enum PauseMenuOptions currentOption) {
 	return;
 }
 
-enum PauseMenuOptions ActivatePauseMenu(int difficulty) {
-	int activePauseMenu = 1;
+/*!	\brief Activates pause menu
+*
+*	Activates pause menu on the game screen by
+*	handling all the user related input in the
+*	menu itself and prints the newly activated menu
+*   on the game screen
+*	\param difficulty difficulty of the game
+*/
+enum PauseMenuOptions ActivatePauseMenu(int difficulty) { // STA CE NAM DIFFICULTY ZA PARAMETAR OVDE
+	int activePauseMenu = 1, currPos = 0;
+	char cheat[MAX_CHEAT];
 	SDL_Event event;
 	enum PauseMenuOptions selectedOption = continueWithGame;
 	enum PauseMenuOptions currentOption = selectedOption;
-	
+
 	createPauseHeading();
 
 	while (game.isRunning) {
@@ -124,19 +144,35 @@ enum PauseMenuOptions ActivatePauseMenu(int difficulty) {
 					switch (selectedOption) {
 					case continueWithGame:
 						return continueWithGame;
-					case settingsInGame:
-						return settingsInGame;
 					case mainMenu:
 						return mainMenu;
 					case finishGame:
 						return finishGame;
 					}
 					break;
+
+				case SDLK_BACKSPACE:
+					cheat[currPos = 0] = '\0';
+					break;
+
+				default:
+					if (currPos < MAX_CHEAT - 1) {
+						if (event.key.keysym.sym <= SDLK_9 && event.key.keysym.sym >= SDLK_0) {
+							cheat[currPos++] = MAP_SDL_NUMBERS(event.key.keysym.sym);
+						}
+						else if (event.key.keysym.sym <= SDLK_z && event.key.keysym.sym >= SDLK_a) {
+							cheat[currPos++] = MAP_SDL_LETTERS(event.key.keysym.sym);
+						}
+						cheat[currPos] = '\0';
+					}
+					toggleIfCheat(cheat);
 				}
-				break;
+
+
+				break;	// break SDL_KEYDOWN
 			case SDL_QUIT:
 				game.isRunning = SDL_FALSE;
-				
+
 				break;
 			}
 			currentOption = selectedOption;
@@ -144,5 +180,17 @@ enum PauseMenuOptions ActivatePauseMenu(int difficulty) {
 	}
 	return quitInGame;
 	activePauseMenu = 0;
+}
 
+/*
+*	\brief Destroys all the textures used in the pause menu
+*/
+void destroyPauseMenuTextures() {
+	enum PauseMenuOptions pauseMenuOption;
+
+	for (pauseMenuOption = 0; pauseMenuOption < numberOfPauseMenuOptions; pauseMenuOption++) {
+		SDL_DestroyTexture(pauseMenuTextureManager.whiteTextures[pauseMenuOption]);
+		SDL_DestroyTexture(pauseMenuTextureManager.yellowTextures[pauseMenuOption]);
+	}
+	SDL_DestroyTexture(pauseMenuTextureManager.pacmanTexture);
 }

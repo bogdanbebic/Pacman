@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['savegame',['SaveGame',['../save_game_8h.html#a547d6b2a66aaeac6b93241b14827a7aa',1,'SaveGame():&#160;saveGame.h'],['../game_8c.html#aa579cfeee0891ad82b869a2975db71fa',1,'saveGame():&#160;game.c'],['../main_8c.html#aa579cfeee0891ad82b869a2975db71fa',1,'saveGame():&#160;game.c']]],
+  ['savegame_2eh',['saveGame.h',['../save_game_8h.html',1,'']]],
+  ['savegameforcontinue',['saveGameForContinue',['../game_8c.html#a4e66b11d89a12c5e618119220592d321',1,'saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount, int srbendaMod, int timer_tick, int timer_tick_POWER_PELLET, int isPowerPelletEaten):&#160;game.c'],['../game_8h.html#a4e66b11d89a12c5e618119220592d321',1,'saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, int livesCount, Highscore currentScore, int isStartOfNewGame, PacStruct home, PacStruct pacman, PacStruct ghosts[], int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int pacDotCount, int srbendaMod, int timer_tick, int timer_tick_POWER_PELLET, int isPowerPelletEaten):&#160;game.c']]],
+  ['savegamestruct',['SaveGameStruct',['../struct_save_game_struct.html',1,'']]],
+  ['scoreboxrect',['scoreBoxRect',['../struct_game_texture_struct.html#abca02e8b18db8eacecec24e7518f65f3',1,'GameTextureStruct']]],
+  ['scoreboxtexture',['scoreBoxTexture',['../struct_game_texture_struct.html#aebbe23dced363ded660f1c33ae200026',1,'GameTextureStruct::scoreBoxTexture()'],['../game_8c.html#a10bef80c181cc7acb6d56a49b287d5dd',1,'ScoreBoxTexture():&#160;gameGraphics.c'],['../game_graphics_8c.html#a10bef80c181cc7acb6d56a49b287d5dd',1,'ScoreBoxTexture():&#160;gameGraphics.c']]],
+  ['scoredigitrect',['scoreDigitRect',['../struct_game_texture_struct.html#aeaf7f8b34f2578c96867597802d3fb77',1,'GameTextureStruct']]],
+  ['scoredigittextures',['scoreDigitTextures',['../struct_game_texture_struct.html#a21b9bf03d44213c78bf41fe434632129',1,'GameTextureStruct']]],
+  ['screen',['screen',['../struct_game_struct.html#a25cab1c2dd63e90138b14fec27cecc4b',1,'GameStruct::screen()'],['../game_8h.html#a1fe974bdcb1d2fd4963cffd8fd1cc1fc',1,'Screen():&#160;game.h']]],
+  ['screen_5fheight',['SCREEN_HEIGHT',['../graphics_menu_8h.html#a6974d08a74da681b3957b2fead2608b8',1,'graphicsMenu.h']]],
+  ['screen_5fname',['SCREEN_NAME',['../graphics_menu_8h.html#a85c2ed976bb69da6ecff844592d54871',1,'graphicsMenu.h']]],
+  ['screen_5fscale',['SCREEN_SCALE',['../graphics_menu_8h.html#a1db7ab92e01c40f209303307cc33c68b',1,'graphicsMenu.h']]],
+  ['screen_5fwidth',['SCREEN_WIDTH',['../graphics_menu_8h.html#a2cd109632a6dcccaa80b43561b1ab700',1,'graphicsMenu.h']]],
+  ['screenstruct',['ScreenStruct',['../struct_screen_struct.html',1,'']]],
+  ['seed_5flcg',['seed_LCG',['../encryption_8c.html#a3e68a4744d0a6dde06c40fb0de7f9934',1,'encryption.c']]],
+  ['seedrandomlcg',['seedRandomLCG',['../encryption_8c.html#a8a94821ad58759f13c09539b5c935b7d',1,'encryption.c']]],
+  ['settings',['settings',['../graphics_menu_8h.html#a63775c0553a6f57aca7b67f7be477b75a791d9eb7befc60d57208c85043e99e2a',1,'graphicsMenu.h']]],
+  ['settingsmenutextures',['SettingsMenuTextures',['../graphics_menu_8h.html#afb70451940afd7a6d1917dd401c890c3',1,'graphicsMenu.h']]],
+  ['settingsoptions',['SettingsOptions',['../graphics_menu_8h.html#a3eeeb09e131f4a4b15cb7847cf18a929',1,'graphicsMenu.h']]],
+  ['settingstexturemanager',['settingsTextureManager',['../graphics_menu_8h.html#a297e70b1c616d2f762071c90690eb209',1,'graphicsMenu.h']]],
+  ['settingstexturesstruct',['SettingsTexturesStruct',['../struct_settings_textures_struct.html',1,'']]],
+  ['speed',['speed',['../cheats_8c.html#a218b4f7c6cc2681a99c23a3b089d68b1',1,'cheats.c']]],
+  ['srbendamod',['srbendaMod',['../struct_save_game_struct.html#afd7f72ae5a6a6bd2d16e9f96c2154359',1,'SaveGameStruct']]]
+];

@@ -2,26 +2,36 @@
 #ifndef _highscores_h_
 #define _highscores_h_
 
-// TODO: ovo treba da bude nesto smisleno
+/*!	\file highscores.h
+*	\brief Contains declarations and constants for highscore keeping
+*/
+
+/*!
+*	\brief Maximum name for player
+*/
 #define MAX_NAME 12
 
-// TODO: ovo treba da bude nesto smisleno
+/*!
+*	\brief Number of highscores saved
+*/
 #define MAX_HIGHSCORES 7
 
+/*!
+*	\brief struct which contains info needed for highscore (name and points)
+*/
 typedef struct HighscoreStruct {
-	int points;	// OVO JE BITNO
-	int pacDots;
-	int powerPellets;
-	int ghosts;
-	char name[MAX_NAME];	// OVO JE BITNO
+	int points;
+	char name[MAX_NAME];
 } Highscore;
+
+void makeDecoyHighscoreFiles();
 
 void makeGenericHighscores();
 
 void updateHighscores(Highscore newHighscore);
 
-void readHighscoresFromFile();
+void readHighscoresFromFiles();
 
-void writeHighscoresToFile();
+void writeHighscoresToFiles();
 
 #endif // !_highscores_h_

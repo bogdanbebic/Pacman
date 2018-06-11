@@ -1,0 +1,1 @@
+Nije highscore ovde, sacuvan je na boljem mestu

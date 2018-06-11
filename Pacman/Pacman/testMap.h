@@ -1,6 +1,11 @@
 #ifndef _testMap_h_
 #define _testMap_h_
 #include "gameMap.h"
+
+/*!	\file testMap.h
+*	\brief Contains map on which the game is played
+*/
+
 /*
 *	Test map 1:
 *	samo zidovi na krajevima mape
@@ -39,6 +44,9 @@ int pacDotCountTestMap2 = 12;
 #define MAP_HEIGHT 29
 #define MAP_WIDTH 28*/
 
+/*!
+*	\brief Map which is used for gameplay
+*/
 int map[HEIGHT_OF_MAP][WIDTH_OF_MAP] = {
 { WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL },
 { WALL, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, WALL, WALL, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, WALL },
@@ -71,5 +79,4 @@ int map[HEIGHT_OF_MAP][WIDTH_OF_MAP] = {
 { WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL },
 };
 
-//Ne ubrajam Power Pellete-e u broj dotova
 #endif // !_testMap_h_

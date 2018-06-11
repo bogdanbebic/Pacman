@@ -25,7 +25,7 @@
     <RootNamespace>Pacman</RootNamespace>
     <ProjectName>
     </ProjectName>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -153,7 +153,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AI_ghost.c" />
+    <ClCompile Include="cheats.c" />
+    <ClCompile Include="encryption.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="gameGraphics.c" />
     <ClCompile Include="ghosts.c" />
@@ -163,6 +164,8 @@
     <ClCompile Include="pauseMenuGraphics.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cheats.h" />
+    <ClInclude Include="encryption.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameGraphics.h" />
     <ClInclude Include="gameMap.h" />
@@ -171,8 +174,16 @@
     <ClInclude Include="highscores.h" />
     <ClInclude Include="pacStruct.h" />
     <ClInclude Include="pauseMenuGraphics.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="saveGame.h" />
     <ClInclude Include="testMap.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Pacman.rc" />
+    <ResourceCompile Include="resources.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Pictures\pacmanShortcut.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

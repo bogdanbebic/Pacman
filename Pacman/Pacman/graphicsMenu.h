@@ -1,6 +1,10 @@
 #ifndef _graphicsMenu_h_
 #define _graphicsMenu_h_
 
+/*!	\file graphicsMenu.h
+*	\brief Contains declarations and constants for menu and screen graphics
+*/
+
 #include <stdio.h>
 #include <Windows.h>
 #include <SDL.h>
@@ -11,6 +15,7 @@
 #include "game.h"
 #include "pauseMenuGraphics.h"
 #include "gameMap.h"
+#include "highscores.h"
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
@@ -19,9 +24,20 @@
 #define MAX_STRING_LINE 20
 #define NUMBER_OF_CHARACTERS ('Z')
 
+/*!
+*	\brief Enum containing all possible menu options
+*/
 enum MenuOptions { demoGame, newGame, continueGame, highscore, settings, credits, quitGame, numberOfMenuOptions };
 
-enum SettingsOptions {gameDifficulty, diffOption, music, numberOfSettingsOptions}; //dodace se jos vrednosti
+/*!
+*	\brief Enum containing all possible settings options
+*/
+enum SettingsOptions { gameDifficulty, diffOption, music, musicOption, numberOfSettingsOptions };
+
+/*!
+*	\brief Enum containing all possible music options
+*/
+enum YesOrNo { no, yes, numberOfMusicOptions };
 
 void gameInit();
 
@@ -31,26 +47,45 @@ void getScreenResolution(int *width, int *height);
 
 void initTexturesForMenu(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture ** PacmanTexture);
 
+void destroyMenuTextures(SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture ** PacmanTexture);
+
 void createHeading();
 
 void printMenu(enum menuOptions currentMenuOption, SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture * PacmanTexture);
 
 void initSettingsTextures();
 
+void destroySettingsTextures();
+
 void createSettingsHeading();
 
-void activateSettings(enum DifficultySpeed * currentDifficulty);
+void activateSettings(enum DifficultySpeed * currentDifficulty, enum YesNo * currentMusicOption);
 
-void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed currentDifficulty, enum DifficultySpeed hoveringDiff);
+void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed currentDifficulty, enum DifficultySpeed hoveringDiff, enum YesNo currentMusicOption, enum YesNo hoveringMusicOption);
 
 void initEndGameTextures();
+
+void destroyEndGameTextures();
 
 void endGameScreen();
 
 void initFinalScoreTextures();
 
+void destroyFinalScoreTextures();
+
 void finalScoreScreen(int currScore, char * name, int *nameSave);
 
+void createHighScoreHeading();
+
+void printHighScore();
+
+void createCreditsHeading();
+
+void printCredits();
+
+/*!
+*	\brief Struct containing needed variables for settings textures
+*/
 typedef struct SettingsTexturesStruct {
 	SDL_Texture * whiteTextures[numberOfSettingsOptions];
 	SDL_Texture * yellowTextures[numberOfSettingsOptions];
@@ -58,24 +93,43 @@ typedef struct SettingsTexturesStruct {
 	SDL_Texture * yellowDifficulty[NUMBER_OF_DIFFICULTIES];
 	SDL_Texture * whiteFilledDiff[NUMBER_OF_DIFFICULTIES];
 	SDL_Texture * yellowFilledDiff[NUMBER_OF_DIFFICULTIES];
+	SDL_Texture * yesNoWhite[numberOfMusicOptions];
+	SDL_Texture * yesNoYellow[numberOfMusicOptions];
+	SDL_Texture * yesNoWhiteFilled[numberOfMusicOptions];
+	SDL_Texture * yesNoYellowFilled[numberOfMusicOptions];
 	SDL_Texture * pacmanTexture;
 }SettingsMenuTextures;
 
+/*!
+*	\brief Struct containing needed variables for end game textures
+*/
 typedef struct EndGameTextureStruct {
 	SDL_Texture * gameOverTexture;
 	SDL_Texture * pressAnyButtonTexture;
 }EndGameTextures;
 
+/*!
+*	\brief Struct containing needed variables for final score textures
+*/
 typedef struct finalScoreTexturesStruct {
 	SDL_Texture * typeInYourNameTexture;
 	SDL_Texture * characterTextures[NUMBER_OF_CHARACTERS];
 	SDL_Texture * blankTexture;
 }FinalScoreTextures;
 
+/*!
+*	\brief Global variable which contains settings menu textures information
+*/
 SettingsMenuTextures settingsTextureManager;
 
+/*!
+*	\brief Global variable which contains end game textures information
+*/
 EndGameTextures endGameTextureManager;
 
+/*!
+*	\brief Global variable which contains final score textures information
+*/
 FinalScoreTextures finalScoreTextureManager;
 
 #endif
