@@ -451,7 +451,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 	int isPacmanEaten = 0;
 	int nameSave;
 	pacDotCount = countPacDots(map); // Power Pellets are not counted as pacDots!!!
-	int lastMovingTimerTick;
+	int lastMovingTimerTick = 0;
 	enum direction lastPacmanDirection = DIRECTION_RIGHT;
 
 	switch (gameType) {
