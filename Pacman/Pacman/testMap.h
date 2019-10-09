@@ -3,14 +3,14 @@
 #include "gameMap.h"
 
 /*!	\file testMap.h
-*	\brief Contains map on which the game is played
-*/
+ *	\brief Contains map on which the game is played
+ */
 
 /*
-*	Test map 1:
-*	samo zidovi na krajevima mape
-*	ostatak mape prazan
-*/
+ *	Test map 1:
+ *	samo zidovi na krajevima mape
+ *	ostatak mape prazan
+ */
 int testMap1[HEIGHT_OF_MAP][WIDTH_OF_MAP] = { { WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL },
 { WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL,  WALL },
 { WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL,  WALL },
@@ -24,11 +24,11 @@ int testMap1[HEIGHT_OF_MAP][WIDTH_OF_MAP] = { { WALL, WALL, WALL, WALL, WALL, WA
 int pacDotCountTestMap1 = 0;
 
 /*
-*	Test map 2:
-*	samo zidovi na krajevima mape
-*	u prvoj nezid vrsti PAC_DOT-ovi
-*	ostatak mape prazan
-*/
+ *	Test map 2:
+ *	samo zidovi na krajevima mape
+ *	u prvoj nezid vrsti PAC_DOT-ovi
+ *	ostatak mape prazan
+ */
 int testMap2[HEIGHT_OF_MAP][WIDTH_OF_MAP] = { { WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL },
 { WALL, POWER_PELLET, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, POWER_PELLET,  WALL },
 { WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL, NO_WALL,  WALL },
@@ -45,8 +45,8 @@ int pacDotCountTestMap2 = 12;
 #define MAP_WIDTH 28*/
 
 /*!
-*	\brief Map which is used for gameplay
-*/
+ *	\brief Map which is used for gameplay
+ */
 int map[HEIGHT_OF_MAP][WIDTH_OF_MAP] = {
 { WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL, WALL },
 { WALL, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, WALL, WALL, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, PAC_DOT, WALL },

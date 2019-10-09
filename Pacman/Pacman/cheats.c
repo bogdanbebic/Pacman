@@ -7,47 +7,20 @@
 
 /* !!!!!!!!!! CHEAT CODES MUST BE LESS THAN 15 STRLEN !!!!!!!!!! */
 
-/*!
-*	\brief if != 0 then pacman can be at the same spot as a ghost
-*/
 int immortalityCheat;
 
-/*!
-*	\brief immortality activation string
-*/
 char immortality[] = "baguvix";
 
-
-/*!
-*	\brief if != 0 then pacman gets an extra life
-*/
 int extraLifeCheat;
 
-/*!
-*	\brief extra life activation string
-*/
 char extraLife[] = "hesoyam";
 
-
-/*!
-*	\brief if != 0 then controls are inverted
-*/
 int drunkCheat;
 
-/*!
-*	\brief drunk activation string
-*/
 char drunk[] = "elektrijada";
 
-
-/*!
-*	\brief if != 0 then pacman is not shown on map
-*/
 int invisibilityCheat;
 
-/*!
-*	\brief invisibility activation string
-*/
 char invisibility[] = "mcstojan";
 
 
@@ -67,25 +40,12 @@ int increaseSpeedCheat;
 char increaseSpeed[] = "acalukas";
 
 
-/*!
-*	\brief if != 0 then pacman can go through walls
-*/
 int throughTheWallCheat;
 
-/*!
-*	\brief through the wall activation string
-*/
 char throughTheWall[] = "ekvzid";
 
-
-/*!
-*	\brief if != 0 then power pellet effect lasts until ghost is eaten
-*/
 int infinityReverseCheat;
 
-/*!
-*	\brief infinity reverse activation string
-*/
 char infinityReverse[] = "rasta";
 
 /*!
@@ -93,10 +53,6 @@ char infinityReverse[] = "rasta";
 */
 #define TOGGLE_CHEAT(x) ((x) = (x) == 1 ? 0 : 1)
 
-/*!
-*	\brief Toggles cheat if argument is a cheat
-*	\param cheat string which was typed in
-*/
 void toggleIfCheat(char cheat[]) {
 	if (strcmp(cheat, immortality) == 0) {
 		TOGGLE_CHEAT(immortalityCheat);

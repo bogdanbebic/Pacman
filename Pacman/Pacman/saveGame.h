@@ -3,16 +3,16 @@
 #define _saveGame_h_
 
 /*!	\file saveGame.h
-*	\brief Contains save game struct
-*/
+ *	\brief Contains save game struct
+ */
 
 #include "pacStruct.h"
 #include "highscores.h"
 #include "gameMap.h"
 
 /*!
-*	\brief struct which contains info about in game data
-*/
+ *	\brief struct which contains info about in game data
+ */
 typedef struct SaveGameStruct {
 	enum DifficultySpeed difficulty;
 	int delay;
