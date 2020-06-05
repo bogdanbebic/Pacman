@@ -7,8 +7,8 @@
 #include <string.h>
 
 /*!	\file gameGraphics.c
-*	\brief Contains graphics functions definitions needed for gameplay
-*/
+ *	\brief Contains graphics functions definitions needed for gameplay
+ */
 
 static SDL_Surface* surface[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 static SDL_Texture *tile[HEIGHT_OF_MAP][WIDTH_OF_MAP];
@@ -16,9 +16,6 @@ static SDL_Rect tile_rect[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 SDL_Texture* ScoreBoxTexture, *LivesBoxTexture;
 extern GameTextures gameTexturesManager;
 
-/*!
-*	\brief Initializes all game textures
-*/
 void initGameTextures() {
 	int i, j;
 	SDL_Surface * PacSurface, *TempSurface;
@@ -181,9 +178,6 @@ void initGameTextures() {
 	return;
 }
 
-/*!
-*	\brief Destroys all game textures
-*/
 void destroyGameTextures() {
 	int i;
 	for (i = 0; i < NUMBER_OF_DIRECTIONS; i++) {	
@@ -206,10 +200,10 @@ void destroyGameTextures() {
 }
 
 /*!
-*	\brief Gets old position of pacStruct
-*	\param pacStruct PacStruct containing current position
-*	\return PacStruct with old postition
-*/
+ *	\brief Gets old position of pacStruct
+ *	\param pacStruct PacStruct containing current position
+ *	\return PacStruct with old postition
+ */
 static PacStruct getOldPacPosition(PacStruct pacStruct) {
 	PacStruct oldPosition;
 
@@ -239,10 +233,6 @@ static PacStruct getOldPacPosition(PacStruct pacStruct) {
 	return oldPosition;
 }
 
-/*!
-*	\brief Updates GUI level box in the game screen
-*	\param level number which will be printed on screen as level
-*/
 void updateLevelBox(int level) {
 	extern Game game;
 	int i = 0, j = 0, bufferArray[NUMBER_OF_LVL_DIGITS] = { 0 };
@@ -264,10 +254,6 @@ void updateLevelBox(int level) {
 	
 }
 
-/*!
-*	\brief Updates the score box in the game screen
-*	\param currentScore number which will be printed on screen as current score
-*/
 void updateScoreBox(Highscore currentScore) {
 	extern Game game;
 	int i = 0, j = 0, bufferArray[NUMBER_OF_DIGITS] = {0};
@@ -286,12 +272,6 @@ void updateScoreBox(Highscore currentScore) {
 	return;
 }
 
-/*!
-*	\brief Updates the Pacman lives box in the game screen according to the argument livesCount
-*	\param map map on which the game s played
-*	\param numberOfLivesTiles number of tiles which are on the game screen for lives
-*	\param livesCount number of lives pacman has left
-*/
 void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles, int livesCount) {
 	SDL_Rect LivesBoxRect;
 	extern Game game;
@@ -310,13 +290,6 @@ void updateLivesBox(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], int numberOfLivesTiles
 	return;
 }
 
-/*!
-*	\brief Prints argument map and pacman on the game screen
-*	\param map map on which the game s played
-*	\param pacman PacStruct containing info about pacman
-*	\param srbendaMod contains info about whether srbendaMod is active ( != 0 )
-*	\param newLevel contains info about wheter now a new level should be printed
-*/
 void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int srbendaMod, int newLevel) {
 	int i, j;
 	TTF_Font *font = TTF_OpenFont("impact.ttf", 46);
@@ -372,13 +345,6 @@ void printInitMap(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int sr
 	return;
 }
 
-/*!
-*	\brief Updates arguments map and pacman according to its values and values of arguments delay and timer_tick
-*	\param map map on which the game s played
-*	\param pacman PacStruct containing info about pacman
-*	\param timer_tick clock timer for game loop
-*	\param srbendaMod contains info about whether srbendaMod is active ( != 0 )
-*/
 void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int timer_tick, int srbendaMod) {
 	extern Game game;
 	PacStruct oldPosition = getOldPacPosition(pacman);
@@ -420,16 +386,6 @@ void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int ti
 	return;
 }
 
-/*!
-*	\brief Updates arguments map and ghosts according to their values and values of arguments delay and timer_tick
-*	\param map map on which the game s played
-*	\param ghosts PacStruct array containing info about ghosts
-*	\param timer_tick clock timer for game loop
-*	\param srbendaMod contains info about whether srbendaMod is active ( != 0 )
-*	\param pacman PacStruct which contains info about pacman
-*	\param lastPacmanDirection contains the last direction of Pacman, that wasn't none
-*	\param lastMovingTimerTick contains the last tick in which Pacman was moving
-*/
 void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_OF_GHOSTS], int timer_tick, int srbendaMod, PacStruct pacman, enum direction lastPacmanDirection, int lastMovingTimerTick) {
 	int i;
 	extern Game game;

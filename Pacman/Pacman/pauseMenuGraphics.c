@@ -2,14 +2,11 @@
 #include "cheats.h"
 
 /*! \file pauseMenuGraphics.c
-*	\brief Contains function definitions needed for graphics of in game pause menu
-*/
+ *	\brief Contains function definitions needed for graphics of in game pause menu
+ */
 
 extern PauseMenuTextures pauseMenuTextureManager;
 
-/*!
-*	\brief Initializes the textures for pause menu
-*/
 void initPauseMenuTextures() {
 	SDL_Surface * tempSurfaceWhite, *tempSurfaceYellow;
 	enum PauseMenuOptions pauseMenuOption;
@@ -47,8 +44,8 @@ void initPauseMenuTextures() {
 }
 
 /*!
-*	\brief Creates a heading for pause menu
-*/
+ *	\brief Creates a heading for pause menu
+ */
 void createPauseHeading() {
 	SDL_Surface *HeadingSurface;
 	SDL_Texture *HeadingTexture;
@@ -69,9 +66,9 @@ void createPauseHeading() {
 }
 
 /*!
-*	\brief Prints the pause menu
-*	\param currentOption option which is currently highlighted
-*/
+ *	\brief Prints the pause menu
+ *	\param currentOption option which is currently highlighted
+ */
 void printPauseMenu(enum PauseMenuOptions currentOption) {
 	SDL_Rect menuRect, pacmanRect;
 	enum PauseMenuOptions menuOption;
@@ -98,14 +95,6 @@ void printPauseMenu(enum PauseMenuOptions currentOption) {
 	return;
 }
 
-/*!	\brief Activates pause menu
-*
-*	Activates pause menu on the game screen by
-*	handling all the user related input in the
-*	menu itself and prints the newly activated menu
-*   on the game screen
-*	\param difficulty difficulty of the game
-*/
 enum PauseMenuOptions ActivatePauseMenu(int difficulty) { // STA CE NAM DIFFICULTY ZA PARAMETAR OVDE
 	int activePauseMenu = 1, currPos = 0;
 	char cheat[MAX_CHEAT];
@@ -182,9 +171,6 @@ enum PauseMenuOptions ActivatePauseMenu(int difficulty) { // STA CE NAM DIFFICUL
 	activePauseMenu = 0;
 }
 
-/*
-*	\brief Destroys all the textures used in the pause menu
-*/
 void destroyPauseMenuTextures() {
 	enum PauseMenuOptions pauseMenuOption;
 

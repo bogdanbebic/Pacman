@@ -41,9 +41,6 @@ unsigned int seed_for_random[] = { 123555U, 212345U, 654321U, 987456U, 154826U }
 */
 Highscore highscores[MAX_HIGHSCORES];
 
-/*!
-*	\brief Makes decoy highscore files with the purpose of fooling Marko Misic
-*/
 void makeDecoyHighscoreFiles() {
 	FILE *notAhighscoreFile;
 
@@ -83,9 +80,6 @@ void makeDecoyHighscoreFiles() {
 	return;
 }
 
-/*!
-*	\brief Initializes highscores array with generic highscores
-*/
 void makeGenericHighscores() {
 	extern Highscore highscores[MAX_HIGHSCORES];
 	const char genericName[] = "Anonymous";
@@ -100,10 +94,6 @@ void makeGenericHighscores() {
 	return;
 }
 
-/*!
-*	\brief Updates highscores array if neccesary
-*	\param newHighscore highscore which is added to highscores if points are greater
-*/
 void updateHighscores(Highscore newHighscore) {
 	extern Highscore highscores[MAX_HIGHSCORES];
 	int i;
@@ -130,35 +120,35 @@ void updateHighscores(Highscore newHighscore) {
 }
 
 /*!
-*	\brief Number of files in which highscores are kept
-*/
+ *	\brief Number of files in which highscores are kept
+ */
 #define NUMBER_OF_FILES 5
 
 #define BITS_IN_BYTE 8
 
 /*!
-*	\brief Size of unsigned int buffer for reading/writing from/to highscores file
-*/
+ *	\brief Size of unsigned int buffer for reading/writing from/to highscores file
+ */
 #define SIZE_OF_BUFFER ((MAX_HIGHSCORES * sizeof(Highscore) + sizeof(unsigned int) - 1) / sizeof(unsigned int))
 
 /*!
-*	\brief Buffer for reading/writing data from/to highscores file
-*/
+ *	\brief Buffer for reading/writing data from/to highscores file
+ */
 unsigned int bufferInt[NUMBER_OF_FILES][SIZE_OF_BUFFER];
 
 /*!
-*	\brief Buffer for reading/writing prefix sums from/to highscores file
-*/
+ *	\brief Buffer for reading/writing prefix sums from/to highscores file
+ */
 unsigned int prefixSumsBuffer[SIZE_OF_BUFFER];
 
 /*!
-*	\brief Reads highscores array from one file
-*	\param filePath defines name of file
-*	\param L_filePath defines name of file for hiding
-*	\param encryptionSeed seed used for random generator used in encryption
-*	\param indexOfFile Represents index of file to be read
-*	\return Returns 1 if opened file != NULL, 0 if file was not opened
-*/
+ *	\brief Reads highscores array from one file
+ *	\param filePath defines name of file
+ *	\param L_filePath defines name of file for hiding
+ *	\param encryptionSeed seed used for random generator used in encryption
+ *	\param indexOfFile Represents index of file to be read
+ *	\return Returns 1 if opened file != NULL, 0 if file was not opened
+ */
 static int readHighscoresFromFile(char *filePath, LPCWSTR L_filePath, unsigned int encryptionSeed, int indexOfFile) {
 	extern unsigned int bufferInt[NUMBER_OF_FILES][SIZE_OF_BUFFER];
 	extern unsigned int prefixSumsBuffer[SIZE_OF_BUFFER];
@@ -197,9 +187,6 @@ static int readHighscoresFromFile(char *filePath, LPCWSTR L_filePath, unsigned i
 	}
 }
 
-/*!
-*	\brief Reads highscores array from files
-*/
 void readHighscoresFromFiles() {
 	extern Highscore highscores[MAX_HIGHSCORES];
 	extern unsigned int bufferInt[NUMBER_OF_FILES][SIZE_OF_BUFFER];
@@ -258,11 +245,11 @@ void readHighscoresFromFiles() {
 }
 
 /*!
-*	\brief Encrypts highscores array and writes it to file
-*	\param filePath defines name of file
-*	\param L_filePath defines name of file for hiding
-*	\param encryptionSeed seed used for random generator used in encryption of data
-*/
+ *	\brief Encrypts highscores array and writes it to file
+ *	\param filePath defines name of file
+ *	\param L_filePath defines name of file for hiding
+ *	\param encryptionSeed seed used for random generator used in encryption of data
+ */
 static void writeHighscoresToFile(char *filePath, LPCWSTR L_filePath, unsigned int encryptionSeed) {
 	extern Highscore highscores[MAX_HIGHSCORES];
 	FILE *highscoresFile;
@@ -307,9 +294,6 @@ static void writeHighscoresToFile(char *filePath, LPCWSTR L_filePath, unsigned i
 	return;
 }
 
-/*!
-*	\brief Writes highscores to 5 files using the function writeHighscoresToFile
-*/
 void writeHighscoresToFiles() {
 	writeHighscoresToFile(FILE_1, L_FILE_1, seed_for_random[0]);
 	writeHighscoresToFile(FILE_2, L_FILE_2, seed_for_random[1]);
