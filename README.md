@@ -8,3 +8,4 @@ Documentation is doxygen generated and can be found [here](https://bogdanbebic.g
 ## Contributors
 - [MinnieMs](https://github.com/MinnieMS)
 - [UrosKrstic](https://github.com/UrosKrstic)
+- Mentor [lukicNIK](https://github.com/lukicNIK)
