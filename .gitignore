@@ -387,3 +387,11 @@ Doxyfile.bak
 
 # shortcut
 Pacman.exe.lnk
+
+# .hsc files
+*.hsc
+Pacman/Pacman/SDL2/SDL_Event.dll
+Pacman/Pacman/SDL2/SDL2_init_test.lib
+Pacman/Pacman/SDL2_ttf/zlib2.dll
+Pacman/Pacman/SDL2_ttf/TTF_Texture.lib
+Pacman/Pacman/SDL2_ttf/libfreetype_x.dll
