@@ -1,1 +1,0 @@
-Nije ni ovde highscore, ali sigurno ste mislili da ste nasli :P
