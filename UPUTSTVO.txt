@@ -1,7 +1,0 @@
-SDK ne radi lepo na svim platformama,
-pa se mora namestiti, jer nemamo svi iste verzije 
-za nase kompove.
-
-Moramo da ih namestimo tako da rade lepo.
-
-Pacman property pages/Configuration Properties/General/Windows SDK Version

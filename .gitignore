@@ -384,3 +384,6 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 Doxyfile.bak
+
+# shortcut
+Pacman.exe.lnk
