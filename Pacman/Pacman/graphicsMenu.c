@@ -155,7 +155,7 @@ void createHeading() {
 	SDL_DestroyTexture(HeadingTexture);
 }
 
-void printMenu(enum menuOptions currentMenuOption, SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture * PacmanTexture) {
+void printMenu(enum MenuOptions currentMenuOption, SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture * PacmanTexture) {
 	SDL_Rect menuRect, pacmanRect;
 	enum MenuOptions menuOption;
 
@@ -336,7 +336,7 @@ void destroySettingsTextures() {
 
 }
 
-void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed currentDifficulty, enum DifficultySpeed hoveringDiff, enum YesNo currentMusicOption, enum YesNo hoveringMusicOption) {
+void printSettings(enum SettingsOptions currentMenuOption, enum DifficultySpeed currentDifficulty, enum DifficultySpeed hoveringDiff, enum YesNo currentMusicOption, enum YesNo hoveringMusicOption) {
 	extern Game game;
 	extern SettingsMenuTextures settingsTextureManager;
 	SDL_Rect menuRect, pacmanRect, diffRect;

@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 
 	int isGameCreated = 0;
 	enum MenuOptions menuOption = 1;	// Ovo je za izbor u meniju
-	enum DifficulySpeed difficulty = MEDIUM;
+	enum DifficultySpeed difficulty = MEDIUM;
 	enum YesNo isMusicOn = yes;
 
 	Highscore newHighscore;
