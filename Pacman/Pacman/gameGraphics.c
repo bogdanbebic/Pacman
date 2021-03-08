@@ -386,7 +386,7 @@ void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int ti
 	return;
 }
 
-void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_OF_GHOSTS], int timer_tick, int srbendaMod, PacStruct pacman, enum direction lastPacmanDirection, int lastMovingTimerTick) {
+void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_OF_GHOSTS], int timer_tick, int srbendaMod, PacStruct pacman, enum Direction lastPacmanDirection, int lastMovingTimerTick) {
 	int i;
 	extern Game game;
 	PacStruct oldPositionGhost;

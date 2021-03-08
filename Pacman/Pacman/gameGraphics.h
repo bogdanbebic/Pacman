@@ -76,6 +76,6 @@ void updatePacman(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct pacman, int ti
  *	\param lastPacmanDirection contains the last direction of Pacman, that wasn't none
  *	\param lastMovingTimerTick contains the last tick in which Pacman was moving
  */
-void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_OF_GHOSTS], int timer_tick, int srbendaMod, PacStruct pacman, enum direction lastPacmanDirection, int lastMovingTimerTick);
+void updateGhosts(int map[HEIGHT_OF_MAP][WIDTH_OF_MAP], PacStruct ghosts[NUMBER_OF_GHOSTS], int timer_tick, int srbendaMod, PacStruct pacman, enum Direction lastPacmanDirection, int lastMovingTimerTick);
 
 #endif

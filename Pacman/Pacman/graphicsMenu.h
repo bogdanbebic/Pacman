@@ -34,7 +34,7 @@ enum SettingsOptions { gameDifficulty, diffOption, music, musicOption, numberOfS
 /*!
 *	\brief Enum containing all possible music options
 */
-enum YesOrNo { no, yes, numberOfMusicOptions };
+enum YesNo { no, yes, numberOfMusicOptions };
 
 /*!
  *	\brief Initializes the game and everything needed for it
@@ -84,7 +84,7 @@ void createHeading();
  *	\param menuTextureYellow SDL texture which contains yellow texture for menu
  *	\param PacmanTexture SDL texture which contains pacman texture for menu
  */
-void printMenu(enum menuOptions currentMenuOption, SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture * PacmanTexture);
+void printMenu(enum MenuOptions currentMenuOption, SDL_Texture * menuTextureWhite[], SDL_Texture * menuTextureYellow[], SDL_Texture * PacmanTexture);
 
 /*!
  *	\brief Initializes the textures for settings
@@ -125,7 +125,7 @@ void activateSettings(enum DifficultySpeed * currentDifficulty, enum YesNo * cur
  *	\param currentMusicOption indicates which music option is on
  *	\param hoveringMusicOption indicates which music option is highlighted
  */
-void printSettings(enum settingsOptions currentMenuOption, enum DifficultySpeed currentDifficulty, enum DifficultySpeed hoveringDiff, enum YesNo currentMusicOption, enum YesNo hoveringMusicOption);
+void printSettings(enum SettingsOptions currentMenuOption, enum DifficultySpeed currentDifficulty, enum DifficultySpeed hoveringDiff, enum YesNo currentMusicOption, enum YesNo hoveringMusicOption);
 
 /*!
  *	\brief Initializes the textures for end game screen
