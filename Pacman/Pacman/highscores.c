@@ -1,6 +1,9 @@
 #include "highscores.h"
 #include <stdio.h>
+#include <string.h>
+#ifdef _WIN32
 #include <Windows.h>
+#endif
 #include <time.h>
 #include "encryption.h"
 
@@ -18,11 +21,13 @@
 #define FILE_4 "SDL2_ttf/TTF_Texture.lib"
 #define FILE_5 "SDL2_ttf/libfreetype_x.dll"
 
+#ifdef _WIN32
 #define L_FILE_1 L"SDL2/SDL_Event.dll"
 #define L_FILE_2 L"SDL2/SDL2_init_test.lib"
 #define L_FILE_3 L"SDL2_ttf/zlib2.dll"
 #define L_FILE_4 L"SDL2_ttf/TTF_Texture.lib"
 #define L_FILE_5 L"SDL2_ttf/libfreetype_x.dll"
+#endif
 
 #define DECOY_1 "highscores1.hsc"
 #define DECOY_2 "highscores2.hsc"
@@ -48,31 +53,31 @@ void makeDecoyHighscoreFiles() {
 	char s0[] = "Pa nije ovde highscore, bukvalno pise u imenu fajla";
 	char s1[] = "Nije ni ovde highscore, ali sigurno ste mislili da ste nasli :P";
 
-	fopen_s(&notAhighscoreFile, DECOY_1, "wb");
+	notAhighscoreFile = fopen(DECOY_1, "wb");
 	if (notAhighscoreFile != NULL) {
 		fwrite(s, sizeof(char), sizeof(s) / sizeof(char) - 1, notAhighscoreFile);
 		fclose(notAhighscoreFile);
 	}
 
-	fopen_s(&notAhighscoreFile, DECOY_2, "wb");
+	notAhighscoreFile = fopen(DECOY_2, "wb");
 	if (notAhighscoreFile != NULL) {
 		fwrite(s, sizeof(char), sizeof(s) / sizeof(char) - 1, notAhighscoreFile);
 		fclose(notAhighscoreFile);
 	}
 
-	fopen_s(&notAhighscoreFile, DECOY_3, "wb");
+	notAhighscoreFile = fopen(DECOY_3, "wb");
 	if (notAhighscoreFile != NULL) {
 		fwrite(s, sizeof(char), sizeof(s) / sizeof(char) - 1, notAhighscoreFile);
 		fclose(notAhighscoreFile);
 	}
 
-	fopen_s(&notAhighscoreFile, DECOY_4, "wb");
+	notAhighscoreFile = fopen(DECOY_4, "wb");
 	if (notAhighscoreFile != NULL) {
 		fwrite(s0, sizeof(char), sizeof(s0) / sizeof(char) - 1, notAhighscoreFile);
 		fclose(notAhighscoreFile);
 	}
 
-	fopen_s(&notAhighscoreFile, DECOY_5, "wb");
+	notAhighscoreFile = fopen(DECOY_5, "wb");
 	if (notAhighscoreFile != NULL) {
 		fwrite(s1, sizeof(char), sizeof(s1) / sizeof(char) - 1, notAhighscoreFile);
 		fclose(notAhighscoreFile);
@@ -149,15 +154,24 @@ unsigned int prefixSumsBuffer[SIZE_OF_BUFFER];
  *	\param indexOfFile Represents index of file to be read
  *	\return Returns 1 if opened file != NULL, 0 if file was not opened
  */
-static int readHighscoresFromFile(char *filePath, LPCWSTR L_filePath, unsigned int encryptionSeed, int indexOfFile) {
+static int readHighscoresFromFile(
+	char *filePath,
+#ifdef _WIN32
+	LPCWSTR L_filePath,
+#endif
+	unsigned int encryptionSeed,
+	int indexOfFile
+) {
 	extern unsigned int bufferInt[NUMBER_OF_FILES][SIZE_OF_BUFFER];
 	extern unsigned int prefixSumsBuffer[SIZE_OF_BUFFER];
 	FILE *highscoresFile;
 	unsigned int i;
 	unsigned int deletions = 0;
 
+#ifdef _WIN32
 	SetFileAttributes(L_filePath, FILE_ATTRIBUTE_NORMAL);
-	fopen_s(&highscoresFile, filePath, "rb");
+#endif
+	highscoresFile = fopen(filePath, "rb");
 	if (highscoresFile != NULL) {
 		seedRandomLCG(encryptionSeed);
 		for (i = 0; i < 2 * SIZE_OF_BUFFER - deletions; ) {
@@ -195,12 +209,20 @@ void readHighscoresFromFiles() {
 	int numberOfOpenedFiles = 0;
 	int isHighscoresUnrecoverable = 0;
 	int currentElem, numberOfSameElems;
-	
+
+#ifdef _WIN32
 	flag[0] = readHighscoresFromFile(FILE_1, L_FILE_1, seed_for_random[0], 0);
 	flag[1] = readHighscoresFromFile(FILE_2, L_FILE_2, seed_for_random[1], 1);
 	flag[2] = readHighscoresFromFile(FILE_3, L_FILE_3, seed_for_random[2], 2);
 	flag[3] = readHighscoresFromFile(FILE_4, L_FILE_4, seed_for_random[3], 3);
 	flag[4] = readHighscoresFromFile(FILE_5, L_FILE_5, seed_for_random[4], 4);
+#else
+	flag[0] = readHighscoresFromFile(FILE_1, seed_for_random[0], 0);
+	flag[1] = readHighscoresFromFile(FILE_2, seed_for_random[1], 1);
+	flag[2] = readHighscoresFromFile(FILE_3, seed_for_random[2], 2);
+	flag[3] = readHighscoresFromFile(FILE_4, seed_for_random[3], 3);
+	flag[4] = readHighscoresFromFile(FILE_5, seed_for_random[4], 4);
+#endif
 
 	for (i = 0; i < NUMBER_OF_FILES; numberOfOpenedFiles += flag[i++]);
 
@@ -250,7 +272,13 @@ void readHighscoresFromFiles() {
  *	\param L_filePath defines name of file for hiding
  *	\param encryptionSeed seed used for random generator used in encryption of data
  */
-static void writeHighscoresToFile(char *filePath, LPCWSTR L_filePath, unsigned int encryptionSeed) {
+static void writeHighscoresToFile(
+	char *filePath,
+#ifdef _WIN32
+	LPCWSTR L_filePath,
+#endif
+	unsigned int encryptionSeed
+) {
 	extern Highscore highscores[MAX_HIGHSCORES];
 	FILE *highscoresFile;
 	int i;
@@ -280,7 +308,7 @@ static void writeHighscoresToFile(char *filePath, LPCWSTR L_filePath, unsigned i
 	
 	encrypt(bufferInt[0], sizeof(bufferInt[0]) / sizeof(int));
 
-	fopen_s(&highscoresFile, filePath, "wb");
+	highscoresFile = fopen(filePath, "wb");
 	if (highscoresFile != NULL) {
 		for (i = 0; i < SIZE_OF_BUFFER; i++) {
 			fwrite(&prefixSumsBuffer[i], sizeof(prefixSumsBuffer[i]), 1, highscoresFile);
@@ -289,16 +317,26 @@ static void writeHighscoresToFile(char *filePath, LPCWSTR L_filePath, unsigned i
 		
 		fclose(highscoresFile);
 
+#ifdef _WIN32
 		SetFileAttributes(L_filePath, FILE_ATTRIBUTE_HIDDEN);
+#endif
 	}
 	return;
 }
 
 void writeHighscoresToFiles() {
+#ifdef _WIN32
 	writeHighscoresToFile(FILE_1, L_FILE_1, seed_for_random[0]);
 	writeHighscoresToFile(FILE_2, L_FILE_2, seed_for_random[1]);
 	writeHighscoresToFile(FILE_3, L_FILE_3, seed_for_random[2]);
 	writeHighscoresToFile(FILE_4, L_FILE_4, seed_for_random[3]);
 	writeHighscoresToFile(FILE_5, L_FILE_5, seed_for_random[4]);
+#else
+	writeHighscoresToFile(FILE_1, seed_for_random[0]);
+	writeHighscoresToFile(FILE_2, seed_for_random[1]);
+	writeHighscoresToFile(FILE_3, seed_for_random[2]);
+	writeHighscoresToFile(FILE_4, seed_for_random[3]);
+	writeHighscoresToFile(FILE_5, seed_for_random[4]);
+#endif
 	return;
 }
