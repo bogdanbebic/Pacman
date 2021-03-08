@@ -88,7 +88,7 @@ void initNewGame(enum DifficultySpeed difficulty, int *delay, int *level, int *l
 *	\param isMusicOn 1 if true, otherwise 0
 *	\return currentScore is the score that the player has accumulated in the game
 */
-Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum YesNo isMusicOn);
+Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, int isMusicOn);
 
 /*!
 *	\brief Initializes starting ghosts positions on map
