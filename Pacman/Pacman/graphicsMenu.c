@@ -672,8 +672,8 @@ void finalScoreScreen(int currScore, char * name, int * nameSave) {
 	SDL_Color white = { 255, 255, 255 };
 	char buffer[10], string[50] = "YOUR FINAL SCORE IS: ";
 
-	_itoa_s(currScore, buffer, 10, 10);
-	strcat_s(string, 50, buffer);
+	sprintf(buffer, "%d", currScore);
+	strcat(string, buffer);
 	surface = TTF_RenderText_Solid(font, string, white);
 	tex = SDL_CreateTextureFromSurface(game.screen.renderer, surface);
 	SDL_FreeSurface(surface);
@@ -788,17 +788,17 @@ void printHighScore() {
 
 	for (i = 0; i < MAX_HIGHSCORES; i++) {
 		j = i + 1;
-		_itoa_s(j, buffer, 40, 10);
-		strcat_s(buffer, 40, string);
-		_itoa_s(highscores[i].points, buffer1, 40, 10);
+		sprintf(buffer, "%d", j);
+		strcat(buffer, string);
+		sprintf(buffer1, "%d", highscores[i].points);
 
 		//highscores[i].name[12] = '\0';
 
-		strcpy_s(temp, 60, highscores[i].name);
-		strcat_s(temp, 60, whiteSpace);
-		strcpy_s(temp2, 40, buffer);
-		strcat_s(temp, 60, buffer1);
-		strcat_s(temp2, 40, temp);
+		strcpy(temp, highscores[i].name);
+		strcat(temp, whiteSpace);
+		strcpy(temp2, buffer);
+		strcat(temp, buffer1);
+		strcat(temp2, temp);
 
 		surface = TTF_RenderText_Solid(font, temp2, white);
 		texture = SDL_CreateTextureFromSurface(game.screen.renderer, surface);

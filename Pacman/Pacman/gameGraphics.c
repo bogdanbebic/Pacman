@@ -152,7 +152,7 @@ void initGameTextures() {
 		gameTexturesManager.scoreDigitRect[i].y = 0;
 		gameTexturesManager.scoreDigitRect[i].w = 2 * game.screen.width / (WIDTH_OF_MAP * 9);
 		gameTexturesManager.scoreDigitRect[i].h = 2 * game.screen.height / (HEIGHT_OF_MAP * 2);
-		_itoa_s(i, buffer, sizeof(buffer), 10);
+		sprintf(buffer, "%d", i);
 		TempSurface = TTF_RenderText_Solid(font, buffer, yellow);
 		gameTexturesManager.scoreDigitTextures[i] = SDL_CreateTextureFromSurface(game.screen.renderer, TempSurface);
 		SDL_FreeSurface(TempSurface);
