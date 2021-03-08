@@ -3,7 +3,10 @@
 #include "pauseMenuGraphics.h"
 #include "saveGame.h"
 #include "cheats.h"
+#ifdef _WIN32
+// TODO: delete when PlaySound gets ported to SDL function
 #include <Windows.h>
+#endif
 
 /*!	\file game.c
 *	\brief Contains game playing, initializing, saving function definitions
@@ -364,9 +367,11 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 		initContinueGame(&difficulty, &delay, &level, &livesCount, &currentScore, &isStartOfNewGame, &home, &pacDotCount, &timer_tick, &timer_tick_POWER_PELLET, &isPowerPelletEaten);
 		srbendaMod = saveGame.srbendaMod;
 		if (srbendaMod) {
+#ifdef _WIN32
 			PlaySound(NULL, NULL, SND_ASYNC);
 			if (isMusicOn)
 				PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_LOOP | SND_ASYNC);
+#endif
 		}
 		int i, j;
 		for (i = 0; i < HEIGHT_OF_MAP; i++) {
@@ -438,6 +443,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 					switch (event.key.keysym.sym) {
 						case SDLK_SPACE:
 							srbendaMod ^= -1;	// MUST BE ALL 1 IN BINARY FORM FOR XOR
+#ifdef _WIN32
 							if (srbendaMod) {
 								PlaySound(NULL, NULL, SND_ASYNC);
 								if (isMusicOn)
@@ -448,6 +454,7 @@ Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum
 								if (isMusicOn)
 									PlaySound(TEXT("Music/PacmanFever"), NULL, SND_LOOP | SND_ASYNC);
 							}
+#endif
 							newLevel = 0;
 							printInitMap(testMapTemp, pacman, srbendaMod, newLevel);
 							break;

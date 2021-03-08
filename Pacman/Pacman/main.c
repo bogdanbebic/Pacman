@@ -1,6 +1,8 @@
 #include <stdio.h>
+#ifdef _WIN32
 #include <Windows.h>
 #pragma comment(lib, "winmm.lib")
+#endif
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include "graphicsMenu.h"
@@ -29,7 +31,9 @@ int main(int argc, char *argv[]) {
 	game.init = gameInit;
 	game.quit = gameQuit;
 	getScreenResolution(&game.screen.width, &game.screen.height);
+#ifdef _WIN32
 	ShowWindow(GetConsoleWindow(), SW_HIDE);
+#endif
 
 	//PlaySound(TEXT("Music/UzickoKolo"), NULL, SND_ASYNC); // za potrebe proslave
 
@@ -52,7 +56,9 @@ int main(int argc, char *argv[]) {
 	// TODO: READ HIGHSCORES FROM FILE, NOT ALWAYS LIKE THIS
 	readHighscoresFromFiles();
 
+#ifdef _WIN32
 	PlaySound(TEXT("Music/PacmanFever"), NULL, SND_LOOP | SND_ASYNC);
+#endif
 
 	while (game.isRunning) {	
 		printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
@@ -109,8 +115,10 @@ int main(int argc, char *argv[]) {
 					createHeading();
 					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 				}
+#ifdef _WIN32
 				if (isMusicOn)
 					PlaySound(TEXT("Music/PacmanFever"), NULL, SND_LOOP | SND_ASYNC);
+#endif
 				break;
 			case isNew:
 				SDL_RenderClear(game.screen.renderer);
@@ -122,8 +130,10 @@ int main(int argc, char *argv[]) {
 					createHeading();
 					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 				}
+#ifdef _WIN32
 				if (isMusicOn)
 					PlaySound(TEXT("Music/PacmanFever"), NULL, SND_LOOP | SND_ASYNC);
+#endif
 				break;
 			case isContinue:
 				if (isGameCreated && saveGame.level != -1) {
@@ -136,8 +146,10 @@ int main(int argc, char *argv[]) {
 						createHeading();
 						printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 					}
+#ifdef _WIN32
 					if (isMusicOn)
 						PlaySound(TEXT("Music/PacmanFever"), NULL, SND_LOOP | SND_ASYNC);
+#endif
 				}
 				else {
 					activeScreen = isMenu;
@@ -166,8 +178,10 @@ int main(int argc, char *argv[]) {
 				break;
 			case isCredits:
 				SDL_RenderClear(game.screen.renderer);
+#ifdef _WIN32
 				if (isMusicOn)
 					PlaySound(TEXT("Music/BombeDevedesetih"), NULL, SND_LOOP | SND_ASYNC);
+#endif
 				printCredits();
 				SDL_RenderClear(game.screen.renderer);
 				activeScreen = isMenu;
@@ -175,8 +189,10 @@ int main(int argc, char *argv[]) {
 					createHeading();
 					printMenu(menuOption, menuTextureWhite, menuTextureYellow, pacmanTexture);
 				}
+#ifdef _WIN32
 				if (isMusicOn)
 					PlaySound(TEXT("Music/PacmanFever"), NULL, SND_LOOP | SND_ASYNC);
+#endif
 				break;
 			case isQuit:
 				game.isRunning = SDL_FALSE;

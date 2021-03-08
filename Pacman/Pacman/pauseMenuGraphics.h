@@ -6,7 +6,6 @@
  */
 
 #include <stdio.h>
-#include <Windows.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include "game.h"

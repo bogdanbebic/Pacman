@@ -1,12 +1,24 @@
 #include "graphicsMenu.h"
 
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
+#endif
+
 /*!	\file graphicsMenu.c
  *	\brief Contains graphics functions definitions needed for menu
  */
 
 void getScreenResolution(int *width, int *height) {
+#ifdef _WIN32
 	*width = GetSystemMetrics(SM_CXSCREEN);
 	*height = GetSystemMetrics(SM_CYSCREEN);
+#else
+	*width = SCREEN_WIDTH;
+	*height = SCREEN_HEIGHT;
+#endif
 	return;
 }
 
@@ -464,12 +476,14 @@ void activateSettings(enum DifficultySpeed * currentDifficulty, enum YesNo * cur
 						}
 						if (selectedOption == musicOption) {
 							*currentMusicOption = hoveringMusicOption;
+#ifdef _WIN32
 							if (*currentMusicOption) {
 								PlaySound(TEXT("Music/PacmanFever"), NULL, SND_ASYNC);
 							}
 							else {
 								PlaySound(NULL, NULL, SND_ASYNC);
 							}
+#endif
 						}
 						if (selectedOption == gameDifficulty) {
 							selectedOption = diffOption;

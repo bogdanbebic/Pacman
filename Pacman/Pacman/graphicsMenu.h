@@ -6,7 +6,6 @@
 */
 
 #include <stdio.h>
-#include <Windows.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <string.h>
@@ -17,8 +16,6 @@
 #include "gameMap.h"
 #include "highscores.h"
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
 #define SCREEN_SCALE 1
 #define SCREEN_NAME ("Pacman")
 #define MAX_STRING_LINE 20
