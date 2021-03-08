@@ -312,7 +312,7 @@ void saveGameForContinue(enum DifficultySpeed difficulty, int delay, int level, 
 	return;
 }
 
-Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, enum YesNo isMusicOn) {
+Highscore playGame(enum GameType gameType, enum DifficultySpeed difficulty, int isMusicOn) {
 	extern int map[HEIGHT_OF_MAP][WIDTH_OF_MAP];
 
 	int testMapTemp[HEIGHT_OF_MAP][WIDTH_OF_MAP];
